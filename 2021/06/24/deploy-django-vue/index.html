@@ -389,7 +389,7 @@
 
 <p><img src="/img/articles/21-6-24/uwsgi.png" srcset="/img/loading.gif" lazyload alt="uwsgi 进程查看"></p>
 <h3 id="配置-Nginx"><a href="#配置-Nginx" class="headerlink" title="配置 Nginx"></a>配置 Nginx</h3><blockquote>
-<p>此处先给出<strong>部署域名</strong>的样例，仅服务器 IP 以后再给出。</p>
+<p>此处先给出部署域名的样例，仅服务器 IP 以后再给出。</p>
 </blockquote>
 <p>首先，删除 <code>/etc/nginx/nginx.conf</code> 文件中 <code>server&#123;...&#125;</code> 部分的代码。当然，如果怕出错，也可先将原本的 nginx.conf 文件备份一下。</p>
 <p>接下来，在 <code>/etc/nginx/conf.d</code> 文件夹中修改默认文件 <code>default.conf</code>（若不存在则新建一个），文件内容如下：</p>
@@ -412,12 +412,19 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">ps -ef | grep uwsgi         <span class="hljs-comment"># 查看uWSGI进程</span><br>killall -9 uwsgi            <span class="hljs-comment"># 用kill方法把uwsgi进程杀死</span><br>uwsgi --ini uwsgi.ini       <span class="hljs-comment"># 重启uwsgi</span><br>nginx -s reload             <span class="hljs-comment"># nginx平滑重启</span><br></code></pre></td></tr></table></figure>
 
 <p>另外，如果你的项目文件存放于 root 用户目录下，访问网站时可能出现 500 或 403 Forbidden 权限报错，此时需修改 <code>/etc/nginx/nginx.conf</code>，将文件首行的 <code>user nginx</code> 修改为 <code>user root</code>。</p>
-<p>至此网站已部署完毕，欢迎访问<a target="_blank" rel="noopener" href="https://zewan.top/">我的网站</a>，项目<a target="_blank" rel="noopener" href="https://github.com/ZewanHuang/Online-Publish-Vue">网上出版系统</a>已开源，欢迎交流学习！</p>
+<p>至此网站已部署完毕，欢迎访问<a target="_blank" rel="noopener" href="https://zewan.top/">我的网站</a>。项目<a target="_blank" rel="noopener" href="https://github.com/ZewanHuang/Online-Publish-Vue">网上出版系统</a>已开源，欢迎交流学习！</p>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/">前后端开发</a>
+                    
+                  </div>
                 
                 
                   <div class="post-meta">
