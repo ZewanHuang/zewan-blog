@@ -13,6 +13,8 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
   <meta name="theme-color" content="#2f4154">
   <meta name="description" content="本篇记录我配置和部署服务器的每一步，主要包括服务器配置 Django 虚拟环境、uWSGI 和 Nginx 的使用以及报错的纠正。">
   <meta name="author" content="Zehuan Huang">
@@ -254,7 +256,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年6月24日 晚上
+                  本文最后更新于：2021年6月26日 晚上
                 
               </p>
             
@@ -432,7 +434,7 @@
                     
                       <a class="hover-with-bg" href="/tags/Web/">Web</a>
                     
-                      <a class="hover-with-bg" href="/tags/Deploy/">Deploy</a>
+                      <a class="hover-with-bg" href="/tags/%E9%83%A8%E7%BD%B2/">部署</a>
                     
                   </div>
                 
@@ -471,6 +473,23 @@
                   
                 
                 
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appKey":"QBNI2wT2eJM19a0Lfl90vFhq","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://hn9otbfn.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":true,"requiredFields":[],"appid":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appkey":"QBNI2wT2eJM19a0Lfl90vFhq"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
 
               </article>
             
