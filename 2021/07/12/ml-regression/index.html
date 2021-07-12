@@ -1,0 +1,729 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/zewanblog.ico">
+  <link rel="icon" href="/img/zewanblog.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="分单变量、多变量介绍线性回归，其中涉及代价函数、梯度下降等知识点。">
+  <meta name="author" content="Zehuan Huang">
+  <meta name="keywords" content="">
+  
+  <title>线性回归 - Zewan Blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.6.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","app_key":"QBNI2wT2eJM19a0Lfl90vFhq","server_url":"https://hn9otbfn.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Zewan Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/configs/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="线性回归">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Zehuan Huang
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-12 18:37" pubdate>
+        2021年7月12日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">线性回归</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年7月13日 凌晨
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h2 id="单变量线性回归-Linear-Regression-with-One-Variable"><a href="#单变量线性回归-Linear-Regression-with-One-Variable" class="headerlink" title="单变量线性回归 (Linear Regression with One Variable)"></a>单变量线性回归 (Linear Regression with One Variable)</h2><p>我们使用上一章房价的例子，介绍模型表示、代价函数、梯度下降的一些基本概念。</p>
+<h3 id="模型表示-Model-Representation"><a href="#模型表示-Model-Representation" class="headerlink" title="模型表示 (Model Representation)"></a>模型表示 (Model Representation)</h3><p>首先，对于房价这个监督学习的例子，我们有一个数据集，称为<strong>训练集</strong>。假设数据如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Size(x)</th>
+<th align="center">Price in 1w’s(y)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">101</td>
+<td align="center">98</td>
+</tr>
+<tr>
+<td align="center">134</td>
+<td align="center">156</td>
+</tr>
+<tr>
+<td align="center">201</td>
+<td align="center">237</td>
+</tr>
+<tr>
+<td align="center">…</td>
+<td align="center">…</td>
+</tr>
+</tbody></table>
+<p>用以下符号来描述这个回归问题：</p>
+<ul>
+<li>$m$ 代表训练集中实例的数量</li>
+<li>$x$ 代表特征/输入变量</li>
+<li>$y$ 代表目标变量/输出变量</li>
+<li>$(x,y)$ 代表训练集中的实例</li>
+<li>$(x^{(i)},y^{(i)})$ 代表第$i$个观察实例</li>
+<li>$h$ 代表学习算法的解决方案或函数，也称为<strong>假设 (hypothesis)</strong></li>
+</ul>
+<p><img src="/img/articles/21-7-11/ml-flow.jpg" srcset="/img/loading.gif" lazyload alt="监督学习算法的工作流程"></p>
+<p>上图展示了监督学习算法的工作方式。可以看到，训练集里有房屋尺寸及其对应的价格，我们将它 feed 给学习算法，然后输出一个函数 $h$。这时我们输入房屋大小 $x$，$h$ 则会输出对应的房屋价格预测值 $y$。因此 $h$ 是一个从 $x$ 到 $y$ 的函数映射。</p>
+<p>如何表达 $h$ 呢？我们可以用简单的线性回归，将其表示为 $h_{\theta}(x)=\theta_{0}+\theta_{1}x$，因为只含有一个特征变量，因此叫做<strong>单变量线性回归问题</strong>。</p>
+<h3 id="代价函数-Cost-Function"><a href="#代价函数-Cost-Function" class="headerlink" title="代价函数 (Cost Function)"></a>代价函数 (Cost Function)</h3><p>在上一部分我们为模型引入了<strong>参数</strong> $\theta_{0}$ 和 $\theta_{1}$，在房价问题的例子中表示直线在 $y$ 轴上的截距和直线的斜率。接下来我们要做的便是为模型选择合适的参数 (parameters)。事实上这就是 feed 的过程。</p>
+<p>选择的参数决定了我们得到的直线相对于我们训练集的准确程度，我们称模型的预测值与实际值的差距为建模误差 (modeling error)。此时目标是选择出使得建模误差的平方和最小的模型参数。</p>
+<p>定义<strong>代价函数</strong>表示建模误差：</p>
+<p>$$<br>J(\theta_{0},\theta_{1})=\frac{1}{2m}\Sigma_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})^2<br>$$</p>
+<p>我们知道，对特定的 $\theta_{0}$ 和 $\theta_{1}$，我们能得到对应的代价值 $J$。因此 $J$ 是关于 $\theta_{0}$ 和 $\theta_{1}$ 的函数。将其绘制成一个等高线图，三个坐标分别为 $\theta_{0}$、$\theta_{1}$ 和 $J(\theta_{0},\theta_{1})$：</p>
+<p><img src="/img/articles/21-7-11/lineheight.png" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>可以直观地看到，三维空间中存在一个使 $J(\theta_{0},\theta_{1})$ 最小的点。</p>
+<p>在这里罗列一下前面的概念：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Concept</th>
+<th align="center">Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Hypothesis</td>
+<td align="center">$h_{\theta}(x) = \theta_{0} + \theta_{1} x$</td>
+</tr>
+<tr>
+<td align="center">Parameters</td>
+<td align="center">$\theta_{0},\theta_{1}$</td>
+</tr>
+<tr>
+<td align="center">Cost Function</td>
+<td align="center">$J(\theta_{0},\theta_{1})=\frac{1}{2m}\Sigma_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})^2$</td>
+</tr>
+<tr>
+<td align="center">Goal</td>
+<td align="center">minimize $J(\theta_{0},\theta_{1})$</td>
+</tr>
+</tbody></table>
+<h3 id="参数求解-Parameter-Learning"><a href="#参数求解-Parameter-Learning" class="headerlink" title="参数求解 (Parameter Learning)"></a>参数求解 (Parameter Learning)</h3><p><strong>梯度下降</strong> (Gradient Descent) 是一个求函数最小值的算法，下面将使用该算法求出代价函数 $J(\theta_{0},\theta_{1})$ 的最小值。</p>
+<p>梯度下降：开始时随机选择一个参数组合 $(\theta_{0}, \theta_{1},…,\theta_{n})$，计算代价函数值，接下来寻找下一个能使代价函数值下降最多的参数组合，持续这么做直到到达一个局部最优解 (local optimal solution)。因此我们没有遍历所有参数组合（也不可能遍历），因此不确定得到的解是否为全局最优。</p>
+<p><img src="/img/articles/21-7-11/Gradient.jpg" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>梯度下降的思想比较好理解。想象你站立在山的某个点，然后旋转 360 度，看看往哪个方向能下山，然后迈出一定距离的步伐。迈出一步后，重新环顾四周，持续上面的过程，直到到达某个点，发现四周都是上山的方向。</p>
+<p><strong>批量梯度下降</strong> (batch gradient descent) 算法公式为：</p>
+<p>$$<br>\theta_{j}:=\theta_{j}-\alpha\frac{\partial}{\partial\theta_{j}}J(\theta_{0},\theta_{1}), j=0或1<br>$$</p>
+<p>其中 $\alpha$ 是<strong>学习率</strong> (learning rate)，决定每一次迈出的步子有多大。当 $\alpha$ 太小或太大时：</p>
+<ul>
+<li>$\alpha$ 太小，即学习速率低，达到局部最优的速度会很慢；</li>
+<li>$\alpha$ 太大，即学习速率过快，迈的步子太大，可能会导致多次迭代都越过了局部最优点。</li>
+</ul>
+<p>在批量梯度下降中，我们每次都<strong>同时</strong>让所有参数减去学习速率乘代价函数的偏导。这里的同时，表示先根据当前点计算出式子右边的值（参数的新值），再同时更新参数。</p>
+<p>在计算过程中，我们会发现，每次迭代（计算代价函数值）都会用到所有训练样本，因此该算法称为<strong>批量梯度下降</strong>。当然也存在其它类型的梯度下降法，不考虑计算整个训练集，而是每次只关注训练集的小子集。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>上述是单变量线性回归问题的阐述。可以看到，针对房价这类问题，首先建立模型，将其表示为一次函数（参数未定），并定义代价函数表示建模误差，接着使用求函数最小值的算法求解参数（上面使用批量梯度下降算法）</p>
+<h2 id="多变量线性回归-Linear-Regression-with-Multiple-Variables"><a href="#多变量线性回归-Linear-Regression-with-Multiple-Variables" class="headerlink" title="多变量线性回归 (Linear Regression with Multiple Variables)"></a>多变量线性回归 (Linear Regression with Multiple Variables)</h2><p>继续延续上面房价模型的例子，不同的是，房价往往与多个变量有关，比如大小、卧室数量、楼层数、房屋年龄等有关，因此我们引入多变量回归问题。</p>
+<h3 id="多维特征-Multiple-Features"><a href="#多维特征-Multiple-Features" class="headerlink" title="多维特征 (Multiple Features)"></a>多维特征 (Multiple Features)</h3><p>建立模型，我们首先需要将其变量进行抽象表示。假设我们有这样的数据：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Size (meter2)</th>
+<th align="center">Number of bedrooms</th>
+<th align="center">Number of floors</th>
+<th align="center">Age of home (years)</th>
+<th align="center">Price (1w)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">2104</td>
+<td align="center">5</td>
+<td align="center">1</td>
+<td align="center">45</td>
+<td align="center">460</td>
+</tr>
+<tr>
+<td align="center">1416</td>
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">40</td>
+<td align="center">232</td>
+</tr>
+<tr>
+<td align="center">1534</td>
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">30</td>
+<td align="center">315</td>
+</tr>
+<tr>
+<td align="center">852</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">36</td>
+<td align="center">178</td>
+</tr>
+<tr>
+<td align="center">…</td>
+<td align="center">…</td>
+<td align="center">…</td>
+<td align="center">…</td>
+<td align="center">…</td>
+</tr>
+</tbody></table>
+<p>同样用符号表示：</p>
+<ul>
+<li>$n$ 代表特征的数量</li>
+<li>$m$ 代表样本数量</li>
+<li>$x^{i}$ 代表第 $i$ 个训练实例，是特征矩阵中的第 $i$ 行，一个<strong>向量</strong></li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ML/">ML</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/10/ml-welcome/">
+                        <span class="hidden-mobile">机器学习的基础分类与概念</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appKey":"QBNI2wT2eJM19a0Lfl90vFhq","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://hn9otbfn.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":true,"requiredFields":[],"appid":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appkey":"QBNI2wT2eJM19a0Lfl90vFhq"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        粤ICP备2021021248号-3
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.2/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
