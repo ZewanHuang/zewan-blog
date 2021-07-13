@@ -204,7 +204,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      839 字
+      859 字
     </span>
   
 
@@ -214,7 +214,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      13
        分钟
     </span>
   
@@ -256,7 +256,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年7月13日 晚上
+                  本文最后更新于：2021年7月14日 凌晨
                 
               </p>
             
@@ -289,13 +289,16 @@
 <p>现使用特征 $\frac{\partial J(\theta)}{\partial\theta}=0$，推导出参数方程：</p>
 <p>$$<br>\theta=(X^{T}X)^{-1}X^{T}y<br>$$</p>
 <p>其中，$X$ 表示特征矩阵（含$x_{0}=1$），$T$ 表示矩阵转置，$y$ 为训练集的结果，是一个向量。即：</p>
-<p>$$<br>\theta =<br>\left[<br>\begin{matrix}<br>\theta_{0} &amp; \theta_{1} &amp; … &amp; \theta_{n}<br>\end{matrix}<br>\right];<br>X =<br>\left[<br>\begin{matrix}<br>x_{0}^{(1)} &amp; … &amp; x_{n}^{(1)} \\<br>. &amp; . &amp; . \\<br>x_{0}^{m} &amp; … &amp; x_{n}^{m}<br>\end{matrix}<br>\right];<br>y =<br>\left[<br>\begin{matrix}<br>y_{1} \\<br>y_{2} \\<br>. \\<br>. \\<br>y_{m}<br>\end{matrix}<br>\right]<br>$$</p>
+<p>$$<br>\theta =<br>\left[<br>\begin{matrix}<br>\theta_{0} \\<br>\theta_{1} \\<br>. \\<br>. \\<br>\theta_{n}<br>\end{matrix}<br>\right];<br>X =<br>\left[<br>\begin{matrix}<br>x_{0}^{(1)} &amp; … &amp; x_{n}^{(1)} \\<br>. &amp; . &amp; . \\<br>x_{0}^{m} &amp; … &amp; x_{n}^{m}<br>\end{matrix}<br>\right];<br>y =<br>\left[<br>\begin{matrix}<br>y_{1} \\<br>y_{2} \\<br>. \\<br>. \\<br>y_{m}<br>\end{matrix}<br>\right]<br>$$</p>
 <h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p>将代价函数 $J(\theta)$ 转为矩阵表达形式，有</p>
 <p>$$<br>J(\theta) = \frac{1}{2}(X\theta-y)^{2}<br>$$</p>
+<blockquote>
+<p>上式 $X\theta-y$ 为 $(m,1)$ 向量，平方仅代表各元素做平方运算</p>
+</blockquote>
 <p>对 $J(\theta)$ 进行如下变换：</p>
-<p>$$<br>\begin{aligned}<br>J(\theta) &amp;=  \frac{1}{2}(X\theta-y)^{T}(X\theta-y)\\<br>&amp;= \frac{1}{2}(\theta^{T}X^{T}-y^{T})(X\theta-y)\\<br>&amp;= \frac{1}{2}(\theta^{T}X^{T}X\theta-\theta^{T}X^{T}y-y^{T}X\theta-y^{T}y)<br>\end{aligned}<br>$$</p>
+<p>$$<br>\begin{aligned}<br>J(\theta) &amp;=  \frac{1}{2}(X\theta-y)^{T}(X\theta-y)\\<br>&amp;= \frac{1}{2}(\theta^{T}X^{T}-y^{T})(X\theta-y)\\<br>&amp;= \frac{1}{2}(\theta^{T}X^{T}X\theta-\theta^{T}X^{T}y-y^{T}X\theta+y^{T}y)<br>\end{aligned}<br>$$</p>
 <p>接下来使用矩阵的求导法则 $\frac{\mathrm{d}AB}{\mathrm{d}B}=A^{T},\frac{\mathrm{d}X^{T}AX}{\mathrm{d}X}=2AX$，对 $J(\theta)$ 偏导，得：</p>
-<p>$$<br>\begin{aligned}<br>\frac{\partial J(\theta)}{\partial \theta}<br>&amp;= \frac{1}{2}(2X^{T}X\theta-X^{T}y-(y^{T}X)^{T}-0)\\<br>&amp;= \frac{1}{2}(2X^{T}X\theta-X^{T}y-X^{T}y-0)\\<br>&amp;= X^{T}X\theta-X^{T}y<br>\end{aligned}<br>$$</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial J(\theta)}{\partial \theta}<br>&amp;= \frac{1}{2}(2X^{T}X\theta-X^{T}y-(y^{T}X)^{T}+0)\\<br>&amp;= \frac{1}{2}(2X^{T}X\theta-X^{T}y-X^{T}y+0)\\<br>&amp;= X^{T}X\theta-X^{T}y<br>\end{aligned}<br>$$</p>
 <p>令 $\frac{\partial J(\theta)}{\partial \theta}=0$，得</p>
 <p>$$<br>\theta = (X^{T}X)^{-1}X^{T}y<br>$$</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p>
