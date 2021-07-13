@@ -446,14 +446,14 @@
 <p>$$<br>\frac{\partial}{\partial\theta_{j}}J(\theta_{j})=0<br>$$</p>
 <p>利用上式，结合 $J(\theta)$ 的定义，我们得到非常重要且常用的公式：</p>
 <blockquote>
-<p>此处省略推导，后面补上</p>
+<p>推导过程见<a target="_blank" rel="noopener" href="https://blog.zewan.cc/2021/07/13/normalEqu/">正规方程的推导 - Zewan Blog</a></p>
 </blockquote>
 <p>$$<br>\theta=(X^{T}X)^{-1}X^{T}y<br>$$</p>
 <p>其中，$X$ 表示特征矩阵（含$x_{0}=1$），$T$ 表示矩阵转置，$y$ 为训练集的结果，是一个向量。</p>
 <p>使用上述公式，即可求解参数。Python 代码示例如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">normalEqn</span>(<span class="hljs-params">X, y</span>):</span><br>    <span class="hljs-keyword">return</span> np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y) <span class="hljs-comment"># np.linalg.inv 求逆，X.T 转置，.dot(X) 矩阵乘法，可 @ 代替</span><br></code></pre></td></tr></table></figure>
 
-<p>当然，对于不可逆矩阵，通常是因为特征之间不独立，如同时包含以英尺为单位的特征和以米为单位的特征，或特征数量大于训练集数量，此时正规方程方法不可用。</p>
+<p>当然，对于不可逆矩阵，通常是因为特征之间不独立，如同时包含以英尺为单位的特征和以米为单位的特征，或特征数量大于训练集数量，或存在<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BA%BF%E6%80%A7%E7%9B%B8%E5%85%B3/6416511">线性相关</a>的特征，此时正规方程方法不可用。</p>
 <p>梯度下降与正规方程的比较：</p>
 <table>
 <thead>
@@ -533,6 +533,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2021/07/13/normalEqu/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">正规方程的推导</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
