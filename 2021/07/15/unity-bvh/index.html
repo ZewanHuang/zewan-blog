@@ -214,7 +214,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      28
+      27
        分钟
     </span>
   
@@ -318,7 +318,7 @@
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> Dictionary&lt;<span class="hljs-built_in">string</span>,Vector3&gt; <span class="hljs-title">getOffset</span>(<span class="hljs-params"><span class="hljs-built_in">float</span> ratio</span>)</span> &#123;<br>    Dictionary&lt;<span class="hljs-built_in">string</span>, Vector3&gt; offset = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">string</span>, Vector3&gt;();<br>    <span class="hljs-keyword">foreach</span>(BVHBone bb <span class="hljs-keyword">in</span> boneList)<br>    &#123;<br>        offset.Add(bb.name, <span class="hljs-keyword">new</span> Vector3(bb.offsetX * ratio, bb.offsetY * ratio, bb.offsetZ * ratio));<br>    &#125;<br>    <span class="hljs-keyword">return</span> offset;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><strong>获取 BVH 的全局旋转，即 $T_{2}$</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> Dictionary&lt;<span class="hljs-built_in">string</span>,Vector3&gt; <span class="hljs-title">getOffset</span>(<span class="hljs-params"><span class="hljs-built_in">float</span> ratio</span>)</span> &#123;<br>    Dictionary&lt;<span class="hljs-built_in">string</span>, Vector3&gt; offset = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">string</span>, Vector3&gt;();<br>    <span class="hljs-keyword">foreach</span>(BVHBone bb <span class="hljs-keyword">in</span> boneList)<br>    &#123;<br>        offset.Add(bb.name, <span class="hljs-keyword">new</span> Vector3(bb.offsetX * ratio, bb.offsetY * ratio, bb.offsetZ * ratio));<br>    &#125;<br>    <span class="hljs-keyword">return</span> offset;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Csharp">bvhT = bp.getKeyFrame(<span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
 
 <p><strong>计算 $T_{5}$</strong></p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Csharp"><span class="hljs-keyword">foreach</span> (BoneMap bm <span class="hljs-keyword">in</span> bonemaps)<br>&#123;<br>    Transform currBone = anim.GetBoneTransform(bm.humanoid_bone);<br>    currBone.rotation = (currFrame[bm.bvh_name] * Quaternion.Inverse(bvhT[bm.bvh_name])) * unityT[bm.humanoid_bone];<br>&#125;<br></code></pre></td></tr></table></figure>
