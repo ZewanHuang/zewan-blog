@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>Unity 使用 bvh 驱动骨骼动作</title>
+    <link href="/2021/07/15/unity-bvh/"/>
+    <url>/2021/07/15/unity-bvh/</url>
+    
+    <content type="html"><![CDATA[<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/zb1165048017/article/details/112394097">[1] Unity 中 BVH 骨骼动画驱动的可视化理论与实现 - CSDN</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Unity</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Unity</tag>
+      
+      <tag>bvh</tag>
+      
+      <tag>3D动画</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>正规方程的推导</title>
     <link href="/2021/07/13/normalEqu/"/>
     <url>/2021/07/13/normalEqu/</url>
