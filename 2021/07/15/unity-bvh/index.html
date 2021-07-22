@@ -256,7 +256,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年7月15日 晚上
+                  本文最后更新于：2021年7月22日 上午
                 
               </p>
             
@@ -303,7 +303,7 @@
 <h3 id="位置调整"><a href="#位置调整" class="headerlink" title="位置调整"></a>位置调整</h3><p>上述矩阵都是作用于各关节点的旋转量上的，但动画除此之外还有<strong>根节点的位置</strong>，通过调整它来调整人物的位置。</p>
 <p>因此 BVH 的人物大小和 Unity 模型大小不同，所以我们通常根据某根骨骼的长度计算缩放比例，然后对 BVH 的根节点位置乘以缩放比例，就得到 Unity 根节点的位置了。</p>
 <p>$$<br>Pos_{r}^{(unity)} = Pos_{r}^{(bvh)} \times Scale<br>$$</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>前面讲解了 BVH 驱动相关原理，接下来大致讲述一下核心代码实现。项目代码见 <a target="_blank" rel="noopener" href="https://github.com/Zewan-Module/BVHParser">BVHParser</a>。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>前面讲解了 BVH 驱动相关原理，接下来大致讲述一下核心代码实现。项目代码见 <a target="_blank" rel="noopener" href="https://github.com/ZewanHuang/BVHParser">BVHParser</a>。</p>
 <h3 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h3><p><strong>获取关节父子关系</strong></p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> Dictionary&lt;<span class="hljs-built_in">string</span>,<span class="hljs-built_in">string</span>&gt; <span class="hljs-title">getHierachy</span>(<span class="hljs-params"></span>)</span><br>&#123;<br>    Dictionary&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt; hierachy = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt;();<br>    <span class="hljs-keyword">foreach</span> (BVHBone bb <span class="hljs-keyword">in</span> boneList)<br>    &#123;<br>        <span class="hljs-keyword">foreach</span> (BVHBone bbc <span class="hljs-keyword">in</span> bb.children)<br>        &#123;<br>            hierachy.Add(bbc.name, bb.name);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> hierachy;<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -329,7 +329,7 @@
 <li>若使用的 bvh 文件的旋转量不是 ZYX 顺序，请相应修改 BVHParser.cs 中的 eul2quat 函数，一般只需调换该函数参数顺序即可</li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文先简要介绍了几个基础知识 BVH 和角色姿势，后阐述了 BVH 驱动动作生成的理论（以 Tpose 为中间媒介求解转换矩阵），并使用代码实现。</p>
-<p>项目地址见 <a target="_blank" rel="noopener" href="https://github.com/Zewan-Module/BVHParser">BVHParser</a>。</p>
+<p>项目地址见 <a target="_blank" rel="noopener" href="https://github.com/ZewanHuang/BVHParser">BVHParser</a>。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zb1165048017/article/details/112394097">[1] Unity 中 BVH 骨骼动画驱动的可视化理论与实现 - CSDN</a></p>
 <p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/bvh/3691673">[2] BVH - 百度百科</a></p>
 

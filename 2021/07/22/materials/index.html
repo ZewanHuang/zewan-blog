@@ -16,11 +16,11 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="向量、矩阵求导的定义，以及给出常用求导方法和部分恒等式的证明，本文的知识介绍主要针对机器学习。">
+  <meta name="description" content="存放线上的一些学习资源，包括大佬博客、网课、论文等。">
   <meta name="author" content="Zehuan Huang">
   <meta name="keywords" content="">
   
-  <title>矩阵求导 - Zewan 笔记</title>
+  <title>资源信息库 - Zewan 笔记</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -177,7 +177,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="矩阵求导">
+            <span class="h2" id="subtitle" title="资源信息库">
               
             </span>
 
@@ -192,8 +192,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-18 22:37" pubdate>
-        2021年7月18日 晚上
+      <time datetime="2021-07-22 10:52" pubdate>
+        2021年7月22日 上午
       </time>
     </span>
   
@@ -204,7 +204,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      173 字
     </span>
   
 
@@ -214,7 +214,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      26
+      1
        分钟
     </span>
   
@@ -252,170 +252,40 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">矩阵求导</h1>
+            <h1 style="display: none">资源信息库</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年7月21日 下午
+                  本文最后更新于：2021年7月22日 上午
                 
               </p>
             
             <div class="markdown-body">
-              <p>本篇主要介绍向量、矩阵求导的定义，包含向量、矩阵、标量之间的求导，并给出一些常用的方法和恒等式。</p>
-<h2 id="符号说明"><a href="#符号说明" class="headerlink" title="符号说明"></a>符号说明</h2><table>
-<thead>
-<tr>
-<th align="center">符号</th>
-<th align="center">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$\mathbf{A},\mathbf{X},\mathbf{Y}$</td>
-<td align="center"><strong>矩阵</strong></td>
-</tr>
-<tr>
-<td align="center">$\mathbf{a},\mathbf{x},\mathbf{y}$</td>
-<td align="center"><strong>向量</strong></td>
-</tr>
-<tr>
-<td align="center">$a,x,y$</td>
-<td align="center"><strong>标量</strong></td>
-</tr>
-<tr>
-<td align="center">$X^{T}$</td>
-<td align="center">矩阵 $X$ 的转置</td>
-</tr>
-<tr>
-<td align="center">$tr(X)$</td>
-<td align="center">矩阵 $X$ 的迹</td>
-</tr>
-<tr>
-<td align="center">$det(X)$ 或 $|X|$</td>
-<td align="center">矩阵 $X$ 的行列式</td>
-</tr>
-<tr>
-<td align="center">$||X||$</td>
-<td align="center">矩阵 $X$ 的范数</td>
-</tr>
-</tbody></table>
-<h2 id="矩阵向量求导定义"><a href="#矩阵向量求导定义" class="headerlink" title="矩阵向量求导定义"></a>矩阵向量求导定义</h2><h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>在高等数学中，我们学过标量对标量的求导，比如标量 $y$ 对标量 $x$ 的求导，可表示为 $\frac{\partial y}{\partial x}$。</p>
-<p>有时我们会有一组标量 $y_{i},i=1,2,…$，对标量 $x$ 求导，我们会得到一组结果：</p>
-<p>$$<br>\frac{\partial y_{i}}{\partial x},i=1,2,…<br>$$</p>
-<p>如果将该组标量 $y_{i}$ 组成向量 $\mathbf{y}$，我们得到的计算结果也会是一个向量 $\frac{\partial \mathbf{y}}{\partial x}$。</p>
-<p>向量对标量的求导，正是<strong>将向量的每个分量分别对标量求导</strong>，最后组成一个向量的形式。</p>
-<p>根据求导的自变量和因变量的类型，属于标量、向量或矩阵，我们有 9 种可能的矩阵求导定义：</p>
-<table>
-<thead>
-<tr>
-<th align="center">自变量\因变量</th>
-<th align="center">标量 $y$</th>
-<th align="center">向量 $\mathbf{y}$</th>
-<th align="center">矩阵 $\mathbf{Y}$</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">标量 $x$</td>
-<td align="center">$\frac{\partial y}{\partial x}$</td>
-<td align="center">$\frac{\partial \mathbf{y}}{\partial x}$</td>
-<td align="center">$\frac{\partial \mathbf{Y}}{\partial x}$</td>
-</tr>
-<tr>
-<td align="center">向量 $\mathbf{x}$</td>
-<td align="center">$\frac{\partial y}{\partial \mathbf{x}}$</td>
-<td align="center">$\frac{\partial \mathbf{y}}{\partial \mathbf{x}}$</td>
-<td align="center">$\frac{\partial \mathbf{Y}}{\partial \mathbf{x}}$</td>
-</tr>
-<tr>
-<td align="center">矩阵 $\mathbf{X}$</td>
-<td align="center">$\frac{\partial y}{\partial \mathbf{X}}$</td>
-<td align="center">$\frac{\partial \mathbf{y}}{\partial \mathbf{X}}$</td>
-<td align="center">$\frac{\partial \mathbf{Y}}{\partial \mathbf{X}}$</td>
-</tr>
-</tbody></table>
-<p>事实上，矩阵、向量、标量之间的求导，是将因变量各个元素分别对自变量各个元素进行求导。比如向量 $\mathbf{y}$ 对向量 $\mathbf{x}$ 求导，则分别将  $\mathbf{y}$ 的每个分量对 $\mathbf{x}$ 的每个分量求导。</p>
-<p>但这样自然会出现一个排列次序的问题。我们将两个长度为 $m,n$ 的向量的分量对应求导，得到 $m\times n$ 个标量。为简练表示结果，我们需要将其写成矩阵的形式，这样就涉及到这 $m\times n$ 个值如何排列。</p>
-<p>为解决这个问题，需要引入<strong>求导布局</strong>的概念。</p>
-<h3 id="求导布局"><a href="#求导布局" class="headerlink" title="求导布局"></a>求导布局</h3><p>为解决矩阵向量求导的结果不唯一，我们引入求导布局。最基本的求导布局有两个：分子布局 (numerator layout) 和分母布局 (denominator layout)。</p>
-<p>对于<strong>分子布局</strong>而言，求导结果的维度以分子为主。也就是说，如果向量 $\mathbf{y}$ 是一个 $m$ 维的<u>列向量</u>，它对标量 $x$ 的求导结果 $\frac{\partial \mathbf{y}}{\partial x}$ 也是一个 $m$ 维<u>列向量</u>；若 $\mathbf{y}$ 是一个 $m$ 维的<u>行向量</u>，则求导结果也是一个 $m$ 维的<u>行向量</u>。</p>
-<p>对于<strong>分母布局</strong>而言，求导结果的维度以分母为主。也就是说，如果向量 $\mathbf{y}$ 是一个 $m$ 维的<u>列向量</u>，它对标量 $x$ 的求导结果 $\frac{\partial \mathbf{y}}{\partial x}$ 是一个 $m$ 维<u>行向量</u>；若 $\mathbf{y}$ 是一个 $m$ 维的<u>行向量</u>，则求导结果也是一个 $m$ 维的<u>列向量</u>。</p>
-<p>可以看出，分子布局和分母布局相差一个转置。</p>
-<p>稍微麻烦些的是向量对向量的求导。比如 $m$ 维列向量 $\mathbf{y}$ 对 $n$ 维列向量 $\mathbf{x}$ 求导，如果是分子布局，结果为：</p>
-<p>$$<br>\frac{\partial \mathbf{y}}{\partial \mathbf{x}}<br>=<br>\left(<br>\begin{matrix}<br>\frac{\partial y_{1}}{\partial x_{1}} &amp; \frac{\partial y_{1}}{\partial x_{2}} &amp; \cdots &amp; \frac{\partial y_{1}}{\partial x_{n}}  \\<br>\frac{\partial y_{2}}{\partial x_{1}} &amp; \frac{\partial y_{2}}{\partial x_{2}} &amp; \cdots &amp; \frac{\partial y_{2}}{\partial x_{n}}  \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\frac{\partial y_{m}}{\partial x_{1}} &amp; \frac{\partial y_{m}}{\partial x_{2}} &amp; \cdots &amp; \frac{\partial y_{m}}{\partial x_{n}}<br>\end{matrix}<br>\right)<br>$$</p>
-<p>上边这个按分子布局求得的向量对向量的求导结果，一般叫做<strong>雅克比 (Jacobian) 矩阵</strong>，有的资料又表示为 $\frac{\partial \mathbf{y}}{\partial \mathbf{x}^{T}}$。</p>
-<p>如果按分母布局，则结果为 $n\times m$ 的矩阵：</p>
-<p>$$<br>\frac{\partial \mathbf{y}}{\partial \mathbf{x}}<br>=<br>\left(<br>\begin{matrix}<br>\frac{\partial y_{1}}{\partial x_{1}} &amp; \frac{\partial y_{2}}{\partial x_{1}} &amp; \cdots &amp; \frac{\partial y_{m}}{\partial x_{1}}  \\<br>\frac{\partial y_{1}}{\partial x_{2}} &amp; \frac{\partial y_{2}}{\partial x_{2}} &amp; \cdots &amp; \frac{\partial y_{m}}{\partial x_{2}}  \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\frac{\partial y_{1}}{\partial x_{n}} &amp; \frac{\partial y_{2}}{\partial x_{n}} &amp; \cdots &amp; \frac{\partial y_{m}}{\partial x_{n}}<br>\end{matrix}<br>\right)<br>$$</p>
-<p>上边这个按分子布局求得的向量对向量的求导结果，一般叫做<strong>梯度矩阵</strong>，有的资料又表示为 $\frac{\partial \mathbf{y}^{T}}{\partial \mathbf{x}}$。</p>
-<p>观察上面两个矩阵，我们可以发现，分子布局的结果矩阵，保留了原分子向量的维度，即结果矩阵的每一列都是 $y_{1}$ 至 $y_{m}$，行数仍为 $m$；分母布局保留了原分母向量的维度，即结果矩阵的每一列都是 $x_{1}$ 至 $x_{n}$，行数为 $n$。</p>
-<p>显然，<strong>对于某一种求导类型，不能同时使用分子布局和分母布局求导。</strong></p>
-<p>在机器学习中，我们使用的是<strong>混合布局</strong>的思路。如果是向量或矩阵对标量求导，则使用分子布局；如果是标量对向量、矩阵求导，则以分母布局为准；而向量对向量求导，有些分歧，本文以分子布局的雅可比矩阵为主。</p>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><table>
-<thead>
-<tr>
-<th align="center">自变量\因变量</th>
-<th>标量 $y$</th>
-<th>列向量 $\mathbf{y}$</th>
-<th>矩阵 $\mathbf{Y}$</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">标量 $x$</td>
-<td>$\frac{\partial y}{\partial x}$</td>
-<td><strong>分子布局：</strong>$m$ 维列向量<br>分母布局：$m$ 维行向量</td>
-<td><strong>分子布局：</strong>$m\times n$<br>分母布局：$n\times m$</td>
-</tr>
-<tr>
-<td align="center">列向量 $\mathbf{x}$</td>
-<td>分子布局：$n$ 维行向量<br><strong>分母布局：</strong>$n$ 维列向量</td>
-<td><strong>分子布局：</strong>$m\times n$ 雅可比矩阵<br>分母布局：$n\times m$ 梯度矩阵</td>
-<td></td>
-</tr>
-<tr>
-<td align="center">矩阵 $\mathbf{X}$</td>
-<td>分子布局：$n\times m$<br><strong>分母布局：</strong>$m\times n$</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="定义法求导"><a href="#定义法求导" class="headerlink" title="定义法求导"></a>定义法求导</h2><h3 id="标量对向量求导"><a href="#标量对向量求导" class="headerlink" title="标量对向量求导"></a>标量对向量求导</h3><p>标量对向量求导，严格来说是实值函数对向量求导。即定义实值函数 $f:R^{n}\rightarrow R$，自变量 $\mathbf{x}$ 是 $n$ 维向量，输出值 $y$ 是标量。</p>
-<p>前面我们也说过，标量对向量求导，实际上就是<strong>对向量的每个分量分别求导</strong>，再把结果排列在一起。那么我们可以将实值函数对向量的每一个分量求导，找到规律，得到结果向量。</p>
-<p>举个简单的例子：$y=\mathbf{a}^{T}\mathbf{x}$，求解 $\frac{\partial\mathbf{a}^{T}\mathbf{x}}{\partial\mathbf{x}}$</p>
-<p>根据定义，对 $\mathbf{x}$ 的第 $i$ 个分量求导：</p>
-<p>$$<br>\frac{\partial \mathbf{a}^{T} \mathbf{x}}{\partial x_{i}}<br>=<br>\frac{\partial \sum_{j=1}^{n} a_{j} x_{j}}{\partial x_{i}}<br>=<br>\frac{\partial a_{i} x_{i}}{\partial x_{i}}<br>=<br>a_{i}<br>$$</p>
-<p>可见，对向量的第 $i$ 个分量的求导结果等于向量 $\mathbf{a}$ 的第 $i$ 个分量。采用分母布局，最后得到的求导结果为 $\mathbf{a}$。即：</p>
-<p>$$<br>\frac{\partial \mathbf{a}^{T} \mathbf{x}}{\partial \mathbf{x}}<br>=<br>\mathbf{a}\tag{1}<br>$$</p>
-<p>同样使用定义法，我们可以得到</p>
-<p>$$<br>\frac{\partial \mathbf{x}^{T} \mathbf{a}}{\partial \mathbf{x}}<br>=<br>\mathbf{a},<br>\frac{\partial \mathbf{x}^{T} \mathbf{x}}{\partial \mathbf{x}}<br>=<br>2\mathbf{x}\tag{2}<br>$$</p>
-<p>再来看一个复杂点的例子：$y=\mathbf{x}^{T}\mathbf{A}\mathbf{x}$，求解 $\frac{\partial \mathbf{x}^{T} \mathbf{A} \mathbf{x}}{\partial \mathbf{x}}$</p>
-<blockquote>
-<p>不难推断矩阵 $\mathbf{A}$ 是方阵</p>
-</blockquote>
-<p>对 $\mathbf{x}$ 的第 $k$ 个分量进行求导如下：</p>
-<p>$$<br>\frac{\partial \mathbf{x^{T}Ax}}{\partial x_{k}}<br>=<br>\frac{\partial \sum_{i=1}^{n} \sum_{j=1}^{n} x_{i}A_{ij}x_{j}}{\partial x_{k}}<br>=<br>\sum_{i=1}^{n}A_{ik}x_{i}<br>+<br>\sum_{j=1}^{n}A_{kj}x_{j}<br>$$</p>
-<p>将这 $k$ 个分量组成向量，结果可表示为</p>
-<p>$$<br>\frac{\partial \mathbf{x}^{T} \mathbf{A} \mathbf{x}}{\partial \mathbf{x}}<br>=<br>\mathbf{A}^{T}\mathbf{x}<br>+<br>\mathbf{Ax}\tag{3}<br>$$</p>
-<h3 id="标量对向量求导的一些基本法则"><a href="#标量对向量求导的一些基本法则" class="headerlink" title="标量对向量求导的一些基本法则"></a>标量对向量求导的一些基本法则</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Matrix_calculus">[1] Matrix Calculus - Wikipedia</a></p>
-<p><a target="_blank" rel="noopener" href="https://fei-wang.github.io/matrix.html">[2] 矩阵求导 - 蒙奇 D 路飞</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinard/p/10750718.html">[3] 机器学习中的矩阵向量求导 - 刘建平Pinard</a></p>
+              <h2 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h2><h3 id="Unity-Animator"><a href="#Unity-Animator" class="headerlink" title="Unity/Animator"></a>Unity/Animator</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_28849871/article/details/72593569">Unity/Animation – 创建Animation Clip</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/qq_28849871/article/details/72771779">Unity/Animation – 调节Animation Curves</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/qq_28849871/article/details/72821633">Unity/Animation – 添加动画事件(Animation Events)</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_28849871/article/details/77914922">Unity/Animation – 创建Animator Controller</a></li>
+</ul>
+<h2 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h2><h3 id="系统学习"><a href="#系统学习" class="headerlink" title="系统学习"></a>系统学习</h3><ul>
+<li><a target="_blank" rel="noopener" href="http://www.ai-start.com/ml2014/">斯坦福大学吴恩达2014机器学习教程中文笔记目录 - 黄海广博士译</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning">机器学习 Coursera 网课 - Andrew Ng 吴恩达</a></li>
+</ul>
+<h2 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h2><h3 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_145288300">直观梳理深度学习 - 大佬专栏</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31561570">深度学习基础(基本概念、优化算法、初始化、正则化等)</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31727402">计算机视觉四大基本任务(分类、定位、检测、分割)</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31727405">计算机视觉其他应用(网络压缩、视觉问答、可视化、风格迁移等)</a></li>
+</ul>
+<h2 id="论文库"><a href="#论文库" class="headerlink" title="论文库"></a>论文库</h2><h3 id="公众号"><a href="#公众号" class="headerlink" title="公众号"></a>公众号</h3><ul>
+<li>arXiv每日学术速递</li>
+</ul>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/%E7%9F%A9%E9%98%B5/">矩阵</a>
-                    
-                  </div>
                 
               </div>
               
@@ -430,18 +300,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/22/materials/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">资源信息库</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/15/unity-bvh/">
-                        <span class="hidden-mobile">Unity 使用 bvh 驱动骨骼动作</span>
+                      <a href="/2021/07/18/matrix-derivation/">
+                        <span class="hidden-mobile">矩阵求导</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
