@@ -16,11 +16,11 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="给博客换了个主题 Hexo Fluid，体验极佳，顺便简略记录一下部署过程和 Hexo 的一些基本用法。">
+  <meta name="description" content="分类问题">
   <meta name="author" content="Zehuan Huang">
   <meta name="keywords" content="">
   
-  <title>Hello World - Zewan 随笔</title>
+  <title>分类问题与逻辑回归 - Zewan 随笔</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -177,7 +177,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Hello World">
+            <span class="h2" id="subtitle" title="分类问题与逻辑回归">
               
             </span>
 
@@ -192,8 +192,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-06-16 17:17" pubdate>
-        2021年6月16日 下午
+      <time datetime="2021-07-23 13:56" pubdate>
+        2021年7月23日 下午
       </time>
     </span>
   
@@ -204,7 +204,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      586 字
+      27 字
     </span>
   
 
@@ -214,7 +214,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      1
        分钟
     </span>
   
@@ -252,70 +252,39 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Hello World</h1>
+            <h1 style="display: none">分类问题与逻辑回归</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年6月24日 下午
+                  本文最后更新于：2021年7月23日 下午
                 
               </p>
             
             <div class="markdown-body">
-              <p>给博客换了个主题 Hexo Fluid，体验极佳，顺便简略记录一下部署过程和 Hexo 的一些基本用法。</p>
-<span id="more"></span>
-
-<h2 id="关于-Hexo"><a href="#关于-Hexo" class="headerlink" title="关于 Hexo"></a>关于 Hexo</h2><blockquote>
-<p>引自官方文档</p>
-</blockquote>
-<p><a href="https://hexo.io/" target="_blank">Hexo</a> 是一个快速建议的博客框架，可使用 <a href="https://daringfireball.net/projects/markdown/" target="_blank">Markdown</a> 编辑页面。</p>
-<p><a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank">Fluid</a> 是本博客采用的主题，十分美观，建议入坑。</p>
-<h2 id="部署过程"><a href="#部署过程" class="headerlink" title="部署过程"></a>部署过程</h2><h3 id="1-准备环境-node-和-git"><a href="#1-准备环境-node-和-git" class="headerlink" title="1. 准备环境 node 和 git"></a>1. 准备环境 node 和 git</h3><p>node 环境的配置可以参照：<a href="https://www.cnblogs.com/jianguo221/p/11487532.html" target="_blank">windows安装npm教程–nodejs</a></p>
-<p>上面参考资料只需要看前半部分。Git 安装较简单，大概下载安装即成功。</p>
-<h3 id="2-安装-Hexo"><a href="#2-安装-Hexo" class="headerlink" title="2. 安装 Hexo"></a>2. 安装 Hexo</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install -g hexo-cli<br></code></pre></td></tr></table></figure>
-
-<p>安装完成后，找个你想放置博客项目文件的地方，执行下面命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo init MyBlog<br><span class="hljs-built_in">cd</span> MyBlog<br>npm install<br></code></pre></td></tr></table></figure>
-
-<p>新建完成后，文件夹目录与功能如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">.<br>├── _config.yml     <span class="hljs-comment"># 网站的配置信息，您可以在此配置大部分的参数。 </span><br>├── package.json<br>├── scaffolds       <span class="hljs-comment"># 模版文件夹</span><br>├── <span class="hljs-built_in">source</span>          <span class="hljs-comment"># 资源文件夹，除 _posts 文件，其他以下划线_开头的文件或者文件夹不会被编译打包到public文件夹</span><br>|   ├── _drafts     <span class="hljs-comment"># 草稿文件</span><br>|   └── _posts      <span class="hljs-comment"># 文章Markdowm文件 </span><br>└── themes          <span class="hljs-comment"># 主题文件夹</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="3-导入-fluid-主题"><a href="#3-导入-fluid-主题" class="headerlink" title="3. 导入 fluid 主题"></a>3. 导入 fluid 主题</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm install --save hexo-theme-fluid<br></code></pre></td></tr></table></figure>
-
-<p>然后在博客目录下创建 _config.fluid.yml，该文件为主题配置文件，具体配置参见 <a target="_blank" rel="noopener" href="https://hexo.fluid-dev.com/docs/guide/">Configuration</a>。我的个人配置仅作参考：<a href="https://paste.ubuntu.com/p/bmNjKsWZW9/" target="_blank">ZewanBlog_config.fluid.yml</a></p>
-<p>如下修改 Hexo 博客目录中的 _config.yml：</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">theme:</span> <span class="hljs-string">fluid</span>        <span class="hljs-comment"># 指定主题</span><br><span class="hljs-attr">language:</span> <span class="hljs-string">zh-CN</span>     <span class="hljs-comment"># 指定语言，会影响主题显示的语言，按需修改</span><br></code></pre></td></tr></table></figure>
-
-<p>运行 <code>hexo s</code> 命令，在本地浏览 <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000</a> 可以预览效果。</p>
-<h3 id="4-新建-GitHub-仓库"><a href="#4-新建-GitHub-仓库" class="headerlink" title="4. 新建 GitHub 仓库"></a>4. 新建 GitHub 仓库</h3><p>注意仓库名必须是 用户名.github.io</p>
-<h3 id="5-部署到-GitHub"><a href="#5-部署到-GitHub" class="headerlink" title="5. 部署到 GitHub"></a>5. 部署到 GitHub</h3><p>在 _config.yml 配置文件中修改：</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">deploy:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">git</span><br>  <span class="hljs-attr">repo:</span><br>    <span class="hljs-attr">github:</span> <span class="hljs-string">https://github.com/ZewanHuang/ZewanHuang.github.io</span>  <span class="hljs-comment"># 修改自己的仓库</span><br>  <span class="hljs-attr">branch:</span> <span class="hljs-string">master</span><br></code></pre></td></tr></table></figure>
-
-<p>安装部署插件 <a href="https://github.com/hexojs/hexo-deployer-git" target="_blank">hexo-deployer-git</a>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install hexo-deployer-git --save<br></code></pre></td></tr></table></figure>
-
-<p>最后执行命令部署上传，以下 g 是 generate 缩写，d 是 deploy 缩写：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo clean      <span class="hljs-comment"># 清除缓存文件和已生成的静态文件</span><br>hexo g -d       <span class="hljs-comment"># 部署上传</span><br></code></pre></td></tr></table></figure>
-
-<h2 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h2><h3 id="创建关于页面"><a href="#创建关于页面" class="headerlink" title="创建关于页面"></a>创建关于页面</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo new page about     <span class="hljs-comment"># 创建关于页面</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="创建新页面"><a href="#创建新页面" class="headerlink" title="创建新页面"></a>创建新页面</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo new <span class="hljs-string">&#x27;article-title&#x27;</span>    <span class="hljs-comment"># 新建页面</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="本地预览"><a href="#本地预览" class="headerlink" title="本地预览"></a>本地预览</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo s<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="生成静态文件"><a href="#生成静态文件" class="headerlink" title="生成静态文件"></a>生成静态文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo g<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo clean                  <span class="hljs-comment"># 清除缓存</span><br>hexo g -d                   <span class="hljs-comment"># 部署上传</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+              <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ML/">ML</a>
+                    
+                  </div>
                 
               </div>
               
@@ -330,15 +299,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/06/24/deploy-django-vue/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">服务器部署 Nginx + Django + Vue</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2021/07/22/materials/">
+                        <span class="hidden-mobile">资源信息库</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
