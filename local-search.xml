@@ -8,12 +8,12 @@
     <link href="/2021/07/23/ml-classification/"/>
     <url>/2021/07/23/ml-classification/</url>
     
-    <content type="html"><![CDATA[<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p><p><a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>]]></content>
+    <content type="html"><![CDATA[<p>本文主要介绍使用逻辑回归算法解决分类问题，包括定义其模型、代价函数，并使用梯度下降算法解决问题。</p><h2 id="分类问题与表示-Classification"><a href="#分类问题与表示-Classification" class="headerlink" title="分类问题与表示 (Classification)"></a>分类问题与表示 (Classification)</h2><p>在<a href="https://blog.zewan.cc/2021/07/10/ml-welcome/">『机器学习的基础分类与概念』</a>一文中，我们介绍了监督学习中的分类问题。</p><p>在分类问题中，我们尝试预测的是数据是否属于某一个类，比如：判断一封电子邮件是否是垃圾邮件，判断一次金融交易是否为欺诈，区别肿瘤是恶性还是良性。</p><p>从简单的二元分类问题开始讨论。</p><p>二元分类指的是，因变量 (dependent variable) 可能属于的类有且仅有两个，分别称之为负向类 (<strong>negative class</strong>) 和正向类 (<strong>positive class</strong>)。我们定义因变量 $y\in {0,1}$，其中 $0$ 表示负向类，$1$ 表示正向类。</p><p><img src="/img/articles/21-7-24/linear.png"></p><p>我们先试图用一下线性回归算法来解决二元分类问题（当然这不是一个好算法）。如上图，我们可以看到，定义一个线性回归模型来拟合分类数据时，函数的输出值可能既不等于 1 也不等于 0，此时可假设：</p><ul><li>$h_{\theta}(x)\geq 0.5$ 时，预测值 $y=1$</li><li>$h_{\theta}(x)\lt 0.5$ 时，预测值 $y=0$</li></ul><p>当然这里所定义的线性模型 $h_{\theta}(x)$ 是不合理的，它的输出值可能远大于 1 或远小于 0，这都不是我们想要的。下面我们将使用<strong>逻辑回归</strong>定义分类问题。</p><h3 id="假设表示-Hypothesis-Representation"><a href="#假设表示-Hypothesis-Representation" class="headerlink" title="假设表示 (Hypothesis Representation)"></a>假设表示 (Hypothesis Representation)</h3><p>前面采用线性回归模型，因其预测值可能不在 $[0,1]$ 范围内，不适合解决分类问题。</p><p>我们引入逻辑回归，使模型输出值范围始终在 0 和 1 之间。该模型假设为：</p><p>$$<br>h_{\theta}(x)=g(\theta^{T}x)<br>$$</p><p>其中 $x$ 表示样本特征值，$g$ 表示逻辑函数 (<strong>logistic function</strong>)，此处使用的是常用的逻辑函数 <strong>Sigmoid function</strong>：</p><p>$$<br>g(z)=\frac{1}{1+e^{-z}}<br>$$</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sigmoid</span>(<span class="hljs-params">z</span>):</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + np.exp(-z))<br></code></pre></td></tr></table></figure><p>该函数图像为：</p><p><img src="/img/articles/21-7-24/sigmoid.png" alt="图源于Coursera"></p><p>如上图所示，函数 $g(z)$ 将实数范围内的值映射到区间 $[0,1]$ 内，从而更符合分类问题的特征。</p><p>事实上，$h_{\theta}(x)$ 展示的是输出值为 1 的可能性 (<strong>probability</strong>)，例如 $h_{\theta}(x)=0.7$ 表示输出值为 1 的几率为 70%。</p><p>$$<br>h_{\theta}(x)=P(y=1|x;\theta)=1-P(y=0|x;\theta)<br>$$</p><h3 id="决策边界-Decision-Boundary"><a href="#决策边界-Decision-Boundary" class="headerlink" title="决策边界 (Decision Boundary)"></a>决策边界 (Decision Boundary)</h3><p>决策边界的概念能帮助理解逻辑回归的假设函数在计算什么。</p><p>在逻辑回归中，我们预测：</p><ul><li>当 $h_{\theta}(x)\geq 0.5$ 时，预测 $y=1$</li><li>当 $h_{\theta}(x)\lt 0.5$ 时，预测 $y=0$</li></ul><p>根据前面所绘制的 Sigmoid 函数图像，我们得到：</p><ul><li>$z=0$ 时 $g(z)=0.5$</li><li>$z&gt;0$ 时 $g(z)&gt;0.5$</li><li>$z&lt;0$ 时 $g(z)&lt;0.5$</li></ul><p>又 $z=\theta^{T}x$，则：$\theta^{T}x\geq 0$ 时 $y=1$；$\theta^{T}x&lt;0$ 时 $y=0$</p><p>此处，<strong>决策边界指划分 $y=0$ 和 $y=1$ 两个区域的边界线，该边界由假设函数决定。</strong></p><p>延续上面所述，假设参数值为 $\theta^{T}=[\begin{matrix} 5&amp;-1&amp;0 \end{matrix}]$，则可求出边界值：$y=1\ if \ 5+(-1)x_{1}+0 x_{2}\geq 0$，得 $x_{1}\leq 5$。在这个例子中，决策边界为 $x_{1}=5$ 的线，在其左边输出值为 $y=1$，位于其右边的点输出值为 $y=0$。</p><p><img src="/img/articles/21-7-24/ex1.png"></p><p>当然，<strong>决策边界不一定是一条直线</strong>。当数据呈下图分布时，需要使用曲线才能分隔 $y=0$ 和 $y=1$ 的区域，即定义高次方函数来表示模型，比如 $h_{\theta}(x)=g(\theta_{0} + \theta_{1} x_{1} + \theta_{2} x_{2} + \theta_{3} x_{1}^{2} + \theta_{4} x_{2}^{2})$，当给定一组参数值时，令 $g(z)$ 中 $z=0$ 可求得决策边界。</p><p><img src="/img/articles/21-7-24/ex2.png"></p><h2 id="逻辑回归模型"><a href="#逻辑回归模型" class="headerlink" title="逻辑回归模型"></a>逻辑回归模型</h2><h3 id="代价函数-Cost-Function"><a href="#代价函数-Cost-Function" class="headerlink" title="代价函数 (Cost Function)"></a>代价函数 (Cost Function)</h3><p>前面我们介绍了分类问题的模型表示，接下来定义代价函数，以使用梯度下降算法进行求解。</p><p>我们不能够使用与线性回归相同的代价函数来定义逻辑回归模型，因为逻辑回归模型的假设为 $h_{\theta}(x)=\frac{1}{1+e^{-\theta^{T}x}}$，将其带入线性回归的代价函数后，我们得到的是一个非凸函数 (non-convex)，将导致有许多局部最小值，影响梯度下降算法的使用。</p><p><img src="/img/articles/21-7-24/non-convex.jpg" alt="图源于Coursera"></p><p>因此，我们重新定义逻辑回归的代价函数：</p><p>$$<br>J(\theta) = \frac{1}{m} \sum_{i=1}^{m} Cost(h_{\theta} (x^{(i)}), y^{(i)})<br>$$</p><p>其中</p><p>$$<br>Cost(h_{\theta}(x), y) =<br>\begin{cases}<br>-log(h_{\theta}(x)) &amp; if\ y=1 \\<br>-log(1-h_{\theta}(x)) &amp; if\ y=0<br>\end{cases}<br>$$</p><p>$h_{\theta}(x)$ 与 $Cost$ 之间的关系如下图所示：</p><p><img src="/img/articles/21-7-24/cost.jpg" alt="图源于Coursera"></p><p>可以看到：</p><ul><li>当实际值 $y=1$ 时，$h_{\theta}(x)$ 也为 1 时误差为 0，且越远离 1 误差增大；</li><li>当实际值 $y=0$ 时，$h_{\theta}(x)$ 也为 0 时误差为 0，且越远离 0 误差增大。</li></ul><p>因此，总体上，该代价函数是符合要求的。我们进一步简化代价函数：</p><p>$$<br>Cost(h_{\theta}(x),y)=-y\times log(h_{\theta}(x)) - (1-y)\times log(1-h_{\theta}(x))<br>$$</p><p>带入代价函数中得到：</p><p>$$<br>J(\theta) = -\frac{1}{m} \sum_{i=1}^{m} [ y^{(i)}log(h_{\theta} (x^{(i)})) + (1-y^{(i)}) log(1-h_{\theta}(x^{(i)})) ]<br>$$</p><p>上面定义的逻辑回归的代价函数，我们所选的函数 $J(\theta)$ 是一个<strong>凸函数，没有局部最优值</strong>。这是可证的，后面有时间再补上推导过程。</p><p>使用向量化表示：</p><p>$$<br>J(\theta) = \frac{1}{m} \cdot (-y^{T} log(h) - (1-y)^{T} log(1-h))<br>$$</p><p>其中，$h=g(X\theta^{T})$，$X$ 代表特征矩阵。</p><p>Python 代码实现：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cost</span>(<span class="hljs-params">theta, X, y</span>):</span><br>    theta = np.matrix(theta)<br>    X = np.matrix(X)<br>    y = np.matrix(y)<br>    first = np.multiply(-y, np.log(sigmoid(X* theta.T)))<br>    second = np.multiply((<span class="hljs-number">1</span> - y), np.log(<span class="hljs-number">1</span> - sigmoid(X* theta.T)))<br>    <span class="hljs-keyword">return</span> np.<span class="hljs-built_in">sum</span>(first - second) / (<span class="hljs-built_in">len</span>(X))<br></code></pre></td></tr></table></figure><h3 id="梯度下降求解-Gradient-Descent"><a href="#梯度下降求解-Gradient-Descent" class="headerlink" title="梯度下降求解 (Gradient Descent)"></a>梯度下降求解 (Gradient Descent)</h3><p>上面我们定义了逻辑回归的代价函数，接下来使用梯度下降算法求解。</p><p>回顾一下梯度下降算法：</p><p>$$<br>Repeat\ {<br>\theta_{j}:=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}}J(\theta)<br>}<br>$$</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p><p><a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>]]></content>
     
     
     <categories>
       
-      <category>机器学习</category>
+      <category>机器学习『吴恩达』</category>
       
     </categories>
     
@@ -107,7 +107,7 @@
     
     <categories>
       
-      <category>机器学习</category>
+      <category>机器学习『吴恩达』</category>
       
     </categories>
     
@@ -136,7 +136,7 @@
     
     <categories>
       
-      <category>机器学习</category>
+      <category>机器学习『吴恩达』</category>
       
     </categories>
     
@@ -163,7 +163,7 @@
     
     <categories>
       
-      <category>机器学习</category>
+      <category>机器学习『吴恩达』</category>
       
     </categories>
     
