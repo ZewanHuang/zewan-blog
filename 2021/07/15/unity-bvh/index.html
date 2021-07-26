@@ -256,7 +256,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年7月22日 上午
+                  本文最后更新于：2021年7月26日 上午
                 
               </p>
             
@@ -271,7 +271,7 @@
 <p>上图是 bvh 最常记录的骨骼点，图用节点表示关节，连线表示躯干，身体的各个部分形成子树的形式。</p>
 <p>BVH 文件的第一部分定义了关节树、每个关节点的名称、关节与关节之间的相对位置（<strong>偏移量</strong>），即基本骨架。Hips 关节点作为整个人体的根节点，拥有三维空间位置参数，从而完成了对人体运动情况的完整描述。</p>
 <p>BVH 文件的第二部分记录了运动的数据，定义了动作数据持续的长度（<strong>帧数</strong>）以及每帧之间的<strong>时间间隔</strong>。且按照第一部分定义的关节顺序提供每帧数据，记录了每一帧中各个关节点的位置信息和旋转信息（<strong>局部旋转量</strong>）。</p>
-<p>BVH 文件示例见 <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/Zewan-Module/BVHParser/master/Assets/Resources/bvh/13_29.bvh">Example.bvh</a></p>
+<p>BVH 文件示例见 <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/ZewanHuang/BVHParser/master/Assets/Resources/bvh/13_29.bvh">Example.bvh</a></p>
 <h3 id="角色姿势"><a href="#角色姿势" class="headerlink" title="角色姿势"></a>角色姿势</h3><p>一般来说，角色模型或 BVH 都有它的<strong>内置姿势</strong>，即创建模型时所设定的姿势。将一个模型<strong>所有关节的局部旋转量设置为单位四元数</strong>，则可显示出其内置姿势。</p>
 <p>在对角色模型或 BVH 的处理中，通常涉及到三种姿势：A 型姿势(A-Pose)、<strong>T 型姿势</strong>(T-Pose)和其它姿势，其中 A-Pose 和 T-Pose 通常作为内置姿势或第一帧骨骼姿势。</p>
 <p><img src="/img/articles/21-7-15/tpose.jpg" srcset="/img/loading.gif" lazyload alt="T-Pose"></p>
