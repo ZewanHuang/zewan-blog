@@ -1,0 +1,712 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/zewanblog.ico">
+  <link rel="icon" href="/img/zewanblog.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="使用逻辑回归算法解决分类问题，包括定义其模型、代价函数，并使用梯度下降算法解决问题。">
+  <meta name="author" content="Zehuan Huang">
+  <meta name="keywords" content="">
+  
+  <title>分类问题与逻辑回归 - Zewan 随笔</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.6.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","app_key":"QBNI2wT2eJM19a0Lfl90vFhq","server_url":"https://hn9otbfn.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Zewan Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/configs/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="分类问题与逻辑回归">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Zehuan Huang
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-23 13:56" pubdate>
+        2021年7月23日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      35
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">分类问题与逻辑回归</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年7月27日 下午
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>本文主要介绍使用逻辑回归算法解决分类问题，包括定义其模型、代价函数，并使用梯度下降算法解决问题。</p>
+<h2 id="分类问题与表示-Classification"><a href="#分类问题与表示-Classification" class="headerlink" title="分类问题与表示 (Classification)"></a>分类问题与表示 (Classification)</h2><p>在<a target="_blank" rel="noopener" href="https://blog.zewan.cc/2021/07/10/ml-welcome/">『机器学习的基础分类与概念』</a>一文中，我们介绍了监督学习中的分类问题。</p>
+<p>在分类问题中，我们尝试预测的是数据是否属于某一个类，比如：判断一封电子邮件是否是垃圾邮件，判断一次金融交易是否为欺诈，区别肿瘤是恶性还是良性。</p>
+<p>从简单的二元分类问题开始讨论。</p>
+<p>二元分类指的是，因变量 (dependent variable) 可能属于的类有且仅有两个，分别称之为负向类 (<strong>negative class</strong>) 和正向类 (<strong>positive class</strong>)。我们定义因变量 $y\in {0,1}$，其中 $0$ 表示负向类，$1$ 表示正向类。</p>
+<p><img src="/img/articles/21-7-24/linear.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们先试图用一下线性回归算法来解决二元分类问题（当然这不是一个好算法）。如上图，我们可以看到，定义一个线性回归模型来拟合分类数据时，函数的输出值可能既不等于 1 也不等于 0，此时可假设：</p>
+<ul>
+<li>$h_{\theta}(x)\geq 0.5$ 时，预测值 $y=1$</li>
+<li>$h_{\theta}(x)\lt 0.5$ 时，预测值 $y=0$</li>
+</ul>
+<p>当然这里所定义的线性模型 $h_{\theta}(x)$ 是不合理的，它的输出值可能远大于 1 或远小于 0，这都不是我们想要的。下面我们将使用<strong>逻辑回归</strong>定义分类问题。</p>
+<h3 id="假设表示-Hypothesis-Representation"><a href="#假设表示-Hypothesis-Representation" class="headerlink" title="假设表示 (Hypothesis Representation)"></a>假设表示 (Hypothesis Representation)</h3><p>前面采用线性回归模型，因其预测值可能不在 $[0,1]$ 范围内，不适合解决分类问题。</p>
+<p>我们引入逻辑回归，使模型输出值范围始终在 0 和 1 之间。该模型假设为：</p>
+<p>$$<br>h_{\theta}(x)=g(\theta^{T}x)<br>$$</p>
+<p>其中 $x$ 表示样本特征值，$g$ 表示逻辑函数 (<strong>logistic function</strong>)，此处使用的是常用的逻辑函数 <strong>Sigmoid function</strong>：</p>
+<p>$$<br>g(z)=\frac{1}{1+e^{-z}}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sigmoid</span>(<span class="hljs-params">z</span>):</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + np.exp(-z))<br></code></pre></td></tr></table></figure>
+
+<p>该函数图像为：</p>
+<p><img src="/img/articles/21-7-24/sigmoid.png" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>如上图所示，函数 $g(z)$ 将实数范围内的值映射到区间 $[0,1]$ 内，从而更符合分类问题的特征。</p>
+<p>事实上，$h_{\theta}(x)$ 展示的是输出值为 1 的可能性 (<strong>probability</strong>)，例如 $h_{\theta}(x)=0.7$ 表示输出值为 1 的几率为 70%。</p>
+<p>$$<br>h_{\theta}(x)=P(y=1|x;\theta)=1-P(y=0|x;\theta)<br>$$</p>
+<h3 id="决策边界-Decision-Boundary"><a href="#决策边界-Decision-Boundary" class="headerlink" title="决策边界 (Decision Boundary)"></a>决策边界 (Decision Boundary)</h3><p>决策边界的概念能帮助理解逻辑回归的假设函数在计算什么。</p>
+<p>在逻辑回归中，我们预测：</p>
+<ul>
+<li>当 $h_{\theta}(x)\geq 0.5$ 时，预测 $y=1$</li>
+<li>当 $h_{\theta}(x)\lt 0.5$ 时，预测 $y=0$</li>
+</ul>
+<p>根据前面所绘制的 Sigmoid 函数图像，我们得到：</p>
+<ul>
+<li>$z=0$ 时 $g(z)=0.5$</li>
+<li>$z&gt;0$ 时 $g(z)&gt;0.5$</li>
+<li>$z&lt;0$ 时 $g(z)&lt;0.5$</li>
+</ul>
+<p>又 $z=\theta^{T}x$，则：$\theta^{T}x\geq 0$ 时 $y=1$；$\theta^{T}x&lt;0$ 时 $y=0$</p>
+<p>此处，<strong>决策边界指划分 $y=0$ 和 $y=1$ 两个区域的边界线，该边界由假设函数决定。</strong></p>
+<p>延续上面所述，假设参数值为 $\theta^{T}=[\begin{matrix} 5&amp;-1&amp;0 \end{matrix}]$，则可求出边界值：$y=1\ if \ 5+(-1)x_{1}+0 x_{2}\geq 0$，得 $x_{1}\leq 5$。在这个例子中，决策边界为 $x_{1}=5$ 的线，在其左边输出值为 $y=1$，位于其右边的点输出值为 $y=0$。</p>
+<p><img src="/img/articles/21-7-24/ex1.png" srcset="/img/loading.gif" lazyload></p>
+<p>当然，<strong>决策边界不一定是一条直线</strong>。当数据呈下图分布时，需要使用曲线才能分隔 $y=0$ 和 $y=1$ 的区域，即定义高次方函数来表示模型，比如 $h_{\theta}(x)=g(\theta_{0} + \theta_{1} x_{1} + \theta_{2} x_{2} + \theta_{3} x_{1}^{2} + \theta_{4} x_{2}^{2})$，当给定一组参数值时，令 $g(z)$ 中 $z=0$ 可求得决策边界。</p>
+<p><img src="/img/articles/21-7-24/ex2.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="逻辑回归模型"><a href="#逻辑回归模型" class="headerlink" title="逻辑回归模型"></a>逻辑回归模型</h2><h3 id="代价函数-Cost-Function"><a href="#代价函数-Cost-Function" class="headerlink" title="代价函数 (Cost Function)"></a>代价函数 (Cost Function)</h3><p>前面我们介绍了分类问题的模型表示，接下来定义代价函数，以使用梯度下降算法进行求解。</p>
+<p>我们不能够使用与线性回归相同的代价函数来定义逻辑回归模型，因为逻辑回归模型的假设为 $h_{\theta}(x)=\frac{1}{1+e^{-\theta^{T}x}}$，将其带入线性回归的代价函数后，我们得到的是一个非凸函数 (non-convex)，将导致有许多局部最小值，影响梯度下降算法的使用。</p>
+<p><img src="/img/articles/21-7-24/non-convex.jpg" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>因此，我们重新定义逻辑回归的代价函数：</p>
+<p>$$<br>J(\theta) = \frac{1}{m} \sum_{i=1}^{m} Cost(h_{\theta} (x^{(i)}), y^{(i)})<br>$$</p>
+<p>其中</p>
+<p>$$<br>Cost(h_{\theta}(x), y) =<br>\begin{cases}<br>-log(h_{\theta}(x)) &amp; if\ y=1 \\<br>-log(1-h_{\theta}(x)) &amp; if\ y=0<br>\end{cases}<br>$$</p>
+<p>$h_{\theta}(x)$ 与 $Cost$ 之间的关系如下图所示：</p>
+<p><img src="/img/articles/21-7-24/cost.jpg" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>可以看到：</p>
+<ul>
+<li>当实际值 $y=1$ 时，$h_{\theta}(x)$ 也为 1 时误差为 0，且越远离 1 误差增大；</li>
+<li>当实际值 $y=0$ 时，$h_{\theta}(x)$ 也为 0 时误差为 0，且越远离 0 误差增大。</li>
+</ul>
+<p>因此，总体上，该代价函数是符合要求的。我们进一步简化代价函数：</p>
+<p>$$<br>Cost(h_{\theta}(x),y)=-y\times log(h_{\theta}(x)) - (1-y)\times log(1-h_{\theta}(x))<br>$$</p>
+<p>带入代价函数中得到：</p>
+<p>$$<br>J(\theta) = -\frac{1}{m} \sum_{i=1}^{m} [ y^{(i)}log(h_{\theta} (x^{(i)})) + (1-y^{(i)}) log(1-h_{\theta}(x^{(i)})) ]<br>$$</p>
+<p>上面定义的逻辑回归的代价函数，我们所选的函数 $J(\theta)$ 是一个<strong>凸函数，没有局部最优值</strong>。它是一个凸优化问题，这是可证的，以后再补上证明过程。</p>
+<p>使用向量化表示：</p>
+<p>$$<br>J(\theta) = \frac{1}{m} \cdot (-y^{T} log(h) - (1-y)^{T} log(1-h))<br>$$</p>
+<p>其中，$h=g(X\theta^{T})$，$X$ 代表特征矩阵。</p>
+<p>Python 代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cost</span>(<span class="hljs-params">theta, X, y</span>):</span><br>    theta = np.matrix(theta)<br>    X = np.matrix(X)<br>    y = np.matrix(y)<br>    first = np.multiply(-y, np.log(sigmoid(X* theta.T)))<br>    second = np.multiply((<span class="hljs-number">1</span> - y), np.log(<span class="hljs-number">1</span> - sigmoid(X* theta.T)))<br>    <span class="hljs-keyword">return</span> np.<span class="hljs-built_in">sum</span>(first - second) / (<span class="hljs-built_in">len</span>(X))<br></code></pre></td></tr></table></figure>
+
+<h3 id="梯度下降求解-Gradient-Descent"><a href="#梯度下降求解-Gradient-Descent" class="headerlink" title="梯度下降求解 (Gradient Descent)"></a>梯度下降求解 (Gradient Descent)</h3><p>上面我们定义了逻辑回归的代价函数，接下来使用梯度下降算法求解。</p>
+<p>回顾一下梯度下降算法：</p>
+<p>$$<br>Repeat\ \{<br>\theta_{j}:=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}}J(\theta)<br>\}<br>$$</p>
+<p>将逻辑回归的代价函数 $J(\theta)$ 带入计算，可获得：</p>
+<blockquote>
+<p>这里再省略一波计算过程，后面补上</p>
+</blockquote>
+<p>$$<br>Repeat\ \{<br>\theta_{j}:=\theta_{j}-\frac{\alpha}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})x_{j}^{(i)}<br>\}<br>$$</p>
+<p><strong>注意，尽管它和线性回归的式子长得一样，但假设的定义发生了变化。</strong></p>
+<ul>
+<li>线性回归假设：$h_{\theta}(x)=\theta^{T}x=\theta_{0}x_{0}+\theta_{1}x_{1}+\cdots+\theta_{n}x_{n}$</li>
+<li>逻辑回归假设：$h_{\theta}(x)=g(\theta^{T}x)=\frac{1}{1+e^{-\theta^{T}x}}$</li>
+</ul>
+<p>因此，即使更新参数的规则看起来基本相同，但由于假设的定义发生了变化，所以逻辑函数的梯度下降，跟线性回归的梯度下降实际上是两个完全不同的东西。</p>
+<p>更新参数的规则，我们同样使用向量化表示：</p>
+<p>$$<br>\theta := \theta - \frac{\alpha}{m} X^{T} (g(X\theta^{T}) - y)<br>$$</p>
+<p>这样我们就了解了如何实现逻辑回归，包括其假设、代价函数、参数更新的计算等等。</p>
+<h2 id="多类别分类-Multiclass-Classification"><a href="#多类别分类-Multiclass-Classification" class="headerlink" title="多类别分类 (Multiclass Classification)"></a>多类别分类 (Multiclass Classification)</h2><h3 id="举例介绍一对多"><a href="#举例介绍一对多" class="headerlink" title="举例介绍一对多"></a>举例介绍一对多</h3><p>前面所讲述的都是二元分类问题 (Binary classification)，现在我们来说一说如何使用逻辑回归解决多类别分类问题，用的是<strong>一对多 (one-vs-all)</strong> 的分类算法。</p>
+<p>先举几个多类别分类的例子。</p>
+<ol>
+<li>给邮件归类，区分开工作邮件、来自朋友的邮件、来自家人的邮件，这样类别有四个，可以用 $y=1,y=2,y=3,y=4$ 表示；</li>
+<li>病情诊断，鼻塞的症状，可能没生病，用 $y=1$ 表示，有可能患感冒 $y=2$、得流感 $y=3$；</li>
+<li>天气的分类问题，区分哪些天是晴天、多云、雨天或下雪天……</li>
+</ol>
+<p><img src="/img/articles/21-7-24/binary-multiple.png" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>之前的二元分类问题，数据可能如上面的左图；对于一个多类别分类问题，数据集大概跟右图类似。</p>
+<p>我们已经知道如何进行二元分类，使用逻辑回归，将数据集一分为二为正向类和负向类。下面将介绍如何使用<strong>一对多</strong>的分类思想，解决多类别分类问题。</p>
+<p><img src="/img/articles/21-7-24/one-vs-all.png" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>假设我们有这样的一个训练集，它有三个类别，用三角形、矩形、叉号表示，分别对应 $y=1$、$y=2$、$y=3$。我们从类别一开始，创建一个新的“伪”训练集，<strong>将类别1定义为正向类，类别2和3定为负向类</strong>。这样我们就创建出了一个新的训练集，如上图所示，我们要拟合出这个新的分类器。</p>
+<p>上面这样转变后，问题就变成了我们前面所介绍的二元分类问题了。定义模型 $h_{\theta}^{(1)}(x)$，它其实就对应我们前面所说的假设函数，<strong>表示属于类别1的可能性大小</strong>。使用逻辑回归我们可能获得参数最优解，进而解得该模型。</p>
+<p>接着，类似地我们选择类别2记为正向类，其它类别1和3为负向类，定义模型为 $h_{\theta}^{(2)}(x)$；选择类别3记为正向类，其它类别1和2为负向类，定义模型为 $h_{\theta}^{(3)}(x)$。最后我们得到 3 个模型。</p>
+<p>最后，在我们做预测时，对于每一个输入变量，都需要将这 3 个分类器运行一遍，选择最高可能性的类别作为输出值。比如输入 $x$，计算得到 $h_{\theta}^{(1)}(x)&gt;h_{\theta}^{(2)}(x)&gt;h_{\theta}^{(3)}(x)$，我们就说它属于类别1。</p>
+<h3 id="一对多小结"><a href="#一对多小结" class="headerlink" title="一对多小结"></a>一对多小结</h3><p>通过前面的例子，大概了解了多类别分类的思路，这里再小结一下。</p>
+<p>假设我们拿到的是含 $k$ 个类别的训练集，我们要把它<strong>转换为 $k$ 个二元分类器</strong>。</p>
+<p>将多个类中的一个类标记为正向类 ($y=1$)，其它类记为负向类，该模型记作 $h_{\theta}^{(1)}(x)$；接着，选择第二个类作为正向类 ($y=2$)，其它类为负向类，记作 $h_{\theta}^{(2)}(x)$，依此类推。</p>
+<p>最后得到一系列模型，简记为 </p>
+<p>$$<br>h_{\theta}^{(i)}(x)=P(y=i|x;\theta)<br>$$</p>
+<p>其中 $i=1,2,\cdots,k$</p>
+<p>在需要做预测时，我们输入新值 $x$，在所有 ($k$ 个) 分类器中都运行一遍，选择使 $h_{\theta}^{(i)}(x)$ 值最大的 $i$，即 $\max\limits_{i}h_{\theta}^{(i)}(x)$，作为输出值。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文我们首先介绍了二元分类问题的表示和求解：</p>
+<ol>
+<li>模型假设：$h_{\theta}(x)=g(\theta^{T}x)$，其中 $g(z)=\frac{1}{1+e^{-z}}$</li>
+<li>代价函数：$J(\theta) = -\frac{1}{m} \sum_{i=1}^{m} [ y^{(i)}log(h_{\theta} (x^{(i)})) + (1-y^{(i)}) log(1-h_{\theta}(x^{(i)})) ]$</li>
+<li>梯度下降求解：$Repeat\ \{<br>\theta_{j}:=\theta_{j}-\frac{\alpha}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})x_{j}^{(i)}<br>\}$</li>
+</ol>
+<p>接着介绍如何求解多类别分类问题：将含 n 个类别的训练集，转换为 n 个二元分类器，选取可能性最大的类别作为结果。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8E%E5%90%B4%E6%81%A9%E8%BE%BE%E3%80%8F/">机器学习『吴恩达』</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ML/">ML</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/26/ml/overfit/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">过拟合与正则化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/22/notes/materials/">
+                        <span class="hidden-mobile">资源信息库</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appKey":"QBNI2wT2eJM19a0Lfl90vFhq","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://hn9otbfn.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":true,"requiredFields":[],"appid":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appkey":"QBNI2wT2eJM19a0Lfl90vFhq"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        粤ICP备2021021248号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.2/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
