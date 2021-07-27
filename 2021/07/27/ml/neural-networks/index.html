@@ -204,7 +204,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.1k 字
+      3k 字
     </span>
   
 
@@ -214,7 +214,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      25
+      37
        分钟
     </span>
   
@@ -256,7 +256,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年7月27日 下午
+                  本文最后更新于：2021年7月27日 晚上
                 
               </p>
             
@@ -306,6 +306,75 @@
 <p>事实上中间层可能不止一个，我们可以归纳出计算公式：</p>
 <p>$$<br>a^{(j+1)} = g(\Theta^{(j)} \times a^{(j)})<br>$$</p>
 <p>从上面的过程我们可以看出，神经网络就像是 logistic regression，只不过把特征值不断地进行计算和变换，从而将原始输入值变为高级的特征值，可以把 $a_{1},a_{2},a_{3}$ 理解成 $x_{0},x_{1},x_{2},x_{3}$ 的进化体。因为过程是梯度下降的，所以中间量 $a$ 变得越来越厉害，所以这些更高级的特征值远比 $x$ 次方更厉害，能更好地预测新数据。<strong>这就是神经网络相比于逻辑回归和线性回归的优势。</strong></p>
+<h2 id="应用举例"><a href="#应用举例" class="headerlink" title="应用举例"></a>应用举例</h2><h3 id="实现逻辑运算"><a href="#实现逻辑运算" class="headerlink" title="实现逻辑运算"></a>实现逻辑运算</h3><p>接下来，我们构建神经网络，来实现基础的逻辑运算，包括逻辑与、或、非。</p>
+<p>我们可以用这样的一个神经网络来表示 <strong>AND</strong> 函数：</p>
+<p><img src="/img/articles/21-7-27/05.png" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>其中权重为 $[-30\ 20\ 20]$，即 $\theta_{0}=-30,\theta_{1}=20,\theta_{2}=20$，则输出函数为 $h_{\Theta}(x)=g(-30+20x_{1}+20x_{2})$</p>
+<p>而我们知道 $g(x)$ 的图像是：</p>
+<p><img src="/img/articles/21-7-27/06.png" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>这样我们赋值 $x_{1},x_{2}\in \{0,1\}$，得到：</p>
+<p>$$<br>\begin{align*}&amp; x_1 = 0 \ \ and \ \ x_2 = 0 \ \ then \ \ g(-30) \approx 0 \newline &amp; x_1 = 0 \ \ and \ \ x_2 = 1 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 = 1 \ \ and \ \ x_2 = 0 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 = 1 \ \ and \ \ x_2 = 1 \ \ then \ \ g(10) \approx 1\end{align*}<br>$$</p>
+<p>这样，我们有 $h_{\Theta}(x)=x_{1} \text{AND} x_{2}$</p>
+<p>从上面逻辑与神经网络的构建过程，我们可以看到，我们只需搭建一个无隐藏层的神经网络即可实现，只需在权重上合理分配，即可达到效果。后面将直接给出其它两个逻辑运算的神经网络。</p>
+<ul>
+<li><strong>逻辑与 AND</strong>：权重为 $-30,20,20$</li>
+<li><strong>逻辑或 OR</strong>：权重为 $-10,20,20$</li>
+<li><strong>逻辑非 NOT</strong>：权重为 $10,-20$</li>
+</ul>
+<p><img src="/img/articles/21-7-27/07.png" srcset="/img/loading.gif" lazyload alt="AND &amp; OR &amp; NOT"></p>
+<p>我们还可以将神经元组合成更复杂的神经网络，以实现更复杂的运算。例如实现 <strong>XNOR</strong> 功能，要求当且仅当输入的两个值相等时输出 1，反之则输出 0，即</p>
+<p>$$<br>\text{XNOR} = (x_{1}\ \text{AND}\ x_{2})\ \text{OR}\ ((\text{NOT}\ x_{1})\ \text{AND}\ (\text{NOT} \ x_{2}))<br>$$</p>
+<p><img src="/img/articles/21-7-27/08.png" srcset="/img/loading.gif" lazyload alt="XNOR"></p>
+<p>这样我们就得到了一个能实现 <strong>XNOR</strong> 运算符的神经网络。我们来检验一下。</p>
+<table>
+<thead>
+<tr>
+<th align="center">$x_{1}$</th>
+<th align="center">$x_{2}$</th>
+<th align="center">$a_{1}^{(2)}$</th>
+<th align="center">$a_{2}^{(2)}$</th>
+<th align="center">$h_{\Theta}(x)$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$0$</td>
+<td align="center">$0$</td>
+<td align="center">$0$</td>
+<td align="center">$1$</td>
+<td align="center">$1$</td>
+</tr>
+<tr>
+<td align="center">$0$</td>
+<td align="center">$1$</td>
+<td align="center">$0$</td>
+<td align="center">$0$</td>
+<td align="center">$0$</td>
+</tr>
+<tr>
+<td align="center">$1$</td>
+<td align="center">$0$</td>
+<td align="center">$0$</td>
+<td align="center">$0$</td>
+<td align="center">$0$</td>
+</tr>
+<tr>
+<td align="center">$1$</td>
+<td align="center">$1$</td>
+<td align="center">$1$</td>
+<td align="center">$0$</td>
+<td align="center">$1$</td>
+</tr>
+</tbody></table>
+<p>按这种组合神经元的方法，我们可以逐渐构造出越来越复杂的函数，也能得到更加厉害的特征，这正是神经网络的优势。</p>
+<h3 id="多类别分类"><a href="#多类别分类" class="headerlink" title="多类别分类"></a>多类别分类</h3><p>前面我们介绍过逻辑回归解决多类别分类问题的方法，神经网络同样能实现。</p>
+<p>如果我们要训练一个神经网络来识别路人、汽车、摩托车和卡车，在输出层我们应有 4 个值，分别对应以上四种类别。</p>
+<p><img src="/img/articles/21-7-27/09.png" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>我们定义结果如下，对应路人、汽车、摩托车和卡车：</p>
+<p>$$<br>y^{(i)}=<br>\left[<br>\begin{matrix}<br>1\newline 0\newline 0\newline 0<br>\end{matrix}<br>\right],<br>\left[<br>\begin{matrix}<br>0\newline 1\newline 0\newline 0<br>\end{matrix}<br>\right],<br>\left[<br>\begin{matrix}<br>0\newline 0\newline 1\newline 0<br>\end{matrix}<br>\right],<br>\left[<br>\begin{matrix}<br>0\newline 0\newline 0\newline 1<br>\end{matrix}<br>\right]<br>$$</p>
+<p>这样我们构建出来的神经网络大概如下：</p>
+<p>$$<br>\left[\begin{matrix}x_{0}\newline x_{1}\newline x_{2}\newline \cdots\newline x_{n}\end{matrix}\right]<br>\rightarrow<br>\left[\begin{matrix}a_{0}^{(2)}\newline a_{1}^{(2)}\newline a_{2}^{(2)}\newline \cdots \end{matrix}\right]<br>\rightarrow<br>\left[\begin{matrix}a_{0}^{(3)}\newline a_{1}^{(3)}\newline a_{2}^{(3)}\newline \cdots \end{matrix}\right]<br>\rightarrow \cdots\rightarrow<br>\left[\begin{matrix}h_{\Theta}(x)_{1}\newline h_{\Theta}(x)_{2}\newline h_{\Theta}(x)_{3}\newline h_{\Theta}(x)_{4}\newline\end{matrix}\right]<br>$$</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文从大脑和神经元的人体结构引入，介绍了神经网络的结构，由输入层、隐藏层、输出层组成。同时我们以逻辑回归模型建立激活单元，表示出神经网络，并给出计算公式：$a^{(j+1)} = g(\Theta^{(j)} \times a^{(j)})$</p>
+<p>最后我们构造神经网络模型，建立了逻辑运算和多类别分类的模型。当然，本文并没有给出参数求解的细节，而是给出神经网络的表述，帮助理解神经网络的结构和概念。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>
 
