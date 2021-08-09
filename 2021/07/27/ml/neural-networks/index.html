@@ -254,7 +254,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年7月27日 晚上
+                  本文最后更新于：2021年8月7日 下午
                 
               </p>
             
@@ -288,7 +288,7 @@
 <p><img src="/img/articles/21-7-27/04.png" srcset="/img/loading.gif" lazyload></p>
 <p>我们用符号来描述模型：</p>
 <p>$$<br>\begin{align*}&amp; a_i^{(j)} = \text{“activation” of unit $i$ in layer $j$} \newline&amp; \Theta^{(j)} = \text{matrix of weights controlling function mapping from layer $j$ to layer $j+1$}\end{align*}<br>$$</p>
-<p>$a_{i}^{(j)}$ 代表第 $j$ 层的第 $i$ 个激活单元，$\Theta^{(j)}$ 代表从第 $j$ 层到第 $j+1$ 层的权重矩阵（参数矩阵），其尺寸为：以第 $j+1$ 层激活单元数量为行数，以第 $j$ 层激活单元数为列数。例如，上图的神经网络 $\theta^{(1)}$ 为 $3\times 4$ 矩阵。</p>
+<p>$a_{i}^{(j)}$ 代表第 $j$ 层的第 $i$ 个激活单元，$\Theta^{(j)}$ 代表从第 $j$ 层到第 $j+1$ 层的权重矩阵（参数矩阵），其尺寸为：以第 $j+1$ 层激活单元数量为行数，以第 $j$ 层激活单元数为列数。例如，上图的神经网络 $\Theta^{(1)}$ 为 $3\times 4$ 矩阵。</p>
 <p>对于上图的模型，计算表达式为：</p>
 <p>$$<br>\begin{align*} a_1^{(2)} &amp;= g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) \newline a_2^{(2)} &amp;= g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) \newline a_3^{(2)} &amp;= g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) \newline h_\Theta(x) &amp;= a_1^{(3)} = g(\Theta_{10}^{(2)}a_0^{(2)} + \Theta_{11}^{(2)}a_1^{(2)} + \Theta_{12}^{(2)}a_2^{(2)} + \Theta_{13}^{(2)}a_3^{(2)}) \newline \end{align*}<br>$$</p>
 <p>上面的表达仅仅将特征矩阵的一行（一个训练实例）feed 给了神经网络，我们需要将整个训练集都喂给算法进行学习。</p>
