@@ -254,14 +254,14 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年7月27日 下午
+                  本文最后更新于：2021年8月14日 下午
                 
               </p>
             
             <div class="markdown-body">
               <p>本篇主要介绍如何在 Unity 中使用 bvh 驱动骨骼动画，同时从理论与实操两个方面进行阐述。</p>
 <blockquote>
-<p>文末有代码仓库链接</p>
+<p>代码已打包成 unitypackage，见链接 <a target="_blank" rel="noopener" href="https://github.com/ZewanHuang/unitypackages/tree/master/3_BVHParser">BVHParser</a></p>
 </blockquote>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>先简单介绍一些相关的理论基础。</p>
 <h3 id="BVH"><a href="#BVH" class="headerlink" title="BVH"></a>BVH</h3><p>BVH 文件是使用设备对人体运动进行捕获后产生的文件，它包含<strong>角色的骨骼和肢体关节旋转数据</strong>，是一种通用的人体特征动画文件格式。</p>
@@ -327,7 +327,7 @@
 <li>若使用的 bvh 文件的旋转量不是 ZYX 顺序，请相应修改 BVHParser.cs 中的 eul2quat 函数，一般只需调换该函数参数顺序即可</li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文先简要介绍了几个基础知识 BVH 和角色姿势，后阐述了 BVH 驱动动作生成的理论（以 Tpose 为中间媒介求解转换矩阵），并使用代码实现。</p>
-<p>项目地址见 <a target="_blank" rel="noopener" href="https://github.com/ZewanHuang/BVHParser">BVHParser</a>。</p>
+<p>项目地址见 <a target="_blank" rel="noopener" href="https://github.com/ZewanHuang/unitypackages/tree/master/3_BVHParser">BVHParser</a>。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zb1165048017/article/details/112394097">[1] Unity 中 BVH 骨骼动画驱动的可视化理论与实现 - CSDN</a></p>
 <p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/bvh/3691673">[2] BVH - 百度百科</a></p>
 
