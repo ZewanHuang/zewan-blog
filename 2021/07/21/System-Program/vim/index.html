@@ -14,11 +14,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="向量、矩阵求导的定义，以及给出常用求导方法和部分恒等式的证明，本文的知识介绍主要针对机器学习。">
+  <meta name="description" content="Vim 是程序员常用的文本编辑器，本篇简要介绍 Vim 编辑器的常用操作命令，不涉及自定义配置等复杂操作。">
   <meta name="author" content="Zehuan Huang">
   <meta name="keywords" content="">
   
-  <title>矩阵求导 - Zewan 随笔</title>
+  <title>Vim 编辑器 - Zewan 随笔</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -181,7 +181,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="矩阵求导">
+            <span class="h2" id="subtitle" title="Vim 编辑器">
               
             </span>
 
@@ -196,8 +196,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-18 22:37" pubdate>
-        2021年7月18日 晚上
+      <time datetime="2021-07-21 12:00" pubdate>
+        2021年7月21日 中午
       </time>
     </span>
   
@@ -208,7 +208,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      1.1k 字
     </span>
   
 
@@ -218,7 +218,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      26
+      11
        分钟
     </span>
   
@@ -256,150 +256,329 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">矩阵求导</h1>
+            <h1 style="display: none">Vim 编辑器</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年7月27日 下午
+                  本文最后更新于：2021年9月8日 下午
                 
               </p>
             
             <div class="markdown-body">
-              <p>本篇主要介绍向量、矩阵求导的定义，包含向量、矩阵、标量之间的求导，并给出一些常用的方法和恒等式。</p>
-<h2 id="符号说明"><a href="#符号说明" class="headerlink" title="符号说明"></a>符号说明</h2><table>
+              <p>Vim 是程序员常用的<strong>文本编辑器</strong>，本篇简要介绍 Vim 编辑器的常用操作命令，不涉及自定义配置等复杂操作。</p>
+<p>Vim 分为三种模式：<strong>命令模式，插入模式，底行模式</strong></p>
+<p><img src="/img/articles/21-9-8/20210310123244.png" srcset="/img/loading.gif" lazyload alt="图源于 Linux vi/vim 菜鸟教程"></p>
+<h2 id="一、命令模式-command-mode"><a href="#一、命令模式-command-mode" class="headerlink" title="一、命令模式 (command mode)"></a>一、命令模式 (command mode)</h2><h3 id="1-移动光标"><a href="#1-移动光标" class="headerlink" title="1. 移动光标"></a>1. 移动光标</h3><table>
 <thead>
 <tr>
-<th align="center">符号</th>
+<th align="center">级别</th>
+<th align="center">操作符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">字符级</td>
+<td align="center"><strong>← 或 h</strong></td>
+<td>光标向左移动一个字符</td>
+</tr>
+<tr>
+<td align="center">字符级</td>
+<td align="center"><strong>→ 或 l</strong></td>
+<td>光标向右移动一个字符</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center"><strong>↑ 或 k</strong></td>
+<td>光标移动到上一行相同位置字符</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center"><strong>↓ 或 j</strong></td>
+<td>光标移动到下一行相同位置字符</td>
+</tr>
+<tr>
+<td align="center">单词级</td>
+<td align="center">b</td>
+<td>光标移动到本单词的首字符</td>
+</tr>
+<tr>
+<td align="center">单词级</td>
+<td align="center">e</td>
+<td>光标移动到本单词的尾字符</td>
+</tr>
+<tr>
+<td align="center">单词级</td>
+<td align="center">w</td>
+<td>光标移动到下一个单词的首字符</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center">0</td>
+<td>光标移动到当前行首字符</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center">$</td>
+<td>光标移动到当前行尾字符</td>
+</tr>
+<tr>
+<td align="center">段落级</td>
+<td align="center">{</td>
+<td>光标移动到段落首字符</td>
+</tr>
+<tr>
+<td align="center">段落级</td>
+<td align="center">}</td>
+<td>光标移动到段落尾字符</td>
+</tr>
+<tr>
+<td align="center">屏幕级</td>
+<td align="center">H</td>
+<td>光标移动到屏幕首行首字符</td>
+</tr>
+<tr>
+<td align="center">屏幕级</td>
+<td align="center">L</td>
+<td>光标移动到屏幕尾行首字符</td>
+</tr>
+<tr>
+<td align="center">屏幕级</td>
+<td align="center"><strong>Ctrl+b</strong></td>
+<td>上滚一屏</td>
+</tr>
+<tr>
+<td align="center">屏幕级</td>
+<td align="center"><strong>Ctrl+f</strong></td>
+<td>下滚一屏</td>
+</tr>
+<tr>
+<td align="center">屏幕级</td>
+<td align="center">Ctrl+d</td>
+<td>下滚半屏</td>
+</tr>
+<tr>
+<td align="center">屏幕级</td>
+<td align="center">Ctrl+u</td>
+<td>上滚半屏</td>
+</tr>
+<tr>
+<td align="center">文档级</td>
+<td align="center"><strong>n</strong>G</td>
+<td>光标移动到文档第 n 行首字符</td>
+</tr>
+<tr>
+<td align="center">文档级</td>
+<td align="center">G</td>
+<td>光标移动到文档尾行首字符</td>
+</tr>
+</tbody></table>
+<h3 id="2-复制"><a href="#2-复制" class="headerlink" title="2. 复制"></a>2. 复制</h3><table>
+<thead>
+<tr>
+<th align="center">级别</th>
+<th align="center">操作符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">字符级</td>
+<td align="center">y← 或 yh</td>
+<td>复制前一个字符</td>
+</tr>
+<tr>
+<td align="center">字符级</td>
+<td align="center"><strong>y→ 或 yl</strong></td>
+<td>复制当前字符</td>
+</tr>
+<tr>
+<td align="center">单词级</td>
+<td align="center">yb</td>
+<td>从单词首字符开始复制直到当前字符(不包括)</td>
+</tr>
+<tr>
+<td align="center">单词级</td>
+<td align="center">ye 或 yw</td>
+<td>从当前字符开始复制直到单词尾字符(包括)</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center">y0</td>
+<td>从行首字符开始复制直到当前字符(不包括)</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center">y$</td>
+<td>从当前字符开始复制直到行尾字符(包括)</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center"><strong>yy</strong></td>
+<td>复制当前行</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center">y↑ 或 yk</td>
+<td>复制上一行和当前行</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center">y↓ 或 yj</td>
+<td>复制当前行和下一行</td>
+</tr>
+<tr>
+<td align="center">行级</td>
+<td align="center"><strong>n</strong>yy</td>
+<td>复制包括当前行在内的后面 n 行</td>
+</tr>
+<tr>
+<td align="center">段落级</td>
+<td align="center">y{</td>
+<td>从段落首字符开始复制直到当前字符(不包括)</td>
+</tr>
+<tr>
+<td align="center">段落级</td>
+<td align="center">y}</td>
+<td>从当前字符开始复制直到段落尾字符(包括)</td>
+</tr>
+<tr>
+<td align="center">屏幕级</td>
+<td align="center">yH</td>
+<td>从屏幕首行开始复制直到当前行(包括)</td>
+</tr>
+<tr>
+<td align="center">屏幕级</td>
+<td align="center">yL</td>
+<td>从当前行开始复制直到屏幕尾行(包括)</td>
+</tr>
+<tr>
+<td align="center">文档级</td>
+<td align="center">yG</td>
+<td>从当前行开始复制直到文档尾行(包括)</td>
+</tr>
+<tr>
+<td align="center">文档级</td>
+<td align="center">y<strong>n</strong>G</td>
+<td>从第 n 行开始复制直到当前行(包括)</td>
+</tr>
+</tbody></table>
+<h3 id="3-粘贴"><a href="#3-粘贴" class="headerlink" title="3. 粘贴"></a>3. 粘贴</h3><p>p: 将复制的内容粘贴到当前字符的下一个位置</p>
+<h3 id="4-删除"><a href="#4-删除" class="headerlink" title="4. 删除"></a>4. 删除</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
 <th align="center">说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">$\mathbf{A},\mathbf{X},\mathbf{Y}$</td>
-<td align="center"><strong>矩阵</strong></td>
+<td align="center"><strong>x</strong></td>
+<td align="center">删除当前字符</td>
 </tr>
 <tr>
-<td align="center">$\mathbf{a},\mathbf{x},\mathbf{y}$</td>
-<td align="center"><strong>向量</strong></td>
+<td align="center"><strong>dd</strong></td>
+<td align="center">删除当前行</td>
 </tr>
 <tr>
-<td align="center">$a,x,y$</td>
-<td align="center"><strong>标量</strong></td>
-</tr>
-<tr>
-<td align="center">$X^{T}$</td>
-<td align="center">矩阵 $X$ 的转置</td>
-</tr>
-<tr>
-<td align="center">$tr(X)$</td>
-<td align="center">矩阵 $X$ 的迹</td>
-</tr>
-<tr>
-<td align="center">$det(X)$ 或 $|X|$</td>
-<td align="center">矩阵 $X$ 的行列式</td>
-</tr>
-<tr>
-<td align="center">$||X||$</td>
-<td align="center">矩阵 $X$ 的范数</td>
+<td align="center"><strong>n</strong>dd</td>
+<td align="center">删除包括当前行在内的后面 n 行</td>
 </tr>
 </tbody></table>
-<h2 id="矩阵向量求导定义"><a href="#矩阵向量求导定义" class="headerlink" title="矩阵向量求导定义"></a>矩阵向量求导定义</h2><h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>在高等数学中，我们学过标量对标量的求导，比如标量 $y$ 对标量 $x$ 的求导，可表示为 $\frac{\partial y}{\partial x}$。</p>
-<p>有时我们会有一组标量 $y_{i},i=1,2,…$，对标量 $x$ 求导，我们会得到一组结果：</p>
-<p>$$<br>\frac{\partial y_{i}}{\partial x},i=1,2,…<br>$$</p>
-<p>如果将该组标量 $y_{i}$ 组成向量 $\mathbf{y}$，我们得到的计算结果也会是一个向量 $\frac{\partial \mathbf{y}}{\partial x}$。</p>
-<p>向量对标量的求导，正是<strong>将向量的每个分量分别对标量求导</strong>，最后组成一个向量的形式。</p>
-<p>根据求导的自变量和因变量的类型，属于标量、向量或矩阵，我们有 9 种可能的矩阵求导定义：</p>
-<table>
+<h3 id="5-撤销"><a href="#5-撤销" class="headerlink" title="5. 撤销"></a>5. 撤销</h3><p>u: 撤销命令</p>
+<h2 id="二、插入模式-insert-mode"><a href="#二、插入模式-insert-mode" class="headerlink" title="二、插入模式 (insert mode)"></a>二、插入模式 (insert mode)</h2><p>重要的记住，<code>a</code> 光标后移一位进入编辑模式，<code>i</code> 光标移动到当前行行首进入编辑模式，<code>esc</code> 从编辑模式返回命令模式。</p>
+<h2 id="三、底行模式-last-line-mode"><a href="#三、底行模式-last-line-mode" class="headerlink" title="三、底行模式 (last line mode)"></a>三、底行模式 (last line mode)</h2><h3 id="1-编辑器设置"><a href="#1-编辑器设置" class="headerlink" title="1. 编辑器设置"></a>1. 编辑器设置</h3><table>
 <thead>
 <tr>
-<th align="center">自变量\因变量</th>
-<th align="center">标量 $y$</th>
-<th align="center">向量 $\mathbf{y}$</th>
-<th align="center">矩阵 $\mathbf{Y}$</th>
+<th align="center">设置</th>
+<th align="center">说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">标量 $x$</td>
-<td align="center">$\frac{\partial y}{\partial x}$</td>
-<td align="center">$\frac{\partial \mathbf{y}}{\partial x}$</td>
-<td align="center">$\frac{\partial \mathbf{Y}}{\partial x}$</td>
+<td align="center">set number</td>
+<td align="center">设置行号</td>
 </tr>
 <tr>
-<td align="center">向量 $\mathbf{x}$</td>
-<td align="center">$\frac{\partial y}{\partial \mathbf{x}}$</td>
-<td align="center">$\frac{\partial \mathbf{y}}{\partial \mathbf{x}}$</td>
-<td align="center">$\frac{\partial \mathbf{Y}}{\partial \mathbf{x}}$</td>
+<td align="center">set nonumber</td>
+<td align="center">取消设置行号</td>
 </tr>
 <tr>
-<td align="center">矩阵 $\mathbf{X}$</td>
-<td align="center">$\frac{\partial y}{\partial \mathbf{X}}$</td>
-<td align="center">$\frac{\partial \mathbf{y}}{\partial \mathbf{X}}$</td>
-<td align="center">$\frac{\partial \mathbf{Y}}{\partial \mathbf{X}}$</td>
+<td align="center">set autoindent</td>
+<td align="center">自动对齐</td>
+</tr>
+<tr>
+<td align="center">set smartindent</td>
+<td align="center">智能对齐</td>
+</tr>
+<tr>
+<td align="center">set cindent</td>
+<td align="center">C 语言格式对齐</td>
+</tr>
+<tr>
+<td align="center">set showmatch</td>
+<td align="center">括号匹配</td>
+</tr>
+<tr>
+<td align="center">set tabstop=4</td>
+<td align="center">Tab 为 4 个空格</td>
+</tr>
+<tr>
+<td align="center">set mouse=a</td>
+<td align="center">鼠标支持</td>
 </tr>
 </tbody></table>
-<p>事实上，矩阵、向量、标量之间的求导，是将因变量各个元素分别对自变量各个元素进行求导。比如向量 $\mathbf{y}$ 对向量 $\mathbf{x}$ 求导，则分别将  $\mathbf{y}$ 的每个分量对 $\mathbf{x}$ 的每个分量求导。</p>
-<p>但这样自然会出现一个排列次序的问题。我们将两个长度为 $m,n$ 的向量的分量对应求导，得到 $m\times n$ 个标量。为简练表示结果，我们需要将其写成矩阵的形式，这样就涉及到这 $m\times n$ 个值如何排列。</p>
-<p>为解决这个问题，需要引入<strong>求导布局</strong>的概念。</p>
-<h3 id="求导布局"><a href="#求导布局" class="headerlink" title="求导布局"></a>求导布局</h3><p>为解决矩阵向量求导的结果不唯一，我们引入求导布局。最基本的求导布局有两个：分子布局 (numerator layout) 和分母布局 (denominator layout)。</p>
-<p>对于<strong>分子布局</strong>而言，求导结果的维度以分子为主。也就是说，如果向量 $\mathbf{y}$ 是一个 $m$ 维的<u>列向量</u>，它对标量 $x$ 的求导结果 $\frac{\partial \mathbf{y}}{\partial x}$ 也是一个 $m$ 维<u>列向量</u>；若 $\mathbf{y}$ 是一个 $m$ 维的<u>行向量</u>，则求导结果也是一个 $m$ 维的<u>行向量</u>。</p>
-<p>对于<strong>分母布局</strong>而言，求导结果的维度以分母为主。也就是说，如果向量 $\mathbf{y}$ 是一个 $m$ 维的<u>列向量</u>，它对标量 $x$ 的求导结果 $\frac{\partial \mathbf{y}}{\partial x}$ 是一个 $m$ 维<u>行向量</u>；若 $\mathbf{y}$ 是一个 $m$ 维的<u>行向量</u>，则求导结果也是一个 $m$ 维的<u>列向量</u>。</p>
-<p>可以看出，分子布局和分母布局相差一个转置。</p>
-<p>稍微麻烦些的是向量对向量的求导。比如 $m$ 维列向量 $\mathbf{y}$ 对 $n$ 维列向量 $\mathbf{x}$ 求导，如果是分子布局，结果为：</p>
-<p>$$<br>\frac{\partial \mathbf{y}}{\partial \mathbf{x}}<br>=<br>\left(<br>\begin{matrix}<br>\frac{\partial y_{1}}{\partial x_{1}} &amp; \frac{\partial y_{1}}{\partial x_{2}} &amp; \cdots &amp; \frac{\partial y_{1}}{\partial x_{n}}  \\<br>\frac{\partial y_{2}}{\partial x_{1}} &amp; \frac{\partial y_{2}}{\partial x_{2}} &amp; \cdots &amp; \frac{\partial y_{2}}{\partial x_{n}}  \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\frac{\partial y_{m}}{\partial x_{1}} &amp; \frac{\partial y_{m}}{\partial x_{2}} &amp; \cdots &amp; \frac{\partial y_{m}}{\partial x_{n}}<br>\end{matrix}<br>\right)<br>$$</p>
-<p>上边这个按分子布局求得的向量对向量的求导结果，一般叫做<strong>雅克比 (Jacobian) 矩阵</strong>，有的资料又表示为 $\frac{\partial \mathbf{y}}{\partial \mathbf{x}^{T}}$。</p>
-<p>如果按分母布局，则结果为 $n\times m$ 的矩阵：</p>
-<p>$$<br>\frac{\partial \mathbf{y}}{\partial \mathbf{x}}<br>=<br>\left(<br>\begin{matrix}<br>\frac{\partial y_{1}}{\partial x_{1}} &amp; \frac{\partial y_{2}}{\partial x_{1}} &amp; \cdots &amp; \frac{\partial y_{m}}{\partial x_{1}}  \\<br>\frac{\partial y_{1}}{\partial x_{2}} &amp; \frac{\partial y_{2}}{\partial x_{2}} &amp; \cdots &amp; \frac{\partial y_{m}}{\partial x_{2}}  \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\frac{\partial y_{1}}{\partial x_{n}} &amp; \frac{\partial y_{2}}{\partial x_{n}} &amp; \cdots &amp; \frac{\partial y_{m}}{\partial x_{n}}<br>\end{matrix}<br>\right)<br>$$</p>
-<p>上边这个按分子布局求得的向量对向量的求导结果，一般叫做<strong>梯度矩阵</strong>，有的资料又表示为 $\frac{\partial \mathbf{y}^{T}}{\partial \mathbf{x}}$。</p>
-<p>观察上面两个矩阵，我们可以发现，分子布局的结果矩阵，保留了原分子向量的维度，即结果矩阵的每一列都是 $y_{1}$ 至 $y_{m}$，行数仍为 $m$；分母布局保留了原分母向量的维度，即结果矩阵的每一列都是 $x_{1}$ 至 $x_{n}$，行数为 $n$。</p>
-<p>显然，<strong>对于某一种求导类型，不能同时使用分子布局和分母布局求导。</strong></p>
-<p>在机器学习中，我们使用的是<strong>混合布局</strong>的思路。如果是向量或矩阵对标量求导，则使用分子布局；如果是标量对向量、矩阵求导，则以分母布局为准；而向量对向量求导，有些分歧，本文以分子布局的雅可比矩阵为主。</p>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><table>
+<p>底行模式下对 vi 编辑器的设置只对本次操作有效，vi 编辑器的用户配置信息放在 <code>~/.vimrc</code> 文件中，可以通过修改该文件进行长久有效的配置。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> vi ~/.vimrc</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-保存与退出"><a href="#2-保存与退出" class="headerlink" title="2. 保存与退出"></a>2. 保存与退出</h3><table>
 <thead>
 <tr>
-<th align="center">自变量\因变量</th>
-<th>标量 $y$</th>
-<th>列向量 $\mathbf{y}$</th>
-<th>矩阵 $\mathbf{Y}$</th>
+<th align="center">操作符</th>
+<th align="center">说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">标量 $x$</td>
-<td>$\frac{\partial y}{\partial x}$</td>
-<td><strong>分子布局：</strong>$m$ 维列向量<br>分母布局：$m$ 维行向量</td>
-<td><strong>分子布局：</strong>$m\times n$<br>分母布局：$n\times m$</td>
+<td align="center">:w [文件名]</td>
+<td align="center">保存文件</td>
 </tr>
 <tr>
-<td align="center">列向量 $\mathbf{x}$</td>
-<td>分子布局：$n$ 维行向量<br><strong>分母布局：</strong>$n$ 维列向量</td>
-<td><strong>分子布局：</strong>$m\times n$ 雅可比矩阵<br>分母布局：$n\times m$ 梯度矩阵</td>
-<td></td>
+<td align="center">:q</td>
+<td align="center">退出编辑器</td>
 </tr>
 <tr>
-<td align="center">矩阵 $\mathbf{X}$</td>
-<td>分子布局：$n\times m$<br><strong>分母布局：</strong>$m\times n$</td>
-<td></td>
-<td></td>
+<td align="center">:wq [文件名]</td>
+<td align="center">保存文件并退出编辑器</td>
+</tr>
+<tr>
+<td align="center">:w! [文件名]</td>
+<td align="center">对于没有修改权限的用户强行保存对文件的修改，<br>修改后的所有者和所属组发生变化</td>
+</tr>
+<tr>
+<td align="center">:q!</td>
+<td align="center">强行退出编辑器，不保存修改</td>
+</tr>
+<tr>
+<td align="center">:wq! [文件名]</td>
+<td align="center">强行保存修改并退出编辑器</td>
 </tr>
 </tbody></table>
-<h2 id="定义法求导"><a href="#定义法求导" class="headerlink" title="定义法求导"></a>定义法求导</h2><h3 id="标量对向量求导"><a href="#标量对向量求导" class="headerlink" title="标量对向量求导"></a>标量对向量求导</h3><p>标量对向量求导，严格来说是实值函数对向量求导。即定义实值函数 $f:R^{n}\rightarrow R$，自变量 $\mathbf{x}$ 是 $n$ 维向量，输出值 $y$ 是标量。</p>
-<p>前面我们也说过，标量对向量求导，实际上就是<strong>对向量的每个分量分别求导</strong>，再把结果排列在一起。那么我们可以将实值函数对向量的每一个分量求导，找到规律，得到结果向量。</p>
-<p>举个简单的例子：$y=\mathbf{a}^{T}\mathbf{x}$，求解 $\frac{\partial\mathbf{a}^{T}\mathbf{x}}{\partial\mathbf{x}}$</p>
-<p>根据定义，对 $\mathbf{x}$ 的第 $i$ 个分量求导：</p>
-<p>$$<br>\frac{\partial \mathbf{a}^{T} \mathbf{x}}{\partial x_{i}}<br>=<br>\frac{\partial \sum_{j=1}^{n} a_{j} x_{j}}{\partial x_{i}}<br>=<br>\frac{\partial a_{i} x_{i}}{\partial x_{i}}<br>=<br>a_{i}<br>$$</p>
-<p>可见，对向量的第 $i$ 个分量的求导结果等于向量 $\mathbf{a}$ 的第 $i$ 个分量。采用分母布局，最后得到的求导结果为 $\mathbf{a}$。即：</p>
-<p>$$<br>\frac{\partial \mathbf{a}^{T} \mathbf{x}}{\partial \mathbf{x}}<br>=<br>\mathbf{a}\tag{1}<br>$$</p>
-<p>同样使用定义法，我们可以得到</p>
-<p>$$<br>\frac{\partial \mathbf{x}^{T} \mathbf{a}}{\partial \mathbf{x}}<br>=<br>\mathbf{a},<br>\frac{\partial \mathbf{x}^{T} \mathbf{x}}{\partial \mathbf{x}}<br>=<br>2\mathbf{x}\tag{2}<br>$$</p>
-<p>再来看一个复杂点的例子：$y=\mathbf{x}^{T}\mathbf{A}\mathbf{x}$，求解 $\frac{\partial \mathbf{x}^{T} \mathbf{A} \mathbf{x}}{\partial \mathbf{x}}$</p>
-<blockquote>
-<p>不难推断矩阵 $\mathbf{A}$ 是方阵</p>
-</blockquote>
-<p>对 $\mathbf{x}$ 的第 $k$ 个分量进行求导如下：</p>
-<p>$$<br>\frac{\partial \mathbf{x^{T}Ax}}{\partial x_{k}}<br>=<br>\frac{\partial \sum_{i=1}^{n} \sum_{j=1}^{n} x_{i}A_{ij}x_{j}}{\partial x_{k}}<br>=<br>\sum_{i=1}^{n}A_{ik}x_{i}<br>+<br>\sum_{j=1}^{n}A_{kj}x_{j}<br>$$</p>
-<p>将这 $k$ 个分量组成向量，结果可表示为</p>
-<p>$$<br>\frac{\partial \mathbf{x}^{T} \mathbf{A} \mathbf{x}}{\partial \mathbf{x}}<br>=<br>\mathbf{A}^{T}\mathbf{x}<br>+<br>\mathbf{Ax}\tag{3}<br>$$</p>
-<h3 id="标量对向量求导的一些基本法则"><a href="#标量对向量求导的一些基本法则" class="headerlink" title="标量对向量求导的一些基本法则"></a>标量对向量求导的一些基本法则</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Matrix_calculus">[1] Matrix Calculus - Wikipedia</a></p>
-<p><a target="_blank" rel="noopener" href="https://fei-wang.github.io/matrix.html">[2] 矩阵求导 - 蒙奇 D 路飞</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinard/p/10750718.html">[3] 机器学习中的矩阵向量求导 - 刘建平Pinard</a></p>
+<h3 id="3-文件操作"><a href="#3-文件操作" class="headerlink" title="3. 文件操作"></a>3. 文件操作</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">:<strong>n</strong></td>
+<td>光标移动到第 n 行</td>
+</tr>
+<tr>
+<td align="center"><strong>/查找内容</strong></td>
+<td>查找指定内容，n 下一个，N 上一个</td>
+</tr>
+<tr>
+<td align="center"><strong>:1,$s/word1/word2/g</strong></td>
+<td>全程将word1替换为word2</td>
+</tr>
+</tbody></table>
 
             </div>
             <hr>
@@ -409,7 +588,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a>
+                      <a class="hover-with-bg" href="/categories/%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/">系统编程</a>
                     
                   </div>
                 
@@ -417,7 +596,13 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E7%9F%A9%E9%98%B5/">矩阵</a>
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/">系统编程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Vim/">Vim</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B7%A5%E5%85%B7/">工具</a>
                     
                   </div>
                 
@@ -434,9 +619,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/20/System-Program/Linux/">
+                      <a href="/2021/07/22/notes/materials/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux 简介与终端命令</span>
+                        <span class="hidden-mobile">资源信息库</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -444,8 +629,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/15/unity/unity-bvh/">
-                        <span class="hidden-mobile">Unity 使用 bvh 驱动骨骼动作</span>
+                      <a href="/2021/07/20/System-Program/Linux/">
+                        <span class="hidden-mobile">Linux 简介与终端命令</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
