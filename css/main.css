@@ -304,7 +304,7 @@ html {
 }
 html,
 body {
-  font-family: var(--font-family-sans-serif);
+  font-family: JetBrainsMono-Bold, Noto Serif SC;
 }
 html,
 body,
@@ -894,7 +894,7 @@ img[lazyload] {
 .markdown-body {
   font-size: 1rem;
   margin-bottom: 2rem;
-  font-family: var(--font-family-sans-serif);
+  font-family: JetBrainsMono-Bold, Noto Serif SC;
   color: var(--post-text-color);
 }
 .markdown-body h1,

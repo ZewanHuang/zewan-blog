@@ -14,11 +14,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="正规方程是线性回归模型求参的常用方法，本篇将结合线性代数的基础知识，介绍其公式的推导过程。">
+  <meta name="description" content="在使用模型拟合训练集时，可能会出现过拟合的问题，本文介绍正则化的方法处理该问题。">
   <meta name="author" content="Zehuan Huang">
   <meta name="keywords" content="">
   
-  <title>正规方程的推导 - Zewan 随笔</title>
+  <title>过拟合与正则化 - Zewan 随笔</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -52,6 +52,12 @@
 <link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/font.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC&display=swap.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin&display=swap.css">
+
 
 
   <script id="fluid-configs">
@@ -175,7 +181,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="正规方程的推导">
+            <span class="h2" id="subtitle" title="过拟合与正则化">
               
             </span>
 
@@ -190,8 +196,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-13 20:54" pubdate>
-        2021年7月13日 晚上
+      <time datetime="2021-07-26 11:30" pubdate>
+        2021年7月26日 中午
       </time>
     </span>
   
@@ -202,7 +208,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      1.6k 字
     </span>
   
 
@@ -212,7 +218,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      19
+      20
        分钟
     </span>
   
@@ -250,70 +256,69 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">正规方程的推导</h1>
+            <h1 style="display: none">过拟合与正则化</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年9月4日 上午
+                  本文最后更新于：2021年9月7日 晚上
                 
               </p>
             
             <div class="markdown-body">
-              <p>本篇主要介绍正规方程公式的推导，关于正规方程详情，可参考 <a target="_blank" rel="noopener" href="https://blog.zewan.cc/2021/07/12/ml-regression/#%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B-Normal-Equation">线性回归 - Zewan Blog</a>。</p>
-<h2 id="线性代数基础"><a href="#线性代数基础" class="headerlink" title="线性代数基础"></a>线性代数基础</h2><h3 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h3><p>设 $A$ 为 $m\times p$ 的矩阵，$B$ 为 $p\times n$ 的矩阵，则称 $m\times n$ 的矩阵 $C$ 为 $A$ 与 $B$ 的乘积，记作 $C=AB$，其中矩阵 $C$ 的第 $i$ 行第 $j$ 列元素为：</p>
-<p>$$<br>(AB)_{ij} =<br>\sum^{p}_{k=1}<br>a_{ik}b_{kj}=a_{i1}b_{1j}+a_{i2}b_{2j}+\cdots+a_{ip}b_{pj}<br>$$</p>
-<p>例如：</p>
-<p>$$<br>A =<br>\left[<br>\begin{matrix}<br>1 &amp; 2 &amp; 3  \\<br>4 &amp; 5 &amp; 6  \\<br>\end{matrix}<br>\right];<br>B =<br>\left[<br>\begin{matrix}<br>7 &amp; 8   \\<br>9 &amp; 10  \\<br>11 &amp; 12<br>\end{matrix}<br>\right]<br>$$</p>
-<p>则 $A$ 与 $B$ 的乘积为：</p>
-<p>$$<br>C=AB=<br>\left[<br>\begin{matrix}<br>1\times 7+2\times 9+3\times 11 &amp; 1\times 8+2\times 10+3\times 12   \\<br>4\times 7+5\times 9+6\times 11 &amp; 4\times 8+5\times 10+6\times 12<br>\end{matrix}<br>\right]<br>$$</p>
-<h3 id="矩阵的可逆性"><a href="#矩阵的可逆性" class="headerlink" title="矩阵的可逆性"></a>矩阵的可逆性</h3><p>给定一个 $n$ 阶<strong>方阵</strong> $A$，若存在一个 $n$ 阶方阵 $B$ 使得 $AB=BA=I$，其中 $I$ 为单位矩阵，则称 $A$ 可逆，且 $B$ 为 $A$ 的逆矩阵，记作 $A^{-1}$。</p>
-<p>若方阵 $A$ 的逆矩阵存在，则称 $A$ 可逆，为非奇异矩阵，其列向量必线性无关。</p>
-<blockquote>
-<p>奇异矩阵即为不可逆矩阵</p>
-</blockquote>
-<div class="note note-warning">
-            <p>注意可逆性是对于方阵而言，非方阵矩阵（行列数不同）必不可逆</p>
+              <p>在 <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8E%E5%90%B4%E6%81%A9%E8%BE%BE%E3%80%8F/">机器学习『吴恩达』</a> 系列中，我们已经介绍了几种不同的学习算法，包括线性回归和逻辑回归，能够有效地解决许多问题。但是应用时，会遇到过拟合 <strong>(over-fitting)</strong> 的问题，可能会导致效果较差。</p>
+<h2 id="过拟合-over-fitting"><a href="#过拟合-over-fitting" class="headerlink" title="过拟合 (over-fitting)"></a>过拟合 (over-fitting)</h2><p>所以什么是过拟合？我们从下面这个回归问题的例子来认识过拟合。</p>
+<p><img src="/img/articles/21-7-26/fit.jpg" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<ul>
+<li>第一个模型是一个线性模型，欠拟合，不能很好地适应训练集；</li>
+<li>第二个模型较好地拟合了数据，并贴合数据的变化趋势；</li>
+<li>第三个模型是一个四次方模型，过于强调拟合原始数据，而丢失了数据的发展趋势。</li>
+</ul>
+<p>可以看到，第三个模型很好地拟合了数据，但丢失了算法的本质——预测新数据。向第三个模型中输入一个新的值使之预测，它将表现得很差，因为它丢失了数据的发展趋势，失去规律。这就是<strong>过拟合</strong>问题。</p>
+<div class="note note-info">
+            <p><strong>过拟合</strong>（<strong>overfitting</strong>，或称拟合过度），是指过于紧密或精确地匹配特定数据集，以致于无法良好地拟合其他数据或预测未来的观察结果的现象。（<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%81%8E%E9%81%A9">维基百科</a>）</p>
           </div>
 
-<h3 id="矩阵求导法则"><a href="#矩阵求导法则" class="headerlink" title="矩阵求导法则"></a>矩阵求导法则</h3><p>具体知识可见 <a target="_blank" rel="noopener" href="https://blog.zewan.cc/2021/07/18/matrix-derivation">矩阵求导 - Zewan Blog</a>，此处仅介绍需要用到的两个<strong>标量对向量求导</strong>的恒等式推导。</p>
-<p><strong>等式一：</strong>$\mathbf{a},\mathbf{x}$ 为 $n$ 维列向量，则 $\frac{\partial \mathbf{a^{T}x}}{\partial \mathbf{x}}=\mathbf{a}$</p>
-<p>根据定义，对 $\mathbf{x}$ 的第 $i$ 个分量求导：</p>
-<p>$$<br>\frac{\partial \mathbf{a}^{T} \mathbf{x}}{\partial x_{i}}<br>=<br>\frac{\partial \sum_{j=1}^{n} a_{j} x_{j}}{\partial x_{i}}<br>=<br>\frac{\partial a_{i} x_{i}}{\partial x_{i}}<br>=<br>a_{i}<br>$$</p>
-<p>可见，对向量的第 $i$ 个分量的求导结果等于向量 $\mathbf{a}$ 的第 $i$ 个分量。采用分母布局，求导结果组成 $\mathbf{a}$。即：</p>
-<p>$$<br>\frac{\partial \mathbf{a}^{T} \mathbf{x}}{\partial \mathbf{x}}<br>=<br>\mathbf{a}\tag{1}<br>$$</p>
-<p><strong>等式二：</strong>$\mathbf{x}$ 为 $n$ 维列向量，$\mathbf{A}$ 为 $n\times n$ 方阵，则 $\frac{\partial \mathbf{x}^{T} \mathbf{A} \mathbf{x}}{\partial \mathbf{x}}=\mathbf{A}^{T}\mathbf{x}+\mathbf{Ax}$</p>
-<p>对 $\mathbf{x}$ 的第 $k$ 个分量进行求导如下：</p>
-<p>$$<br>\frac{\partial \mathbf{x^{T}Ax}}{\partial x_{k}}<br>=<br>\frac{\partial \sum_{i=1}^{n} \sum_{j=1}^{n} x_{i}A_{ij}x_{j}}{\partial x_{k}}<br>=<br>\sum_{i=1}^{n}A_{ik}x_{i}<br>+<br>\sum_{j=1}^{n}A_{kj}x_{j}<br>$$</p>
-<p>将这 $k$ 个分量组成向量，即得到：</p>
-<p>$$<br>\frac{\partial \mathbf{x}^{T} \mathbf{A} \mathbf{x}}{\partial \mathbf{x}}<br>=<br>\mathbf{A}^{T}\mathbf{x}<br>+<br>\mathbf{Ax}<br>\tag{2}<br>$$</p>
-<h2 id="正规方程简述"><a href="#正规方程简述" class="headerlink" title="正规方程简述"></a>正规方程简述</h2><p>训练集中有 $m$ 个样本，每个样本有 $n$ 个线性无关的特征和一个标签纸（输出值）$y$。建立多变量线性回归模型和代价函数：($x_{0}$ 为 1)</p>
-<ul>
-<li><p>回归模型：$h_{\theta}(x)=\theta_{0}x_{0}+\theta_{1}x_{1}+\theta_{2}x_{2}+…+\theta_{n}x_{n}=\theta^{T}X$</p>
-</li>
-<li><p>代价函数：$J(\theta_{0},\theta_{1},…,\theta_{n})=\frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})^2$</p>
-</li>
-</ul>
-<p>现使用特征 $\frac{\partial J(\theta)}{\partial\theta}=0$，推导出参数方程：</p>
-<p>$$<br>\theta=(X^{T}X)^{-1}X^{T}y<br>$$</p>
-<p>其中，$X$ 表示特征矩阵（含$x_{0}=1$），$T$ 表示矩阵转置，$y$ 为训练集的结果，是一个向量。即：</p>
-<p>$$<br>\theta =<br>\left[<br>\begin{matrix}<br>\theta_{0} \\<br>\theta_{1} \\<br>. \\<br>. \\<br>\theta_{n}<br>\end{matrix}<br>\right];<br>X =<br>\left[<br>\begin{matrix}<br>x_{0}^{(1)} &amp; \cdots &amp; x_{n}^{(1)} \\<br>\vdots &amp; \ddots &amp; \vdots \\<br>x_{0}^{m} &amp; \cdots &amp; x_{n}^{m}<br>\end{matrix}<br>\right];<br>y =<br>\left[<br>\begin{matrix}<br>y_{1} \\<br>y_{2} \\<br>. \\<br>. \\<br>y_{m}<br>\end{matrix}<br>\right]<br>$$</p>
-<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p>将代价函数 $J(\theta)$ 转为矩阵表达形式，有</p>
-<p>$$<br>J(\theta) = \frac{1}{2}(\mathbf{X \theta}-\mathbf{y})^{2}<br>$$</p>
-<blockquote>
-<p>上式 $\mathbf{X \theta}-\mathbf{y}$ 为 $m$ 维列向量，平方仅代表各元素做平方运算</p>
-</blockquote>
-<p>对 $J(\theta)$ 进行如下变换：</p>
-<p>$$<br>\begin{aligned}<br>J(\theta) &amp;=  \frac{1}{2}(\mathbf{X\theta-y})^{T}(\mathbf{X\theta-y})\\<br>&amp;= \frac{1}{2}(\theta^{T}\mathbf{X}^{T}-\mathbf{y}^{T})(\mathbf{X}\theta-\mathbf{y})\\<br>&amp;= \frac{1}{2}(\theta^{T}\mathbf{X}^{T}\mathbf{X}\theta-\theta^{T}\mathbf{X}^{T}\mathbf{y}-\mathbf{y}^{T}\mathbf{X}\theta+\mathbf{y}^{T}\mathbf{y})<br>\end{aligned}<br>$$</p>
-<p>接下来使用矩阵的求导法则 $\frac{\partial \mathbf{a}^{T} \mathbf{x}}{\partial \mathbf{x}}=\mathbf{a},\frac{\partial \mathbf{x}^{T} \mathbf{A} \mathbf{x}}{\partial \mathbf{x}}=\mathbf{A}^{T}\mathbf{x}+\mathbf{Ax}$，对 $J(\theta)$ 偏导:</p>
-<p>$$<br>\frac{\partial \theta^{T} \mathbf{X}^{T} \mathbf{X} \theta}{\partial \theta}<br>=<br>(\mathbf{X}^{T}\mathbf{X})^{T}\theta<br>+<br>(\mathbf{X}^{T}\mathbf{X})\theta<br>=<br>2\mathbf{X}^{T}\mathbf{X}<br>$$</p>
-<p>得：</p>
-<p>$$<br>\begin{aligned}<br>\frac{\partial J(\theta)}{\partial \theta}<br>&amp;= \frac{1}{2}(2\mathbf{\mathbf{X}}^{T}\mathbf{X}\theta-\mathbf{X}^{T}\mathbf{\mathbf{y}}-(\mathbf{y}^{T}\mathbf{X})^{T}+0)\\<br>&amp;= \frac{1}{2}(2\mathbf{X}^{T}\mathbf{X}\theta-\mathbf{X}^{T}\mathbf{y}-\mathbf{X}^{T}\mathbf{y}+0)\\<br>&amp;= \mathbf{X}^{T}\mathbf{X}\theta-\mathbf{X}^{T}\mathbf{y}<br>\end{aligned}<br>$$</p>
-<p>令 $\frac{\partial J(\theta)}{\partial \theta}=0$，得</p>
-<p>$$<br>\theta = (\mathbf{X}^{T}\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{y}<br>$$</p>
+<p>分类问题中也存在这样的问题：</p>
+<p><img src="/img/articles/21-7-26/classification-fit.jpg" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>单纯以多项式模型来理解，$x$ 的次数越高，拟合得越好，但相应的预测能力就可能变差。</p>
+<p>针对过拟合问题，处理的方式有：</p>
+<ol>
+<li>丢弃一些不能帮助我们正确预测的特征。可以是手工选择保留哪些特征，或者使用一些模型选择的算法来帮忙（例如 PCA）</li>
+<li><strong>正则化</strong>。保留所有的特征，但是减小参数 (<strong>magnitude</strong>)</li>
+</ol>
+<p>后面我们主要介绍正则化的方法，在这里简单解释一下上面第一个方法的可行性。</p>
+<p><strong>过拟合通常是发生在特征较多的情况下的。</strong>试想如果特征少，我们用简单的低次模型就可以实现较好的拟合效果，且低次常常能维护正常的数据发展趋势。因此针对过拟合问题，我们可以丢弃低效特征，减少特征数量，简化模型，达到拟合度和预测能力的平衡。</p>
+<h2 id="正则化-Regularization"><a href="#正则化-Regularization" class="headerlink" title="正则化 (Regularization)"></a>正则化 (Regularization)</h2><h3 id="修改代价函数"><a href="#修改代价函数" class="headerlink" title="修改代价函数"></a>修改代价函数</h3><p>如果我们的线性模型 $h_{\theta}(x)=\theta_{0}+\theta_{1}x_{1}+\theta_{2}x_{2}^{2}+\theta_{3}x_{3}^{3}+\theta_{4}x_{4}^{4}$ 出现了过拟合现象，我们要做的就是在一定程度上减小参数 $\theta$ 的值，这就是<strong>正则化的基本方法</strong>。</p>
+<p>我们知道，过拟合是因为高次项，因此我们可以决定减小 $\theta_{3},\theta_{4}$ 的大小，要做的是修改代价函数，在 $\theta_{3},\theta_{4}$ 上设置一些惩罚。这样，我们在最小化代价时，会将该惩罚考虑进去，从而选择较小的 $\theta_{3},\theta_{4}$。</p>
+<p>修改后的代价函数如：</p>
+<p>$$<br>\mathbf{\min}_{\theta}\ J(\theta) = \frac{1}{2m}\sum_{i=1}^{m} (h_{\theta}(x^{(i)})-y^{(i)})^{2} + 1000\cdot \theta_{3}^{2}+1000\cdot \theta_{4}^{2}<br>$$</p>
+<p>假如我们有非常多的特征，我们不确定要惩罚哪些特征，这时我们可以对所有特征进行惩罚，并让代价函数优化软件来选择惩罚的程度。这样我们得到了新的代价函数：</p>
+<p>$$<br>\mathbf{\min}_{\theta}\ J(\theta) = \frac{1}{2m}[\sum_{i=1}^{m} (h_{\theta}(x^{(i)})-y^{(i)})^{2} + \lambda \sum_{j=1}^{n}\theta_{j}^{2}]<br>$$</p>
+<p>其中，$\lambda$ 称为正则化参数 (<strong>Regularization Parameter</strong>)。根据惯例，我们不对 $\theta_{0}$ 进行惩罚。</p>
+<p>经过正则化处理的模型与原模型的可能对比图如下：</p>
+<p><img src="/img/articles/21-7-26/result.jpg" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
+<p>如果 $\lambda$ 过大，会把所有参数最小化，导致模型趋于 $h_{\theta}(x)=\theta_{0}$，这样得到的可能是一条平行于 $x$ 轴的直线，造成欠拟合。</p>
+<h3 id="正则化线性回归"><a href="#正则化线性回归" class="headerlink" title="正则化线性回归"></a>正则化线性回归</h3><p>对线性回归的求解，我们在<a href="/2021/07/12/ml-regression/">『线性回归』</a>一文中推导了两种学习算法：分别基于梯度下降和正规方程。</p>
+<h4 id="梯度下降-Gradient-Descent"><a href="#梯度下降-Gradient-Descent" class="headerlink" title="梯度下降 (Gradient Descent)"></a>梯度下降 (Gradient Descent)</h4><p>我们将正则化的代价函数应用到梯度下降中，因为我们未对 $\theta_{0}$ 进行正则化，所以分两种情形更新参数：</p>
+<p>$$<br>\mathbf{Repeat}\ \{<br>\begin{aligned}<br>\theta_{0} : &amp;= \theta_{0} - \alpha \frac{1}{m} \sum_{i=1}^{m} (h_{\theta}(x^{(i)}) - y^{(i)}) x_{0}^{(i)}\\<br>\theta_{j} : &amp;= \theta_{j} - \alpha [ \frac{1}{m} \sum_{i=1}^{m} (h_{\theta}(x^{(i)}) - y^{(i)}) x_{j}^{(i)} + \frac{\lambda}{m} \theta_{j} ], \ j\in \{1,2,\cdots,n\}<br>\end{aligned}<br>\}<br>$$</p>
+<p>对上面算法中 $j=1,2,\cdots,n$ 的情况进行调整得：</p>
+<p>$$<br>\theta_{j} := \theta_{j} (1-\alpha \frac{\lambda}{m}) - \alpha\frac{1}{m} (h_{\theta}(x^{(i)}) - y^{(i)}) x_{j}^{(i)}<br>$$</p>
+<p>可以看出，正则化线性回归的梯度下降算法的变化在于，每次参数更新都减小一个额外的值。</p>
+<h4 id="正规方程"><a href="#正规方程" class="headerlink" title="正规方程"></a>正规方程</h4><p>我们同样可以利用正规方程求解正则化线性回归模型，向量化公式如下：</p>
+<p>$$<br>\theta = (X^{T}X+\lambda\cdot L)^{-1} X^{T}y<br>$$</p>
+<p>其中 $L$ 为 $n+1$ 维方阵：</p>
+<p>$$<br>L =<br>\left[<br>\begin{matrix}<br>0 \\<br>\  &amp; 1  &amp;    &amp;    &amp; \\<br>\  &amp; \  &amp; 1  &amp;    &amp; \\<br>\  &amp; \  &amp; \  &amp; \ddots &amp; \\<br>\  &amp; \  &amp; \  &amp; \  &amp; 1 \\<br>\end{matrix}<br>\right]<br>$$</p>
+<h3 id="正则化逻辑回归"><a href="#正则化逻辑回归" class="headerlink" title="正则化逻辑回归"></a>正则化逻辑回归</h3><p>我们同样可以对逻辑回归的代价函数正则化：</p>
+<p>$$<br>J(\theta) =<br>\frac{1}{m} \sum_{i=1}^{m}<br>[-y^{(i)}\log(h_{\theta}(x^{(i)})) - (1-y^{(i)})\log(1-h_{\theta}(x^{(i)}))] + \frac{\lambda}{2m} \sum_{j=1}^{n} \theta_{j}^{2}<br>$$</p>
+<p><strong>Python 代码</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">costReg</span>(<span class="hljs-params">theta, X, y, learningRate</span>):</span><br>    theta = np.matrix(theta)<br>    X = np.matrix(X)<br>    y = np.matrix(y)<br>    first = np.multiply(-y, np.log(sigmoid(X*theta.T)))<br>    second = np.multiply((<span class="hljs-number">1</span> - y), np.log(<span class="hljs-number">1</span> - sigmoid(X*theta.T)))<br>    reg = (learningRate / (<span class="hljs-number">2</span> * <span class="hljs-built_in">len</span>(X))* np.<span class="hljs-built_in">sum</span>(np.power(theta[:,<span class="hljs-number">1</span>:theta.shape[<span class="hljs-number">1</span>]],<span class="hljs-number">2</span>))<br>    <span class="hljs-keyword">return</span> np.<span class="hljs-built_in">sum</span>(first - second) / (<span class="hljs-built_in">len</span>(X)) + reg<br></code></pre></td></tr></table></figure>
+
+<p>使用梯度下降算法求解，最终得到的参数更新公式与线性回归一致：</p>
+<p>$$<br>\mathbf{Repeat}\ \{<br>\begin{aligned}<br>\theta_{0} : &amp;= \theta_{0} - \alpha \frac{1}{m} \sum_{i=1}^{m} (h_{\theta}(x^{(i)}) - y^{(i)}) x_{0}^{(i)}\\<br>\theta_{j} : &amp;= \theta_{j} - \alpha [ \frac{1}{m} \sum_{i=1}^{m} (h_{\theta}(x^{(i)}) - y^{(i)}) x_{j}^{(i)} + \frac{\lambda}{m} \theta_{j} ], \ j\in \{1,2,\cdots,n\}<br>\end{aligned}<br>\}<br>$$</p>
+<p>但仍需注意，看上去和线性回归一样，但实际上 $h_{\theta}$ 是不同的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了过拟合问题——过于拟合数据集而丢失预测能力，并介绍正则化方法，主要通过修改代价函数，对指定或全部参数进行惩罚，从而达到减小参数的效果。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/60719445">[3] 详解正规方程 (Normal Equation) - 知乎</a></p>
-<p><a target="_blank" rel="noopener" href="https://fei-wang.github.io/matrix.html">[4] 矩阵求导 - 蒙奇 D 路飞</a></p>
 
             </div>
             <hr>
@@ -323,7 +328,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8E%E5%90%B4%E6%81%A9%E8%BE%BE%E3%80%8F/">机器学习『吴恩达』</a>
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
                     
                   </div>
                 
@@ -335,8 +340,6 @@
                     
                       <a class="hover-with-bg" href="/tags/ML/">ML</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%8E%A8%E5%AF%BC/">推导</a>
-                    
                   </div>
                 
               </div>
@@ -347,6 +350,29 @@
                   
                 </p>
               
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/27/ml/5-neural-networks/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">神经网络表述</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/23/ml/3-classification/">
+                        <span class="hidden-mobile">分类问题与逻辑回归</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
               
             </div>
 

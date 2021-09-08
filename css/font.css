@@ -1,0 +1,8 @@
+@font-face{
+    font-family: 'JetBrainsMono-Bold';
+    src: url('../diy-font/JetBrainsMono-Bold.ttf');   
+}
+​
+body {
+    font-family: 'JetBrainsMono-Bold';
+}
