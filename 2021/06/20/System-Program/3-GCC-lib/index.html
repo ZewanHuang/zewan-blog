@@ -1,0 +1,684 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/zewanblog.ico">
+  <link rel="icon" href="/img/zewanblog.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="本篇主要介绍在 Linux 环境中，如何自定义指定头文件、库文件路径，并借助数学库和自定义库文件两个例子进行理解。">
+  <meta name="author" content="Zehuan Huang">
+  <meta name="keywords" content="">
+  
+  <title>Linux GCC 头文件与库文件路径问题 - Zewan 随笔</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.6.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/font.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC&display=swap.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin&display=swap.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","app_key":"QBNI2wT2eJM19a0Lfl90vFhq","server_url":"https://hn9otbfn.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Zewan Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/configs/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Linux GCC 头文件与库文件路径问题">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Zehuan Huang
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-06-20 12:00" pubdate>
+        2021年6月20日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      16
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux GCC 头文件与库文件路径问题</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年9月9日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>本篇主要介绍在 Linux 环境中，如何自定义指定头文件、库文件路径，并借助数学库和自定义库文件两个例子进行理解。</p>
+<p>通俗地讲，头文件是函数或变量的声明，不含具体的实现；库文件是所需的函数定义等，它定义了头文件所声明的函数，也就是具体的实现方式。</p>
+<p>库文件常由可重定向目标文件(.o文件)“打包”而成。</p>
+<blockquote>
+<p>注意不要把命令 -l(lib) 和 -I(include) 弄混了</p>
+</blockquote>
+<h2 id="1-头文件路径"><a href="#1-头文件路径" class="headerlink" title="1. 头文件路径"></a>1. 头文件路径</h2><h3 id="1-1-include-lt-gt-amp-include””"><a href="#1-1-include-lt-gt-amp-include””" class="headerlink" title="1.1 include&lt;&gt; &amp; include””"></a>1.1 include&lt;&gt; &amp; include””</h3><ul>
+<li><code>#include &lt;&gt;</code> 直接到系统指定的某些目录中去找某些头文件。</li>
+<li><code>#include &quot;&quot;</code> 先到源文件所在文件夹去找，然后再到系统指定的某些目录中去找某些头文件。</li>
+</ul>
+<h3 id="1-2-gcc指定头文件的情况"><a href="#1-2-gcc指定头文件的情况" class="headerlink" title="1.2 gcc指定头文件的情况"></a>1.2 gcc指定头文件的情况</h3><ul>
+<li>默认 /usr/include 文件夹寻找</li>
+<li>gcc 可使用 -I 指定头文件所在文件夹（绝对路径或相对路径都可）</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> gcc [option] -I 头文件所在文件夹 源代码文件</span><br></code></pre></td></tr></table></figure>
+
+<p>比如当前目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">.<br>├── test.c<br>└── include<br>    └── test.h<br></code></pre></td></tr></table></figure>
+
+<p>有两种方法可以访问到 test.h</p>
+<ol>
+<li>在 test.c 代码中，<code>#include &quot;include/test.h&quot;</code></li>
+<li>编译时，<code>gcc -o test -I include test.c</code></li>
+</ol>
+<h3 id="1-3-头文件搜索顺序"><a href="#1-3-头文件搜索顺序" class="headerlink" title="1.3 头文件搜索顺序"></a>1.3 头文件搜索顺序</h3><ol>
+<li>由参数 -I 指定的路径（指定路径有多个时按顺序搜索）</li>
+<li>找 gcc 的环境变量 C_INCLUDE_PATH, CPLUS_INCLUDE_PATH, OBJC_INCLUDE_PATH</li>
+<li>找内定目录（如下）</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">/usr/include<br>/usr/local/include<br>/usr/lib/gcc-lib/[linux system]/include<br>...<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-创建库文件"><a href="#2-创建库文件" class="headerlink" title="2. 创建库文件"></a>2. 创建库文件</h2><p>关于静态库和动态库，请<a href="https://zewanblog.cn/2021/03/17/GCC/#12-浅谈静态库与动态库" target="_blank">点击这里</a>了解。</p>
+<h3 id="2-1-创建静态库"><a href="#2-1-创建静态库" class="headerlink" title="2.1 创建静态库"></a>2.1 创建静态库</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> gcc -c mytool1.c</span><br><span class="hljs-meta">$</span><span class="bash"> gcc -c mytool2.c</span><br><span class="hljs-meta">$</span><span class="bash"> ar cr libmylib.a mytool2.o mytool1.o</span><br></code></pre></td></tr></table></figure>
+
+<p>上述代码中，前两行将包含函数定义等实现方式信息的源代码，编译成可重定位目标文件；第三行代码，将 .o 文件合并“打包”成为静态库 (.a)</p>
+<h3 id="2-2-创建动态库"><a href="#2-2-创建动态库" class="headerlink" title="2.2 创建动态库"></a>2.2 创建动态库</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> gcc -c -fPIC mytool2.c -o mytool2.o</span><br><span class="hljs-meta">$</span><span class="bash"> gcc -c -fPIC mytool1.c -o mytool1.o</span><br><span class="hljs-meta">$</span><span class="bash"> gcc -shared -o libmylib.so mytool2.o mytool1.o</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>-fPIC 参数声明链接库的代码段是可以共享的</li>
+<li>-shared 参数声明编译为共享库</li>
+</ul>
+<p>动态库命名的惯例为 libxxx.so</p>
+<h2 id="3-指定动态库路径"><a href="#3-指定动态库路径" class="headerlink" title="3. 指定动态库路径"></a>3. 指定动态库路径</h2><blockquote>
+<p>此处以动态库为例，但事实上静态库也类似，只不过编译时须加一个声明 <code>-static</code>，因为默认是链接动态库</p>
+</blockquote>
+<p>Linux动态库的默认搜索路径是 /lib 和 /usr/lib。动态库被创建后，一般都复制到这两个目录中。</p>
+<p>当程序需要链接某动态库，系统会自动到这两个默认搜索路径中去查找相应的动态库文件，然后加载该文件到内存中，这样程序就可以使用该动态库中的函数，以及该动态库的其它资源了。</p>
+<p>动态库的搜索路径除了默认的搜索路径外，还可以通过下面介绍的方法来指定。</p>
+<p><strong>写在前面</strong></p>
+<blockquote>
+<p>libc 可以理解为 stdio.h 头文件声明所涉及的库文件</p>
+</blockquote>
+<p>如果代码中用到 libc 以外的库文件，但该库文件是 C 语言内置库，则一般只需要在<a href="#21-%E7%BC%96%E8%AF%91%E6%97%B6%E6%8C%87%E5%AE%9A">编译时指定</a><strong>库文件</strong>。</p>
+<p>如果所用到的库文件不存于上述默认搜索路径 /lib 或 /usr/lib 时，也就是系统没有，是我们自己加的库文件，则需要在编译时<strong>同时指定库文件目录和库文件</strong>，并通过<a href="#22-%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">编辑配置文件</a>或<a href="#23-%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F">添加环境变量</a>，指定系统搜索路径。</p>
+<p><img src="/img/articles/21-9-8/20210327141745.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3-1-编译时指定"><a href="#3-1-编译时指定" class="headerlink" title="3.1 编译时指定"></a>3.1 编译时指定</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> gcc -o main main.o -L &lt;库文件目录&gt; -l&lt;库文件&gt;</span><br>gcc -o main main.o -L lib/ -lxxx<br></code></pre></td></tr></table></figure>
+
+<p>上述代码为编译时指定的命令格式。此处 <code>-l</code> 后的库文件，命名格式为 <code>xxx</code>。比如库文件名称为 <code>libtestlib.so</code>，则只需写 <code>testlib</code>。</p>
+<h3 id="3-2-编辑配置文件"><a href="#3-2-编辑配置文件" class="headerlink" title="3.2 编辑配置文件"></a>3.2 编辑配置文件</h3><p>在配置文件 <strong>/etc/ld.so.conf</strong> 中指定动态库搜索路径。</p>
+<p>编辑 /etc/ld.so.conf 来指定动态库的搜索路径（<strong>目录</strong>），该文件中每行为一个动态库搜索路径。每次编辑完该文件后，都必须运行命令 <code>ldconfig</code> 使修改后的配置生效。</p>
+<h3 id="3-3-添加环境变量"><a href="#3-3-添加环境变量" class="headerlink" title="3.3 添加环境变量"></a>3.3 添加环境变量</h3><p>通过环境变量 <strong>LD_LIBRARY_PATH</strong> 指定动态库搜索路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> <span class="hljs-built_in">export</span> LD_LIBRARY_PATH = &lt;库文件所在目录路径&gt;</span><br>export LD_LIBRARY_PATH=/root:/home # 指定多个路径用冒号隔开<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-4-动态库搜索路径顺序"><a href="#3-4-动态库搜索路径顺序" class="headerlink" title="3.4 动态库搜索路径顺序"></a>3.4 动态库搜索路径顺序</h3><ol>
+<li>编译目标代码时指定的动态库搜索路径；</li>
+<li>环境变量 LD_LIBRARY_PATH 指定的动态库搜索路径；</li>
+<li>配置文件 /etc/ld.so.conf 中指定的动态库搜索路径；</li>
+<li>/lib</li>
+<li>/usr/lib</li>
+</ol>
+<h2 id="4-实践"><a href="#4-实践" class="headerlink" title="4. 实践"></a>4. 实践</h2><p>举两个例子。</p>
+<h3 id="4-1-使用数学库"><a href="#4-1-使用数学库" class="headerlink" title="4.1 使用数学库"></a>4.1 使用数学库</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//main.c</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;math.h&gt;</span></span><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hello\n&quot;</span>);<br>    <span class="hljs-keyword">int</span> b = <span class="hljs-number">2</span>;<br>    <span class="hljs-keyword">double</span> a = <span class="hljs-built_in">exp</span>(b);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%lf\n&quot;</span>,a);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上述代码使用了 libm.so 动态库中的函数，则需执行以下命令进行编译运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> gcc -o main main.c -lm    <span class="hljs-comment"># -lm指定libm库</span></span><br><span class="hljs-meta">$</span><span class="bash"> ./main</span><br>hello<br>7.389056<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-2-使用系统没有的库文件"><a href="#4-2-使用系统没有的库文件" class="headerlink" title="4.2 使用系统没有的库文件"></a>4.2 使用系统没有的库文件</h3><p>文件目录树如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">.<br>|-- include<br>|   `-- fun.h<br>|-- lib<br>|   `-- libfun.so<br>`-- src<br>    `-- main.c<br></code></pre></td></tr></table></figure>
+
+<p>我想在当前目录下编译运行 main.c，命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> gcc -o main src/main.c -Iinclude/ -L ./lib -lfun  <span class="hljs-comment"># 编译指定库文件目录和文件</span></span><br><span class="hljs-meta">$</span><span class="bash"> <span class="hljs-built_in">export</span> LD_LIBRARY_PATH=lib;   <span class="hljs-comment"># 添加环境变量</span></span><br><span class="hljs-meta">$</span><span class="bash"> ./main                        <span class="hljs-comment"># 执行</span></span><br></code></pre></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/">系统编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/">系统编程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/GCC/">GCC</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/06/21/System-Program/4-Make/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">构建工具 Make</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/06/19/System-Program/2-GCC+GDB/">
+                        <span class="hidden-mobile">Linux GCC & GDB 基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appKey":"QBNI2wT2eJM19a0Lfl90vFhq","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://hn9otbfn.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":true,"requiredFields":[],"appid":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appkey":"QBNI2wT2eJM19a0Lfl90vFhq"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        粤ICP备2021021248号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.2/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
