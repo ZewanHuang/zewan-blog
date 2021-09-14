@@ -208,7 +208,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.1k 字
+      3.2k 字
     </span>
   
 
@@ -218,7 +218,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      37
+      38
        分钟
     </span>
   
@@ -260,7 +260,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年9月7日 晚上
+                  本文最后更新于：2021年9月14日 中午
                 
               </p>
             
@@ -438,7 +438,7 @@
 <h4 id="多项式回归-Polynomial-Regression"><a href="#多项式回归-Polynomial-Regression" class="headerlink" title="多项式回归 (Polynomial Regression)"></a>多项式回归 (Polynomial Regression)</h4><p>上面所使用的线性回归，不一定适用于所有数据，有时我们需要曲线来适应拟合数据。比如二次方模型：$h_{\theta}(x)=\theta_{0}+\theta_{1}x_{1}+\theta_{2}x_{2}^{2}$ 或三次方模型等等。</p>
 <p><img src="/img/articles/21-7-11/polynomial.jpg" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
 <p>通常我们需要先观察数据，再决定模型。如果采用多次项，可以令：$x_{2}=x_{2}^{2},x_3=x_{3}^{3}$，从而将模型转化为线性回归模型。</p>
-<h3 id="正规方程-Normal-Equation"><a href="#正规方程-Normal-Equation" class="headerlink" title="正规方程 (Normal Equation)"></a>正规方程 (Normal Equation)</h3><p>到目前为止，都在使用梯度下降算法来求解参数，但对于某些线性回归问题，<strong>正规方程</strong>方法是更好的解法。</p>
+<h2 id="正规方程-Normal-Equation"><a href="#正规方程-Normal-Equation" class="headerlink" title="正规方程 (Normal Equation)"></a>正规方程 (Normal Equation)</h2><p>到目前为止，都在使用梯度下降算法来求解参数，但对于某些线性回归问题，<strong>正规方程</strong>方法是更好的解法。</p>
 <div class="note note-info">
             <p>最小二乘法可以将误差方程转化为有确定解的代数方程组（方程式数目等于未知数的个数），从而可求解出这些位置参数。这个有确定解的代数方程组称为最小二乘法估计的<strong>正规方程（或法方程）</strong>。</p>
           </div>
@@ -499,6 +499,11 @@
 </ol>
 </li>
 </ol>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><blockquote>
+<p>原课程作业答案使用的是 Octave/Matlab 求解模型，本系列博客参考黄海广博士笔记的 Python 代码编写答案</p>
+</blockquote>
+<p>本篇的作业提供了两个数据文件 (<a href='/sources/ML-exercise/ex1data1.txt'>ex1data1.txt</a> 和 <a href='/sources/ML-exercise/ex1data2.txt'>ex1data2.txt</a>)，要求使用线性回归模型对其分析和参数求解；python 参考答案见 <a href='/sources/ML-exercise/ex1.html'>ex1.html</a>。</p>
+<p>作业文件和答案可<a href='/sources/ML-exercise/ex1.zip'>点击下载</a>。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>
 <p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B/10001812">[3] 正规方程 - 百度百科</a></p>
