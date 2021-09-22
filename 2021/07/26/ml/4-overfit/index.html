@@ -208,7 +208,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.6k 字
+      1.7k 字
     </span>
   
 
@@ -218,7 +218,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      20
+      21
        分钟
     </span>
   
@@ -260,7 +260,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年9月7日 晚上
+                  本文最后更新于：2021年9月21日 凌晨
                 
               </p>
             
@@ -298,7 +298,7 @@
 <p>经过正则化处理的模型与原模型的可能对比图如下：</p>
 <p><img src="/img/articles/21-7-26/result.jpg" srcset="/img/loading.gif" lazyload alt="图源于Coursera"></p>
 <p>如果 $\lambda$ 过大，会把所有参数最小化，导致模型趋于 $h_{\theta}(x)=\theta_{0}$，这样得到的可能是一条平行于 $x$ 轴的直线，造成欠拟合。</p>
-<h3 id="正则化线性回归"><a href="#正则化线性回归" class="headerlink" title="正则化线性回归"></a>正则化线性回归</h3><p>对线性回归的求解，我们在<a href="/2021/07/12/ml-regression/">『线性回归』</a>一文中推导了两种学习算法：分别基于梯度下降和正规方程。</p>
+<h3 id="正则化线性回归"><a href="#正则化线性回归" class="headerlink" title="正则化线性回归"></a>正则化线性回归</h3><p>对线性回归的求解，我们在<a target="_blank" rel="noopener" href="https://blog.zewan.cc/2021/07/12/ml/ml-regression/">『线性回归』</a>一文中推导了两种学习算法：分别基于梯度下降和正规方程。</p>
 <h4 id="梯度下降-Gradient-Descent"><a href="#梯度下降-Gradient-Descent" class="headerlink" title="梯度下降 (Gradient Descent)"></a>梯度下降 (Gradient Descent)</h4><p>我们将正则化的代价函数应用到梯度下降中，因为我们未对 $\theta_{0}$ 进行正则化，所以分两种情形更新参数：</p>
 <p>$$<br>\mathbf{Repeat}\ \{<br>\begin{aligned}<br>\theta_{0} : &amp;= \theta_{0} - \alpha \frac{1}{m} \sum_{i=1}^{m} (h_{\theta}(x^{(i)}) - y^{(i)}) x_{0}^{(i)}\\<br>\theta_{j} : &amp;= \theta_{j} - \alpha [ \frac{1}{m} \sum_{i=1}^{m} (h_{\theta}(x^{(i)}) - y^{(i)}) x_{j}^{(i)} + \frac{\lambda}{m} \theta_{j} ], \ j\in \{1,2,\cdots,n\}<br>\end{aligned}<br>\}<br>$$</p>
 <p>对上面算法中 $j=1,2,\cdots,n$ 的情况进行调整得：</p>
@@ -317,6 +317,8 @@
 <p>$$<br>\mathbf{Repeat}\ \{<br>\begin{aligned}<br>\theta_{0} : &amp;= \theta_{0} - \alpha \frac{1}{m} \sum_{i=1}^{m} (h_{\theta}(x^{(i)}) - y^{(i)}) x_{0}^{(i)}\\<br>\theta_{j} : &amp;= \theta_{j} - \alpha [ \frac{1}{m} \sum_{i=1}^{m} (h_{\theta}(x^{(i)}) - y^{(i)}) x_{j}^{(i)} + \frac{\lambda}{m} \theta_{j} ], \ j\in \{1,2,\cdots,n\}<br>\end{aligned}<br>\}<br>$$</p>
 <p>但仍需注意，看上去和线性回归一样，但实际上 $h_{\theta}$ 是不同的。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了过拟合问题——过于拟合数据集而丢失预测能力，并介绍正则化方法，主要通过修改代价函数，对指定或全部参数进行惩罚，从而达到减小参数的效果。</p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>本次作业涉及逻辑回归模型及其正则化，提供了两个数据文件 (<a href='/sources/ML-exercise/ex2data1.txt'>ex2data1.txt</a> 和 <a href='/sources/ML-exercise/ex2data2.txt'>ex2data2.txt</a>)，要求使用逻辑回归模型对 ex2data1 进行分析和参数求解，对 ex2data2 使用正则化逻辑回归处理；python 参考答案见 <a href='/sources/ML-exercise/ex2.html'>ex2.html</a>。</p>
+<p>作业文件和答案可<a href='/sources/ML-exercise/ex2.zip'>点击下载</a>。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>
 
