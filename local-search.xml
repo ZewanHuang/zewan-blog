@@ -4,6 +4,68 @@
   
   
   <entry>
+    <title>关于 nvm、node、npm 的那些事</title>
+    <link href="/2021/10/11/deploy/nvm/"/>
+    <url>/2021/10/11/deploy/nvm/</url>
+    
+    <content type="html"><![CDATA[<p>nodejs 版本和 npm 包的兼容性越来越差，在使用 node 的过程中常常需要切换不同的版本，本篇介绍十分好用的 node 版本管理工具——nvm。</p><blockquote><p>如果你参考我之前的文章 <a href="/2021/10/10/deploy/npm-install/">windows 安装 npm 教程 – Nodejs</a> 或根据其它教程安装过 nodejs，也不会对本篇博客的教程造成较大的影响，因此不需要卸载后重装。</p></blockquote><h2 id="NVM-是什么"><a href="#NVM-是什么" class="headerlink" title="NVM 是什么"></a>NVM 是什么</h2><p>NVM 是 nodejs 的版本管理工具，通过它可以安装和切换不同版本的 Nodejs。</p><p>从 GitHub 或者其他网站下载一个项目，我们首先查看的是当前这个项目所需要的 node 版本。nodejs 官方版本更新非常快，且每一次更新改动都比较大，不同版本很难很好的兼容。正是因为这个需求，才需要频繁的切换 nodejs 版本。</p><p>在尝试使用 npm 安装 gitbook 环境时，正是遇到了版本问题我才开始使用 nvm 来管理 nodejs 版本。使用 v10.13.0 安装和使用 gitbook 没有任何问题，但使用 v14.16.0（我一开始的版本）安装 gitbook 道路十分坎坷。</p><p><img src="/img/articles/21-10-8/gitbook-example.png" alt="v10.13.0运行gitbook"></p><p><img src="/img/articles/21-10-8/gitbook-failure.png" alt="v14.16.0安装gitbook报错"></p><h2 id="NVM、NODE、NPM-的区别"><a href="#NVM、NODE、NPM-的区别" class="headerlink" title="NVM、NODE、NPM 的区别"></a>NVM、NODE、NPM 的区别</h2><ul><li>node：node 开发环境，代码库</li><li>npm：node 的包管理器</li><li>nvm：node 的版本管理工具</li></ul><h2 id="NVM-下载"><a href="#NVM-下载" class="headerlink" title="NVM 下载"></a>NVM 下载</h2><ol><li>Windows 版本：<a href="https://github.com/coreybutler/nvm-windows/releases">https://github.com/coreybutler/nvm-windows/releases</a></li><li>Mac 版本：<a href="https://github.com/nvm-sh/nvm#install--update-script">https://github.com/nvm-sh/nvm#install–update-script</a></li></ol><p><strong>下载时注意安装路径不能出现空格！</strong></p><blockquote><p>一定要注意这里！不然后面又会遇到一堆报错！</p></blockquote><p>如果之前安装过 nodejs，需要在安装 nvm 时根据提示，允许 nvm 控制当前 nodejs 版本；如果之前没安装过，想修改本地仓库地址或更换镜像，可参考 <a href="/2021/10/10/deploy/npm-install/">windows 安装 npm 教程 – Nodejs</a> 进行修改。</p><p>安装完成后，输入下列命令验证是否安装成功：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">nvm --version<br></code></pre></td></tr></table></figure><h2 id="常用的-nvm-命令"><a href="#常用的-nvm-命令" class="headerlink" title="常用的 nvm 命令"></a>常用的 nvm 命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">nvm --version               # 查看nvm版本<br>nvm install stable          # 安装最新稳定版 nodejs<br>nvm install &lt;version&gt;       # 安装指定版本 For examle:<br>nvm install v10.13.0<br>nvm ls                      # 查看已安装的 nodejs 版本<br>nvm use v10.13.0            # 切换使用 v10.13.0 版本<br>nvm alias default 10.13.0   # 设置默认版本<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>配置与部署</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>npm</tag>
+      
+      <tag>配置</tag>
+      
+      <tag>Node</tag>
+      
+      <tag>nvm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>windows 安装 npm 教程 -- Nodejs</title>
+    <link href="/2021/10/10/deploy/npm-install/"/>
+    <url>/2021/10/10/deploy/npm-install/</url>
+    
+    <content type="html"><![CDATA[<p>本篇介绍 windows 系统下安装 npm 的教程，包含自定义本地仓库地址和配置镜像站等实用功能。</p><h2 id="关于-npm"><a href="#关于-npm" class="headerlink" title="关于 npm"></a>关于 npm</h2><p>npm 是 nodejs 下的包管理器。</p><p>参考官方文档所说，npm 是世界上最大的软件注册中心，很多开源开发人员使用 npm 来共享、借用包，或进行开发的管理。</p><p>简单地说，npm 具备命令行接口和软件注册中心 (registry)，使用 npm，我们可以安装、管理、运行 packages，为项目代码适配 packages 等。我最常用的还是用它来安装环境包（如 vue-cli），以及运行 vue 等前端项目（<code>npm run serve</code>）。</p><h2 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h2><p>nodejs 下载网址为：<a href="https://nodejs.org/en/">https://nodejs.org/en/</a></p><p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_20-41-09.png" alt="nodejs"></p><p>下载完成后，点击安装即可，可自行选择安装路径，安装时会默认添加环境变量，然后一路 next，最后点击 finish 即安装完成。</p><p>安装完成后，打开 cmd 或 powershell，输入下列命令检查是否正常。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">node -v<br>npm -v<br></code></pre></td></tr></table></figure><p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_20-46-10.png"></p><h2 id="自定义本地仓库地址"><a href="#自定义本地仓库地址" class="headerlink" title="自定义本地仓库地址"></a>自定义本地仓库地址</h2><p>nodejs 安装成功后，npm 的本地仓库默认指定在 C 盘中 (<code>C:/User/xxx/AppData/Roaming</code>)，这将导致我们以后安装的包都会存在 C 盘。个人更喜欢把软件安装到 D 盘中，所以对仓库地址重新进行了设置。</p><blockquote><p>不介意包安装在 C 盘的可跳过这一步</p></blockquote><p>首先，在你想要的地方新建 nodejs 文件夹，我这里直接在 D 盘根目录下新建，然后在文件夹下新建两个文件夹 <code>node_cache</code> 和 <code>node_global</code>（也可以直接在 nodejs 安装路径下直接创建），分别存储 node 缓存和全局包。</p><p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_20-54-12.png"></p><p>然后在终端运行以下命令。记得根据自己情况改变命令中的路径。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm config set prefix &quot;D:\nodejs\node_global&quot;<br>npm config set cache &quot;D:\nodejs\node_cache&quot;<br></code></pre></td></tr></table></figure><p>回车后，可以输入 <code>npm list -global</code> 观察目录是否改变。</p><p>这样我们后面下载的包，都会安装在 <code>node_global</code> 文件夹下，包模块会放在 <code>node_global/node_modules</code> 中，因此我们还需要在系统环境变量中添加以下两项。</p><blockquote><p>点击我的电脑，右键属性-&gt;高级系统设置-&gt;环境变量，即可进行修改</p></blockquote><p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_21-16-02.png" alt="NODE_PATH"></p><p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_21-19-30.png" alt="node_global"></p><h2 id="配置镜像站"><a href="#配置镜像站" class="headerlink" title="配置镜像站"></a>配置镜像站</h2><p>npm 的包下载地址默认是国外网站，在国内使用可能会大大降低下载速度（当然如果你科学上网了那另说）。在这里我们将下载地址改为淘宝的镜像站。</p><p>输入命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm config set registry=http://registry.npm.taobao.org<br></code></pre></td></tr></table></figure><p>再输入 <code>npm config list</code>，可以看到所有的配置信息。</p><p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_21-06-01.png"></p><p>但是到这一步，该配置还无法保证一直成立，需要修改 <code>.npmrc</code> 文件使配置长久生效。<code>.npmrc</code> 文件的地址在上图中可查看到。</p><p>我的配置文件内容如下图所示，需要根据自己的安装情况进行修改。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs txt">prefix=D:\nodejs\node_global<br>cache=D:\nodejs\node_cache<br>registry=http://registry.npm.taobao.org<br></code></pre></td></tr></table></figure><p>到这一步，就已经完成了 npm 的安装和配置了，后面以 vue 为例进行测试。</p><h2 id="以-Vue-为例"><a href="#以-Vue-为例" class="headerlink" title="以 Vue 为例"></a>以 Vue 为例</h2><p>输入以下命令，安装 vue.js、vue-router、vue-cli 脚手架到 global 全局目录：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm install vue -g<br>npm install vue-router -g<br>npm install vue-cli -g<br></code></pre></td></tr></table></figure><p>使用 vue-cli 创建一个基于 webpack 模板的 vue 项目：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">vue init webpack my-project<br><span class="hljs-meta">#</span><span class="bash"> 这里需要进行一些配置，默认回车即可</span><br></code></pre></td></tr></table></figure><p>进入项目，安装并运行：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd my-project<br>npm install<br>npm run serve<br></code></pre></td></tr></table></figure><p>成功运行后，访问 <a href="http://localhost:8080/">http://localhost:8080/</a> 即可看到 vue 项目的默认界面。</p><blockquote><p>如果 8080 端口被占用，这里的端口可能会改变，实际以终端输出为主</p></blockquote>]]></content>
+    
+    
+    <categories>
+      
+      <category>配置与部署</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>npm</tag>
+      
+      <tag>配置</tag>
+      
+      <tag>windows</tag>
+      
+      <tag>Node</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Unity Inspector 自定义按钮</title>
     <link href="/2021/08/11/unity/editor-inspector/"/>
     <url>/2021/08/11/unity/editor-inspector/</url>
@@ -35,7 +97,7 @@
     <link href="/2021/07/27/ml/5-neural-networks/"/>
     <url>/2021/07/27/ml/5-neural-networks/</url>
     
-    <content type="html"><![CDATA[<p>在 <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8E%E5%90%B4%E6%81%A9%E8%BE%BE%E3%80%8F/">机器学习『吴恩达』</a> 系列中，无论是线性回归还是逻辑回归，都有一个缺点：当特征太多时，计算的负荷非常大。</p><p>而事实上，我们的训练集常常有太多的特征。比如，我们试图训练一个模型来识别视觉对象（比如识别是否为汽车），一种方法是，我们利用图片上一个个像素的值来作为特征，更基础的我们假设只选用灰度图片，这样每个像素只有一个值（而非 RGB 值），且假设采用的都是 $50\times 50$ 像素的小图片，这样就会有 $2500$ 个特征；如果进一步两两特征组合成非线性模型，则大概有 $2500^{2}/2$ 个特征。</p><p>普通的逻辑回归模型，不能有效地处理这么多特征，这时候我们需要<strong>神经网络</strong>。</p><h2 id="神经元和大脑"><a href="#神经元和大脑" class="headerlink" title="神经元和大脑"></a>神经元和大脑</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>神经网络产生的目的是，人们想尝试设计出模仿大脑的算法。</p><p>大脑是十分复杂的，我们能学习数学、编程等多种东西，你可能会想象到，如果想模仿大脑，可能需要写很多不同的算法、软件来模拟所有这些五花八门的学习事件。但能不能假设，大脑做这些事情，不需要过多不同的程序去实现。相反的，<strong>大脑处理事件的方法，只需要一个单一的学习算法就可以。</strong></p><p><img src="/img/articles/21-7-27/01.jpg" alt="图源于Coursera"></p><p>当然，这只是个假设，不过目前还是有一些相关证据的。</p><p>神经系统科学家做了下面这个有趣的实验，把耳朵到听觉皮层的神经切断，将其重新接到一个动物的大脑上，这样从眼睛到视神经的信号最终将传到听觉皮层。结果表明听觉皮层学会了“看”。这类实验称为<strong>神经重接实验</strong>。</p><p>从这个意义上说，如果人体有同一块脑组织可以处理光、声或触觉信号，那么也许存在一种学习算法，可以同时处理视觉、听觉和触觉，而不是需要运行上千个不同的程序，或者上千个不同的算法来做这些大脑所完成的成千上万的美好事情。</p><p>这些只作为前言唠一唠，我们还是主要介绍神经网络的技术细节。</p><h3 id="神经元"><a href="#神经元" class="headerlink" title="神经元"></a>神经元</h3><p>为了构建神经网络模型，首先我们需要思考大脑中的神经网络是怎样的？每一个神经元都可以被认为是一个处理单元/神经核（<strong>processing unit/Nucleus</strong>），它含有许多输入/树突（<strong>input/Dendrite</strong>），并且有一个输出/轴突（<strong>output/Axon</strong>）。神经网络是大量神经元相互连接并通过电脉冲来交流的一个网络。</p><p><img src="/img/articles/21-7-27/02.jpg" alt="图源于Coursera"></p><p>神经元的作用在于，把自己收到的消息进行计算，并向其它神经元传递消息。比如，想活动一块肌肉，会触发一个神经元向肌肉发送消息，再引起肌肉收缩。我们后面建立的神经网络模型，也是以此为基础的。</p><h2 id="模型表示"><a href="#模型表示" class="headerlink" title="模型表示"></a>模型表示</h2><h3 id="单实例解释"><a href="#单实例解释" class="headerlink" title="单实例解释"></a>单实例解释</h3><p>神经网络模型建立在很多神经元上，每一个神经元又是学习模型。这些神经元（也叫<strong>激活单元</strong>，<strong>activation unit</strong>），采纳一些特征作为输入，并根据自身模型提供输出。</p><p>暂且不理会中间的处理，只看输入输出，我们可以简单地了解神经网络：</p><p>$$<br>[x_{0}\ x_{1}\ x_{2}\ \cdots]\ \rightarrow \ [\ ]\  \rightarrow \ h_{\theta}(x)<br>$$</p><p>以<strong>逻辑回归模型</strong>为神经元示例，设计如下神经网络：</p><p><img src="/img/articles/21-7-27/03.png" alt="图源于Coursera"></p><p>图中的激活单元都是一个逻辑回归模型，其中：</p><ul><li>输入单元：$x_{1},x_{2},x_{3}$，我们将原始数据输入给它们</li><li>中间单元：处理数据，并呈递给下一层</li><li>输出单元：计算 $h_{\theta}(x)$</li></ul><p>神经网络模型是许多逻辑单元按照不同层次组织起来的网络，每一层的输出变量都是下一层的输入变量。如下图，第一层为<strong>输入层</strong> (<strong>Input Layer</strong>)，中间层为<strong>隐藏层</strong> (<strong>Hidden Layers</strong>)，最后一层为<strong>输出层</strong> (<strong>Output Layer</strong>)。另外，我们为每一层增加一个<strong>偏差单元</strong> (<strong>bias unit</strong>)。</p><p>偏差单元有点像我们之前在讲述线性回归和逻辑回归时，为满足矩阵运算而添加的单元特征。</p><p><img src="/img/articles/21-7-27/04.png"></p><p>我们用符号来描述模型：</p><p>$$<br>\begin{align*}&amp; a_i^{(j)} = \text{“activation” of unit $i$ in layer $j$} \newline&amp; \Theta^{(j)} = \text{matrix of weights controlling function mapping from layer $j$ to layer $j+1$}\end{align*}<br>$$</p><p>$a_{i}^{(j)}$ 代表第 $j$ 层的第 $i$ 个激活单元，$\Theta^{(j)}$ 代表从第 $j$ 层到第 $j+1$ 层的权重矩阵（参数矩阵），其尺寸为：以第 $j+1$ 层激活单元数量为行数，以第 $j$ 层激活单元数为列数。例如，上图的神经网络 $\Theta^{(1)}$ 为 $3\times 4$ 矩阵。</p><p>对于上图的模型，计算表达式为：</p><p>$$<br>\begin{align*} a_1^{(2)} &amp;= g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) \newline a_2^{(2)} &amp;= g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) \newline a_3^{(2)} &amp;= g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) \newline h_\Theta(x) &amp;= a_1^{(3)} = g(\Theta_{10}^{(2)}a_0^{(2)} + \Theta_{11}^{(2)}a_1^{(2)} + \Theta_{12}^{(2)}a_2^{(2)} + \Theta_{13}^{(2)}a_3^{(2)}) \newline \end{align*}<br>$$</p><p>上面的表达仅仅将特征矩阵的一行（一个训练实例）feed 给了神经网络，我们需要将整个训练集都喂给算法进行学习。</p><h3 id="向量化表示"><a href="#向量化表示" class="headerlink" title="向量化表示"></a>向量化表示</h3><p>从前面的介绍，我们知道，中间层每一个 $a$ 都是由上一层所有的 $x$ 和每个 $x$ 对应的权重所决定的。我们把这样<strong>从左到右</strong>的算法称为<strong>前向传播算法</strong> (<strong>Forward Propagation</strong>)。</p><p>仍然使用上面的例子，先对一个训练实例，将计算过程展开：</p><p>首先我们有输入值 $x=[x_{0}\ x_{1}\ x_{2}\ x_{3}]^{T}$，使用 $z^{(2)}=\Theta^{(1)}x,a^{(2)}=g(z^{(2)})$ 计算第二层的值：</p><p>$$<br>g(<br>    \left[<br>        \begin{matrix}<br>        \theta_{10}^{(1)} &amp; \theta_{11}^{(1)} &amp; \theta_{12}^{(1)} &amp; \theta_{13}^{(1)}\newline<br>        \theta_{20}^{(1)} &amp; \theta_{21}^{(1)} &amp; \theta_{22}^{(1)} &amp; \theta_{23}^{(1)}\newline<br>        \theta_{30}^{(1)} &amp; \theta_{31}^{(1)} &amp; \theta_{32}^{(1)} &amp; \theta_{33}^{(1)}<br>        \end{matrix}<br>    \right]<br>    \times<br>    \left[<br>        \begin{matrix}<br>        x_{0}\newline<br>        x_{1}\newline<br>        x_{2}\newline<br>        x_{3}\newline<br>        \end{matrix}<br>    \right]<br>)=g(<br>    \left[<br>        \begin{matrix}<br>        \theta_{10}^{(1)}x_{0}+\theta_{11}^{(1)}x_{1}+\theta_{12}^{(1)}x_{2}+\theta_{13}^{(1)}x_{3}\newline<br>        \theta_{20}^{(1)}x_{0}+\theta_{21}^{(1)}x_{1}+\theta_{22}^{(1)}x_{2}+\theta_{23}^{(1)}x_{3}\newline<br>        \theta_{30}^{(1)}x_{0}+\theta_{31}^{(1)}x_{1}+\theta_{32}^{(1)}x_{2}+\theta_{33}^{(1)}x_{3}\newline<br>        \end{matrix}<br>    \right]<br>)=\left[<br>    \begin{matrix}<br>        a_{1}^{(2)}\newline<br>        a_{2}^{(2)}\newline<br>        a_{3}^{(2)}\newline<br>    \end{matrix}<br>\right]<br>$$</p><p>计算后给第二层添加 $a_{0}^{(2)}=1$，计算输出的值为：</p><p>$$<br>g(<br>    \left[<br>        \begin{matrix}<br>        \theta_{10}^{(2)} &amp; \theta_{11}^{(2)} &amp; \theta_{12}^{(2)} &amp; \theta_{13}^{(2)}<br>        \end{matrix}<br>    \right]<br>    \times<br>    \left[<br>        \begin{matrix}<br>        a_{0}^{(2)} \newline<br>        a_{1}^{(2)} \newline<br>        a_{2}^{(2)} \newline<br>        a_{3}^{(2)} \newline<br>        \end{matrix}<br>    \right]<br>)=g(\theta_{10}^{(2)}a_{0}^{(2)}+\theta_{11}^{(2)}a_{1}^{(2)}+\theta_{12}^{(2)}a_{2}^{(2)}+\theta_{13}^{(2)}a_{3}^{(2)})=h_{\theta}(x)<br>$$</p><p>这样我们展示了单个训练实例的计算过程，接下来我们用向量化表示整个训练集的计算。</p><p>我们需要对训练集特征矩阵进行转置，使同一个实例的特征都在同一列中。即：</p><p>$$<br>a^{(2)} = g(\Theta^{(1)} \times X^{T})<br>$$</p><p>事实上中间层可能不止一个，我们可以归纳出计算公式：</p><p>$$<br>a^{(j+1)} = g(\Theta^{(j)} \times a^{(j)})<br>$$</p><p>从上面的过程我们可以看出，神经网络就像是 logistic regression，只不过把特征值不断地进行计算和变换，从而将原始输入值变为高级的特征值，可以把 $a_{1},a_{2},a_{3}$ 理解成 $x_{0},x_{1},x_{2},x_{3}$ 的进化体。因为过程是梯度下降的，所以中间量 $a$ 变得越来越厉害，所以这些更高级的特征值远比 $x$ 次方更厉害，能更好地预测新数据。<strong>这就是神经网络相比于逻辑回归和线性回归的优势。</strong></p><h2 id="应用举例"><a href="#应用举例" class="headerlink" title="应用举例"></a>应用举例</h2><h3 id="实现逻辑运算"><a href="#实现逻辑运算" class="headerlink" title="实现逻辑运算"></a>实现逻辑运算</h3><p>接下来，我们构建神经网络，来实现基础的逻辑运算，包括逻辑与、或、非。</p><p>我们可以用这样的一个神经网络来表示 <strong>AND</strong> 函数：</p><p><img src="/img/articles/21-7-27/05.png" alt="图源于Coursera"></p><p>其中权重为 $[-30\ 20\ 20]$，即 $\theta_{0}=-30,\theta_{1}=20,\theta_{2}=20$，则输出函数为 $h_{\Theta}(x)=g(-30+20x_{1}+20x_{2})$</p><p>而我们知道 $g(x)$ 的图像是：</p><p><img src="/img/articles/21-7-27/06.png" alt="图源于Coursera"></p><p>这样我们赋值 $x_{1},x_{2}\in \{0,1\}$，得到：</p><p>$$<br>\begin{align*}&amp; x_1 = 0 \ \ and \ \ x_2 = 0 \ \ then \ \ g(-30) \approx 0 \newline &amp; x_1 = 0 \ \ and \ \ x_2 = 1 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 = 1 \ \ and \ \ x_2 = 0 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 = 1 \ \ and \ \ x_2 = 1 \ \ then \ \ g(10) \approx 1\end{align*}<br>$$</p><p>这样，我们有 $h_{\Theta}(x)=x_{1} \text{AND} x_{2}$</p><p>从上面逻辑与神经网络的构建过程，我们可以看到，我们只需搭建一个无隐藏层的神经网络即可实现，只需在权重上合理分配，即可达到效果。后面将直接给出其它两个逻辑运算的神经网络。</p><ul><li><strong>逻辑与 AND</strong>：权重为 $-30,20,20$</li><li><strong>逻辑或 OR</strong>：权重为 $-10,20,20$</li><li><strong>逻辑非 NOT</strong>：权重为 $10,-20$</li></ul><p><img src="/img/articles/21-7-27/07.png" alt="AND &amp; OR &amp; NOT"></p><p>我们还可以将神经元组合成更复杂的神经网络，以实现更复杂的运算。例如实现 <strong>XNOR</strong> 功能，要求当且仅当输入的两个值相等时输出 1，反之则输出 0，即</p><p>$$<br>\text{XNOR} = (x_{1}\ \text{AND}\ x_{2})\ \text{OR}\ ((\text{NOT}\ x_{1})\ \text{AND}\ (\text{NOT} \ x_{2}))<br>$$</p><p><img src="/img/articles/21-7-27/08.png" alt="XNOR"></p><p>这样我们就得到了一个能实现 <strong>XNOR</strong> 运算符的神经网络。我们来检验一下。</p><table><thead><tr><th align="center">$x_{1}$</th><th align="center">$x_{2}$</th><th align="center">$a_{1}^{(2)}$</th><th align="center">$a_{2}^{(2)}$</th><th align="center">$h_{\Theta}(x)$</th></tr></thead><tbody><tr><td align="center">$0$</td><td align="center">$0$</td><td align="center">$0$</td><td align="center">$1$</td><td align="center">$1$</td></tr><tr><td align="center">$0$</td><td align="center">$1$</td><td align="center">$0$</td><td align="center">$0$</td><td align="center">$0$</td></tr><tr><td align="center">$1$</td><td align="center">$0$</td><td align="center">$0$</td><td align="center">$0$</td><td align="center">$0$</td></tr><tr><td align="center">$1$</td><td align="center">$1$</td><td align="center">$1$</td><td align="center">$0$</td><td align="center">$1$</td></tr></tbody></table><p>按这种组合神经元的方法，我们可以逐渐构造出越来越复杂的函数，也能得到更加厉害的特征，这正是神经网络的优势。</p><h3 id="多类别分类"><a href="#多类别分类" class="headerlink" title="多类别分类"></a>多类别分类</h3><p>前面我们介绍过逻辑回归解决多类别分类问题的方法，神经网络同样能实现。</p><p>如果我们要训练一个神经网络来识别路人、汽车、摩托车和卡车，在输出层我们应有 4 个值，分别对应以上四种类别。</p><p><img src="/img/articles/21-7-27/09.png" alt="图源于Coursera"></p><p>我们定义结果如下，对应路人、汽车、摩托车和卡车：</p><p>$$<br>y^{(i)}=<br>\left[<br>\begin{matrix}<br>1\newline 0\newline 0\newline 0<br>\end{matrix}<br>\right],<br>\left[<br>\begin{matrix}<br>0\newline 1\newline 0\newline 0<br>\end{matrix}<br>\right],<br>\left[<br>\begin{matrix}<br>0\newline 0\newline 1\newline 0<br>\end{matrix}<br>\right],<br>\left[<br>\begin{matrix}<br>0\newline 0\newline 0\newline 1<br>\end{matrix}<br>\right]<br>$$</p><p>这样我们构建出来的神经网络大概如下：</p><p>$$<br>\left[\begin{matrix}x_{0}\newline x_{1}\newline x_{2}\newline \cdots\newline x_{n}\end{matrix}\right]<br>\rightarrow<br>\left[\begin{matrix}a_{0}^{(2)}\newline a_{1}^{(2)}\newline a_{2}^{(2)}\newline \cdots \end{matrix}\right]<br>\rightarrow<br>\left[\begin{matrix}a_{0}^{(3)}\newline a_{1}^{(3)}\newline a_{2}^{(3)}\newline \cdots \end{matrix}\right]<br>\rightarrow \cdots\rightarrow<br>\left[\begin{matrix}h_{\Theta}(x)_{1}\newline h_{\Theta}(x)_{2}\newline h_{\Theta}(x)_{3}\newline h_{\Theta}(x)_{4}\newline\end{matrix}\right]<br>$$</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文从大脑和神经元的人体结构引入，介绍了神经网络的结构，由输入层、隐藏层、输出层组成。同时我们以逻辑回归模型建立激活单元，表示出神经网络，并给出计算公式：$a^{(j+1)} = g(\Theta^{(j)} \times a^{(j)})$</p><p>最后我们构造神经网络模型，建立了逻辑运算和多类别分类的模型。当然，本文并没有给出参数求解的细节，而是给出神经网络的表述，帮助理解神经网络的结构和概念。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p><p><a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>]]></content>
+    <content type="html"><![CDATA[<p>在 <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8E%E5%90%B4%E6%81%A9%E8%BE%BE%E3%80%8F/">机器学习『吴恩达』</a> 系列中，无论是线性回归还是逻辑回归，都有一个缺点：当特征太多时，计算的负荷非常大。</p><p>而事实上，我们的训练集常常有太多的特征。比如，我们试图训练一个模型来识别视觉对象（比如识别是否为汽车），一种方法是，我们利用图片上一个个像素的值来作为特征，更基础的我们假设只选用灰度图片，这样每个像素只有一个值（而非 RGB 值），且假设采用的都是 $50\times 50$ 像素的小图片，这样就会有 $2500$ 个特征；如果进一步两两特征组合成非线性模型，则大概有 $2500^{2}/2$ 个特征。</p><p>普通的逻辑回归模型，不能有效地处理这么多特征，这时候我们需要<strong>神经网络</strong>。</p><h2 id="神经元和大脑"><a href="#神经元和大脑" class="headerlink" title="神经元和大脑"></a>神经元和大脑</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>神经网络产生的目的是，人们想尝试设计出模仿大脑的算法。</p><p>大脑是十分复杂的，我们能学习数学、编程等多种东西，你可能会想象到，如果想模仿大脑，可能需要写很多不同的算法、软件来模拟所有这些五花八门的学习事件。但能不能假设，大脑做这些事情，不需要过多不同的程序去实现。相反的，<strong>大脑处理事件的方法，只需要一个单一的学习算法就可以。</strong></p><p><img src="/img/articles/21-7-27/01.jpg" alt="图源于Coursera"></p><p>当然，这只是个假设，不过目前还是有一些相关证据的。</p><p>神经系统科学家做了下面这个有趣的实验，把耳朵到听觉皮层的神经切断，将其重新接到一个动物的大脑上，这样从眼睛到视神经的信号最终将传到听觉皮层。结果表明听觉皮层学会了“看”。这类实验称为<strong>神经重接实验</strong>。</p><p>从这个意义上说，如果人体有同一块脑组织可以处理光、声或触觉信号，那么也许存在一种学习算法，可以同时处理视觉、听觉和触觉，而不是需要运行上千个不同的程序，或者上千个不同的算法来做这些大脑所完成的成千上万的美好事情。</p><p>这些只作为前言唠一唠，我们还是主要介绍神经网络的技术细节。</p><h3 id="神经元"><a href="#神经元" class="headerlink" title="神经元"></a>神经元</h3><p>为了构建神经网络模型，首先我们需要思考大脑中的神经网络是怎样的？每一个神经元都可以被认为是一个处理单元/神经核（<strong>processing unit/Nucleus</strong>），它含有许多输入/树突（<strong>input/Dendrite</strong>），并且有一个输出/轴突（<strong>output/Axon</strong>）。神经网络是大量神经元相互连接并通过电脉冲来交流的一个网络。</p><p><img src="/img/articles/21-7-27/02.jpg" alt="图源于Coursera"></p><p>神经元的作用在于，把自己收到的消息进行计算，并向其它神经元传递消息。比如，想活动一块肌肉，会触发一个神经元向肌肉发送消息，再引起肌肉收缩。我们后面建立的神经网络模型，也是以此为基础的。</p><h2 id="模型表示"><a href="#模型表示" class="headerlink" title="模型表示"></a>模型表示</h2><h3 id="单实例解释"><a href="#单实例解释" class="headerlink" title="单实例解释"></a>单实例解释</h3><p>神经网络模型建立在很多神经元上，每一个神经元又是学习模型。这些神经元（也叫<strong>激活单元</strong>，<strong>activation unit</strong>），采纳一些特征作为输入，并根据自身模型提供输出。</p><p>暂且不理会中间的处理，只看输入输出，我们可以简单地了解神经网络：</p><p>$$<br>[x_{0}\ x_{1}\ x_{2}\ \cdots]\ \rightarrow \ \left[\ \right]\  \rightarrow \ h_{\theta}(x)<br>$$</p><p>以<strong>逻辑回归模型</strong>为神经元示例，设计如下神经网络：</p><p><img src="/img/articles/21-7-27/03.png" alt="图源于Coursera"></p><p>图中的激活单元都是一个逻辑回归模型，其中：</p><ul><li>输入单元：$x_{1},x_{2},x_{3}$，我们将原始数据输入给它们</li><li>中间单元：处理数据，并呈递给下一层</li><li>输出单元：计算 $h_{\theta}(x)$</li></ul><p>神经网络模型是许多逻辑单元按照不同层次组织起来的网络，每一层的输出变量都是下一层的输入变量。如下图，第一层为<strong>输入层</strong> (<strong>Input Layer</strong>)，中间层为<strong>隐藏层</strong> (<strong>Hidden Layers</strong>)，最后一层为<strong>输出层</strong> (<strong>Output Layer</strong>)。另外，我们为每一层增加一个<strong>偏差单元</strong> (<strong>bias unit</strong>)。</p><p>偏差单元有点像我们之前在讲述线性回归和逻辑回归时，为满足矩阵运算而添加的单元特征。</p><p><img src="/img/articles/21-7-27/04.png"></p><p>我们用符号来描述模型：</p><p>$$<br>\begin{align*}&amp; a_i^{(j)} = \text{“activation” of unit $i$ in layer $j$} \newline&amp; \Theta^{(j)} = \text{matrix of weights controlling function mapping from layer $j$ to layer $j+1$}\end{align*}<br>$$</p><p>$a_{i}^{(j)}$ 代表第 $j$ 层的第 $i$ 个激活单元，$\Theta^{(j)}$ 代表从第 $j$ 层到第 $j+1$ 层的权重矩阵（参数矩阵），其尺寸为：以第 $j+1$ 层激活单元数量为行数，以第 $j$ 层激活单元数为列数。例如，上图的神经网络 $\Theta^{(1)}$ 为 $3\times 4$ 矩阵。</p><p>对于上图的模型，计算表达式为：</p><p>$$<br>\begin{align*} a_1^{(2)} &amp;= g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) \newline a_2^{(2)} &amp;= g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) \newline a_3^{(2)} &amp;= g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) \newline h_\Theta(x) &amp;= a_1^{(3)} = g(\Theta_{10}^{(2)}a_0^{(2)} + \Theta_{11}^{(2)}a_1^{(2)} + \Theta_{12}^{(2)}a_2^{(2)} + \Theta_{13}^{(2)}a_3^{(2)}) \newline \end{align*}<br>$$</p><p>上面的表达仅仅将特征矩阵的一行（一个训练实例）feed 给了神经网络，我们需要将整个训练集都喂给算法进行学习。</p><h3 id="向量化表示"><a href="#向量化表示" class="headerlink" title="向量化表示"></a>向量化表示</h3><p>从前面的介绍，我们知道，中间层每一个 $a$ 都是由上一层所有的 $x$ 和每个 $x$ 对应的权重所决定的。我们把这样<strong>从左到右</strong>的算法称为<strong>前向传播算法</strong> (<strong>Forward Propagation</strong>)。</p><p>仍然使用上面的例子，先对一个训练实例，将计算过程展开：</p><p>首先我们有输入值 $x=[x_{0}\ x_{1}\ x_{2}\ x_{3}]^{T}$，使用 $z^{(2)}=\Theta^{(1)}x,a^{(2)}=g(z^{(2)})$ 计算第二层的值：</p><p>$$<br>g(<br>    \left[<br>        \begin{matrix}<br>        \theta_{10}^{(1)} &amp; \theta_{11}^{(1)} &amp; \theta_{12}^{(1)} &amp; \theta_{13}^{(1)}\newline<br>        \theta_{20}^{(1)} &amp; \theta_{21}^{(1)} &amp; \theta_{22}^{(1)} &amp; \theta_{23}^{(1)}\newline<br>        \theta_{30}^{(1)} &amp; \theta_{31}^{(1)} &amp; \theta_{32}^{(1)} &amp; \theta_{33}^{(1)}<br>        \end{matrix}<br>    \right]<br>    \times<br>    \left[<br>        \begin{matrix}<br>        x_{0}\newline<br>        x_{1}\newline<br>        x_{2}\newline<br>        x_{3}\newline<br>        \end{matrix}<br>    \right]<br>)=g(<br>    \left[<br>        \begin{matrix}<br>        \theta_{10}^{(1)}x_{0}+\theta_{11}^{(1)}x_{1}+\theta_{12}^{(1)}x_{2}+\theta_{13}^{(1)}x_{3}\newline<br>        \theta_{20}^{(1)}x_{0}+\theta_{21}^{(1)}x_{1}+\theta_{22}^{(1)}x_{2}+\theta_{23}^{(1)}x_{3}\newline<br>        \theta_{30}^{(1)}x_{0}+\theta_{31}^{(1)}x_{1}+\theta_{32}^{(1)}x_{2}+\theta_{33}^{(1)}x_{3}\newline<br>        \end{matrix}<br>    \right]<br>)=\left[<br>    \begin{matrix}<br>        a_{1}^{(2)}\newline<br>        a_{2}^{(2)}\newline<br>        a_{3}^{(2)}\newline<br>    \end{matrix}<br>\right]<br>$$</p><p>计算后给第二层添加 $a_{0}^{(2)}=1$，计算输出的值为：</p><p>$$<br>g(<br>    \left[<br>        \begin{matrix}<br>        \theta_{10}^{(2)} &amp; \theta_{11}^{(2)} &amp; \theta_{12}^{(2)} &amp; \theta_{13}^{(2)}<br>        \end{matrix}<br>    \right]<br>    \times<br>    \left[<br>        \begin{matrix}<br>        a_{0}^{(2)} \newline<br>        a_{1}^{(2)} \newline<br>        a_{2}^{(2)} \newline<br>        a_{3}^{(2)} \newline<br>        \end{matrix}<br>    \right]<br>)=g(\theta_{10}^{(2)}a_{0}^{(2)}+\theta_{11}^{(2)}a_{1}^{(2)}+\theta_{12}^{(2)}a_{2}^{(2)}+\theta_{13}^{(2)}a_{3}^{(2)})=h_{\theta}(x)<br>$$</p><p>这样我们展示了单个训练实例的计算过程，接下来我们用向量化表示整个训练集的计算。</p><p>我们需要对训练集特征矩阵进行转置，使同一个实例的特征都在同一列中。即：</p><p>$$<br>a^{(2)} = g(\Theta^{(1)} \times X^{T})<br>$$</p><p>事实上中间层可能不止一个，我们可以归纳出计算公式：</p><p>$$<br>a^{(j+1)} = g(\Theta^{(j)} \times a^{(j)})<br>$$</p><p>从上面的过程我们可以看出，神经网络就像是 logistic regression，只不过把特征值不断地进行计算和变换，从而将原始输入值变为高级的特征值，可以把 $a_{1},a_{2},a_{3}$ 理解成 $x_{0},x_{1},x_{2},x_{3}$ 的进化体。因为过程是梯度下降的，所以中间量 $a$ 变得越来越厉害，所以这些更高级的特征值远比 $x$ 次方更厉害，能更好地预测新数据。<strong>这就是神经网络相比于逻辑回归和线性回归的优势。</strong></p><h2 id="应用举例"><a href="#应用举例" class="headerlink" title="应用举例"></a>应用举例</h2><h3 id="实现逻辑运算"><a href="#实现逻辑运算" class="headerlink" title="实现逻辑运算"></a>实现逻辑运算</h3><p>接下来，我们构建神经网络，来实现基础的逻辑运算，包括逻辑与、或、非。</p><p>我们可以用这样的一个神经网络来表示 <strong>AND</strong> 函数：</p><p><img src="/img/articles/21-7-27/05.png" alt="图源于Coursera"></p><p>其中权重为 $[-30\ 20\ 20]$，即 $\theta_{0}=-30,\theta_{1}=20,\theta_{2}=20$，则输出函数为 $h_{\Theta}(x)=g(-30+20x_{1}+20x_{2})$</p><p>而我们知道 $g(x)$ 的图像是：</p><p><img src="/img/articles/21-7-27/06.png" alt="图源于Coursera"></p><p>这样我们赋值 $x_{1},x_{2}\in \{0,1\}$，得到：</p><p>$$<br>\begin{align*}&amp; x_1 = 0 \ \ and \ \ x_2 = 0 \ \ then \ \ g(-30) \approx 0 \newline &amp; x_1 = 0 \ \ and \ \ x_2 = 1 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 = 1 \ \ and \ \ x_2 = 0 \ \ then \ \ g(-10) \approx 0 \newline &amp; x_1 = 1 \ \ and \ \ x_2 = 1 \ \ then \ \ g(10) \approx 1\end{align*}<br>$$</p><p>这样，我们有 $h_{\Theta}(x)=x_{1} \text{AND} x_{2}$</p><p>从上面逻辑与神经网络的构建过程，我们可以看到，我们只需搭建一个无隐藏层的神经网络即可实现，只需在权重上合理分配，即可达到效果。后面将直接给出其它两个逻辑运算的神经网络。</p><ul><li><strong>逻辑与 AND</strong>：权重为 $-30,20,20$</li><li><strong>逻辑或 OR</strong>：权重为 $-10,20,20$</li><li><strong>逻辑非 NOT</strong>：权重为 $10,-20$</li></ul><p><img src="/img/articles/21-7-27/07.png" alt="AND &amp; OR &amp; NOT"></p><p>我们还可以将神经元组合成更复杂的神经网络，以实现更复杂的运算。例如实现 <strong>XNOR</strong> 功能，要求当且仅当输入的两个值相等时输出 1，反之则输出 0，即</p><p>$$<br>\text{XNOR} = (x_{1}\ \text{AND}\ x_{2})\ \text{OR}\ ((\text{NOT}\ x_{1})\ \text{AND}\ (\text{NOT} \ x_{2}))<br>$$</p><p><img src="/img/articles/21-7-27/08.png" alt="XNOR"></p><p>这样我们就得到了一个能实现 <strong>XNOR</strong> 运算符的神经网络。我们来检验一下。</p><table><thead><tr><th align="center">$x_{1}$</th><th align="center">$x_{2}$</th><th align="center">$a_{1}^{(2)}$</th><th align="center">$a_{2}^{(2)}$</th><th align="center">$h_{\Theta}(x)$</th></tr></thead><tbody><tr><td align="center">$0$</td><td align="center">$0$</td><td align="center">$0$</td><td align="center">$1$</td><td align="center">$1$</td></tr><tr><td align="center">$0$</td><td align="center">$1$</td><td align="center">$0$</td><td align="center">$0$</td><td align="center">$0$</td></tr><tr><td align="center">$1$</td><td align="center">$0$</td><td align="center">$0$</td><td align="center">$0$</td><td align="center">$0$</td></tr><tr><td align="center">$1$</td><td align="center">$1$</td><td align="center">$1$</td><td align="center">$0$</td><td align="center">$1$</td></tr></tbody></table><p>按这种组合神经元的方法，我们可以逐渐构造出越来越复杂的函数，也能得到更加厉害的特征，这正是神经网络的优势。</p><h3 id="多类别分类"><a href="#多类别分类" class="headerlink" title="多类别分类"></a>多类别分类</h3><p>前面我们介绍过逻辑回归解决多类别分类问题的方法，神经网络同样能实现。</p><p>如果我们要训练一个神经网络来识别路人、汽车、摩托车和卡车，在输出层我们应有 4 个值，分别对应以上四种类别。</p><p><img src="/img/articles/21-7-27/09.png" alt="图源于Coursera"></p><p>我们定义结果如下，对应路人、汽车、摩托车和卡车：</p><p>$$<br>y^{(i)}=<br>\left[<br>\begin{matrix}<br>1\newline 0\newline 0\newline 0<br>\end{matrix}<br>\right],<br>\left[<br>\begin{matrix}<br>0\newline 1\newline 0\newline 0<br>\end{matrix}<br>\right],<br>\left[<br>\begin{matrix}<br>0\newline 0\newline 1\newline 0<br>\end{matrix}<br>\right],<br>\left[<br>\begin{matrix}<br>0\newline 0\newline 0\newline 1<br>\end{matrix}<br>\right]<br>$$</p><p>这样我们构建出来的神经网络大概如下：</p><p>$$<br>\left[\begin{matrix}x_{0}\newline x_{1}\newline x_{2}\newline \cdots\newline x_{n}\end{matrix}\right]<br>\rightarrow<br>\left[\begin{matrix}a_{0}^{(2)}\newline a_{1}^{(2)}\newline a_{2}^{(2)}\newline \cdots \end{matrix}\right]<br>\rightarrow<br>\left[\begin{matrix}a_{0}^{(3)}\newline a_{1}^{(3)}\newline a_{2}^{(3)}\newline \cdots \end{matrix}\right]<br>\rightarrow \cdots\rightarrow<br>\left[\begin{matrix}h_{\Theta}(x)_{1}\newline h_{\Theta}(x)_{2}\newline h_{\Theta}(x)_{3}\newline h_{\Theta}(x)_{4}\newline\end{matrix}\right]<br>$$</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文从大脑和神经元的人体结构引入，介绍了神经网络的结构，由输入层、隐藏层、输出层组成。同时我们以逻辑回归模型建立激活单元，表示出神经网络，并给出计算公式：$a^{(j+1)} = g(\Theta^{(j)} \times a^{(j)})$</p><p>最后我们构造神经网络模型，建立了逻辑运算和多类别分类的模型。当然，本文并没有给出参数求解的细节，而是给出神经网络的表述，帮助理解神经网络的结构和概念。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.coursera.org/learn/machine-learning">[1] 吴恩达 Andrew Ng 机器学习课程</a></p><p><a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">[2] 黄海广博士的机器学习笔记</a></p>]]></content>
     
     
     <categories>
@@ -274,6 +336,35 @@
   
   
   <entry>
+    <title>Gitbook - 管理项目和控制版本的工具</title>
+    <link href="/2021/06/25/deploy/gitbook-install/"/>
+    <url>/2021/06/25/deploy/gitbook-install/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>随笔</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>系统编程</tag>
+      
+      <tag>工具</tag>
+      
+      <tag>Git</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Git - 管理项目和控制版本的工具</title>
     <link href="/2021/06/25/notes/git/"/>
     <url>/2021/06/25/notes/git/</url>
@@ -290,11 +381,11 @@
     
     <tags>
       
-      <tag>Git</tag>
+      <tag>系统编程</tag>
       
       <tag>工具</tag>
       
-      <tag>系统编程</tag>
+      <tag>Git</tag>
       
     </tags>
     
@@ -346,9 +437,9 @@
     
     <tags>
       
-      <tag>系统编程</tag>
-      
       <tag>Linux</tag>
+      
+      <tag>系统编程</tag>
       
       <tag>Shell</tag>
       
@@ -375,9 +466,9 @@
     
     <tags>
       
-      <tag>系统编程</tag>
-      
       <tag>Linux</tag>
+      
+      <tag>系统编程</tag>
       
       <tag>Make</tag>
       
@@ -404,9 +495,9 @@
     
     <tags>
       
-      <tag>系统编程</tag>
-      
       <tag>Linux</tag>
+      
+      <tag>系统编程</tag>
       
       <tag>GCC</tag>
       
@@ -433,9 +524,9 @@
     
     <tags>
       
-      <tag>系统编程</tag>
-      
       <tag>Linux</tag>
+      
+      <tag>系统编程</tag>
       
       <tag>GCC</tag>
       
@@ -464,13 +555,13 @@
     
     <tags>
       
-      <tag>工具</tag>
+      <tag>Linux</tag>
       
       <tag>系统编程</tag>
       
-      <tag>Linux</tag>
-      
       <tag>Vim</tag>
+      
+      <tag>工具</tag>
       
     </tags>
     
@@ -495,9 +586,9 @@
     
     <tags>
       
-      <tag>系统编程</tag>
-      
       <tag>Linux</tag>
+      
+      <tag>系统编程</tag>
       
     </tags>
     

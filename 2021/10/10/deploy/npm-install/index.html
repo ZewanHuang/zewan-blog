@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/zewanblog.ico">
+  <link rel="icon" href="/img/zewanblog.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="本篇介绍 windows 系统下安装 npm 的教程，包含自定义本地仓库地址和配置镜像站等实用功能。">
+  <meta name="author" content="Zehuan Huang">
+  <meta name="keywords" content="">
+  
+  <title>windows 安装 npm 教程 -- Nodejs - Zewan 随笔</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.6.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/font.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC&display=swap.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin&display=swap.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","app_key":"QBNI2wT2eJM19a0Lfl90vFhq","server_url":"https://hn9otbfn.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Zewan Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/configs/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="windows 安装 npm 教程 -- Nodejs">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Zehuan Huang
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-10-10 16:19" pubdate>
+        2021年10月10日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      915 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">windows 安装 npm 教程 -- Nodejs</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年10月11日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>本篇介绍 windows 系统下安装 npm 的教程，包含自定义本地仓库地址和配置镜像站等实用功能。</p>
+<h2 id="关于-npm"><a href="#关于-npm" class="headerlink" title="关于 npm"></a>关于 npm</h2><p>npm 是 nodejs 下的包管理器。</p>
+<p>参考官方文档所说，npm 是世界上最大的软件注册中心，很多开源开发人员使用 npm 来共享、借用包，或进行开发的管理。</p>
+<p>简单地说，npm 具备命令行接口和软件注册中心 (registry)，使用 npm，我们可以安装、管理、运行 packages，为项目代码适配 packages 等。我最常用的还是用它来安装环境包（如 vue-cli），以及运行 vue 等前端项目（<code>npm run serve</code>）。</p>
+<h2 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h2><p>nodejs 下载网址为：<a target="_blank" rel="noopener" href="https://nodejs.org/en/">https://nodejs.org/en/</a></p>
+<p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_20-41-09.png" srcset="/img/loading.gif" lazyload alt="nodejs"></p>
+<p>下载完成后，点击安装即可，可自行选择安装路径，安装时会默认添加环境变量，然后一路 next，最后点击 finish 即安装完成。</p>
+<p>安装完成后，打开 cmd 或 powershell，输入下列命令检查是否正常。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">node -v<br>npm -v<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_20-46-10.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="自定义本地仓库地址"><a href="#自定义本地仓库地址" class="headerlink" title="自定义本地仓库地址"></a>自定义本地仓库地址</h2><p>nodejs 安装成功后，npm 的本地仓库默认指定在 C 盘中 (<code>C:/User/xxx/AppData/Roaming</code>)，这将导致我们以后安装的包都会存在 C 盘。个人更喜欢把软件安装到 D 盘中，所以对仓库地址重新进行了设置。</p>
+<blockquote>
+<p>不介意包安装在 C 盘的可跳过这一步</p>
+</blockquote>
+<p>首先，在你想要的地方新建 nodejs 文件夹，我这里直接在 D 盘根目录下新建，然后在文件夹下新建两个文件夹 <code>node_cache</code> 和 <code>node_global</code>（也可以直接在 nodejs 安装路径下直接创建），分别存储 node 缓存和全局包。</p>
+<p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_20-54-12.png" srcset="/img/loading.gif" lazyload></p>
+<p>然后在终端运行以下命令。记得根据自己情况改变命令中的路径。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm config set prefix &quot;D:\nodejs\node_global&quot;<br>npm config set cache &quot;D:\nodejs\node_cache&quot;<br></code></pre></td></tr></table></figure>
+
+<p>回车后，可以输入 <code>npm list -global</code> 观察目录是否改变。</p>
+<p>这样我们后面下载的包，都会安装在 <code>node_global</code> 文件夹下，包模块会放在 <code>node_global/node_modules</code> 中，因此我们还需要在系统环境变量中添加以下两项。</p>
+<blockquote>
+<p>点击我的电脑，右键属性-&gt;高级系统设置-&gt;环境变量，即可进行修改</p>
+</blockquote>
+<p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_21-16-02.png" srcset="/img/loading.gif" lazyload alt="NODE_PATH"></p>
+<p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_21-19-30.png" srcset="/img/loading.gif" lazyload alt="node_global"></p>
+<h2 id="配置镜像站"><a href="#配置镜像站" class="headerlink" title="配置镜像站"></a>配置镜像站</h2><p>npm 的包下载地址默认是国外网站，在国内使用可能会大大降低下载速度（当然如果你科学上网了那另说）。在这里我们将下载地址改为淘宝的镜像站。</p>
+<p>输入命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm config set registry=http://registry.npm.taobao.org<br></code></pre></td></tr></table></figure>
+
+<p>再输入 <code>npm config list</code>，可以看到所有的配置信息。</p>
+<p><img src="/img/articles/21-10-8/Snipaste_2021-10-11_21-06-01.png" srcset="/img/loading.gif" lazyload></p>
+<p>但是到这一步，该配置还无法保证一直成立，需要修改 <code>.npmrc</code> 文件使配置长久生效。<code>.npmrc</code> 文件的地址在上图中可查看到。</p>
+<p>我的配置文件内容如下图所示，需要根据自己的安装情况进行修改。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs txt">prefix=D:\nodejs\node_global<br>cache=D:\nodejs\node_cache<br>registry=http://registry.npm.taobao.org<br></code></pre></td></tr></table></figure>
+
+<p>到这一步，就已经完成了 npm 的安装和配置了，后面以 vue 为例进行测试。</p>
+<h2 id="以-Vue-为例"><a href="#以-Vue-为例" class="headerlink" title="以 Vue 为例"></a>以 Vue 为例</h2><p>输入以下命令，安装 vue.js、vue-router、vue-cli 脚手架到 global 全局目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm install vue -g<br>npm install vue-router -g<br>npm install vue-cli -g<br></code></pre></td></tr></table></figure>
+
+<p>使用 vue-cli 创建一个基于 webpack 模板的 vue 项目：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">vue init webpack my-project<br><span class="hljs-meta">#</span><span class="bash"> 这里需要进行一些配置，默认回车即可</span><br></code></pre></td></tr></table></figure>
+
+<p>进入项目，安装并运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd my-project<br>npm install<br>npm run serve<br></code></pre></td></tr></table></figure>
+
+<p>成功运行后，访问 <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080/</a> 即可看到 vue 项目的默认界面。</p>
+<blockquote>
+<p>如果 8080 端口被占用，这里的端口可能会改变，实际以终端输出为主</p>
+</blockquote>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%85%8D%E7%BD%AE%E4%B8%8E%E9%83%A8%E7%BD%B2/">配置与部署</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/npm/">npm</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%85%8D%E7%BD%AE/">配置</a>
+                    
+                      <a class="hover-with-bg" href="/tags/windows/">windows</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Node/">Node</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/10/11/deploy/nvm/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">关于 nvm、node、npm 的那些事</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/11/unity/editor-inspector/">
+                        <span class="hidden-mobile">Unity Inspector 自定义按钮</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appKey":"QBNI2wT2eJM19a0Lfl90vFhq","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://hn9otbfn.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":true,"requiredFields":[],"appid":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appkey":"QBNI2wT2eJM19a0Lfl90vFhq"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        粤ICP备2021021248号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.2/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,628 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/zewanblog.ico">
+  <link rel="icon" href="/img/zewanblog.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="本篇主要介绍妆容迁移技术的概念和发展现状，以及在调研过程中提出的问题和发展方向。">
+  <meta name="author" content="Zehuan Huang">
+  <meta name="keywords" content="">
+  
+  <title>妆容迁移综述 - Zewan 随笔</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.6.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/font.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC&display=swap.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin&display=swap.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","app_key":"QBNI2wT2eJM19a0Lfl90vFhq","server_url":"https://hn9otbfn.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Zewan Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/configs/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="妆容迁移综述">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Zehuan Huang
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-10-07 22:37" pubdate>
+        2021年10月7日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">妆容迁移综述</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年10月11日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>本篇主要介绍妆容迁移技术的概念和发展现状，以及在调研过程中提出的问题和发展方向。</p>
+<h2 id="1-什么是妆容迁移"><a href="#1-什么是妆容迁移" class="headerlink" title="1. 什么是妆容迁移"></a>1. 什么是妆容迁移</h2><p>妆容迁移指的是，将一张人像的妆容(Reference)迁移到另一张人像照片中(Source)，合成新妆容的人像图片(Result)。</p>
+<p><img src="/img/articles/21-10-8/v2-3587dfcfaed2e5cd6b1260e59670e48b_720w.jpg" srcset="/img/loading.gif" lazyload alt="妆容迁移效果示意图"></p>
+<h2 id="2-传统妆容迁移算法"><a href="#2-传统妆容迁移算法" class="headerlink" title="2. 传统妆容迁移算法"></a>2. 传统妆容迁移算法</h2><p>传统妆容迁移算法未使用深度学习技巧，往往对数据集具有较高的要求。根据要求的不同可以将传统妆容迁移算法分为两类：</p>
+<ol>
+<li>需要成对的人脸妆造前后的对比图作为训练集，是有监督模型</li>
+<li>不需要成对图，是无监督模型</li>
+</ol>
+<h3 id="2-1-基于梯度约束和成对数据的算法"><a href="#2-1-基于梯度约束和成对数据的算法" class="headerlink" title="2.1 基于梯度约束和成对数据的算法"></a>2.1 基于梯度约束和成对数据的算法</h3><p>基于成对图的算法，需要同一张人脸图像妆造前后的对比图作为训练集，对数据集的要求很高。此处以 <em>Example-Based Cosmetic Transfer</em><sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="Tong W S, Tang C K, Brown M S, et al. Example-based cosmetic transfer[C]//15th Pacific Conference on Computer Graphics and Applications (PG’07). IEEE, 2007: 211-218.
+">[1]</span></a></sup> 为例对该算法进行简要介绍。</p>
+<p><img src="/img/articles/21-10-8/Snipaste_2021-10-10_15-59-32.png" srcset="/img/loading.gif" lazyload></p>
+<p>如上图所示，$A$ 和 $A^{*}$ 是同一人像化妆前后的对比图数据，将 $A^{*}$ 的妆容迁移至一个全新的不同人脸图片 $B$ 上，获得 result 为 $B^{*}$。中心问题是，建立色彩和人脸表面几何的映射。</p>
+<p>该妆容迁移算法 Cosmetic Transfer 由下列步骤组成：</p>
+<ol>
+<li>预处理</li>
+<li>妆容映射</li>
+<li>外观修正</li>
+<li>眼部迁移</li>
+</ol>
+<p>首先是<strong>人脸预处理</strong>步骤，通常需要</p>
+<ul>
+<li>去除眉毛和眼睫毛</li>
+<li>使用纹理合成填充空缺处</li>
+<li>提取内在皮肤特征，如雀斑等 target face 需要保留的特征和 reference face 需要去除的特征</li>
+<li>将脸部几何扭曲转化为经典的人脸模型</li>
+</ul>
+<blockquote>
+<p>具体如何实现上述操作，在此处不再赘述，论文使用的是前人的成果</p>
+</blockquote>
+<p>第二步是<strong>妆容映射</strong>，主要是建立 $A$ 和 $A^{*}$ 化妆前后的 color 和 reflectance 的映射关系 $C$，并将其作用到 $B$ 上。</p>
+<p>映射关系建立较为简单，对人脸图片按各个像素点进行色彩特征量化，并将对应的像素点做如下公式运算，解得每个像素点的映射关系：</p>
+<p>$$<br>c_{p}=a_{p}^{*}/a_{p}<br>$$</p>
+<p>获得各像素点映射关系，组成总映射 $C$，将其应用到 $B$ 上：</p>
+<p>$$<br>b_{p}^{*}=c_{p}b_{p}<br>$$</p>
+<p>需要注意的是，完成 $B$ 的初步映射后，需要将第一步提取的内在皮肤特征贴合到 $B$ 上。</p>
+<p>当然，$A$ 与 $A^{*}$、$A^{*}$ 与 $B$ 脸部的几何偏差，会对第二步建立的像素级映射带来较大的误差，此时需要第三步，<strong>外观矫正</strong>。</p>
+<p>该步骤主要是在得到的映射关系上，对 $B$ 在像素级别上的色彩强度进行优化，优化公式主要有：</p>
+<p>$$<br>b_{p}^{*}=b_{p}(\gamma(c_{p}-1)+1)\tag{1}<br>$$</p>
+<p>$$<br>\Delta(b^{*}_{p})=\Delta(\beta b_{p}+(1-\beta)a_{p}^{*})\tag{2}<br>$$</p>
+<p>公式(1)引入 $\gamma$，当值为 0 时表示无妆容，当值为 1 时表示妆容完全迁移，因此 $\gamma$ 控制迁移程度。</p>
+<p>公式(2)引入拉普拉斯算子，使用 Gauss-Seidel 求解器求解 reference face 和 source face 之间的权重，以优化参考人脸和目标人脸的几何关系。</p>
+<p>最终在公式(1)和(2)的约束下求解优化，并将眉毛、眼睫毛等眼部特征迁移至人脸中，得到 $B^{*}$。</p>
+<p>该方法有较大的<strong>局限性</strong>：</p>
+<ol>
+<li>要求 source 和 reference 肤色相近，背景单一；</li>
+<li>无法适应较大的几何偏差，即 source 和 reference 人脸位置偏差大时迁移效果差；</li>
+<li>数据集为成对的妆容对比图，要求高。</li>
+</ol>
+<h3 id="2-2-基于物理模型和非成对数据的算法"><a href="#2-2-基于物理模型和非成对数据的算法" class="headerlink" title="2.2 基于物理模型和非成对数据的算法"></a>2.2 基于物理模型和非成对数据的算法</h3><h2 id="3-深度学习妆容迁移算法"><a href="#3-深度学习妆容迁移算法" class="headerlink" title="3. 深度学习妆容迁移算法"></a>3. 深度学习妆容迁移算法</h2><h3 id="3-1-基于匹配的妆造算法"><a href="#3-1-基于匹配的妆造算法" class="headerlink" title="3.1 基于匹配的妆造算法"></a>3.1 基于匹配的妆造算法</h3><h3 id="3-2-基于-GAN-的妆造迁移算法"><a href="#3-2-基于-GAN-的妆造迁移算法" class="headerlink" title="3.2 基于 GAN 的妆造迁移算法"></a>3.2 基于 GAN 的妆造迁移算法</h3><p>BeautyGAN/PSGAN</p>
+<h2 id="4-问题"><a href="#4-问题" class="headerlink" title="4. 问题"></a>4. 问题</h2><h2 id="5-展望"><a href="#5-展望" class="headerlink" title="5. 展望"></a>5. 展望</h2><h2 id="6-妆容数据集"><a href="#6-妆容数据集" class="headerlink" title="6. 妆容数据集"></a>6. 妆容数据集</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span>Tong W S, Tang C K, Brown M S, et al. Example-based cosmetic transfer[C]//15th Pacific Conference on Computer Graphics and Applications (PG’07). IEEE, 2007: 211-218.
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%A6%86%E5%AE%B9%E8%BF%81%E7%A7%BB/">妆容迁移</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%A6%86%E5%AE%B9%E8%BF%81%E7%A7%BB/">妆容迁移</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A7%91%E7%A0%94/">科研</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appKey":"QBNI2wT2eJM19a0Lfl90vFhq","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://hn9otbfn.lc-cn-n1-shared.com","emojiCDN":null,"emojiMaps":null,"enableQQ":true,"requiredFields":[],"appid":"hN9OTBFN3Qu5oHgDYfEGvoi9-gzGzoHsz","appkey":"QBNI2wT2eJM19a0Lfl90vFhq"},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        粤ICP备2021021248号
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.2/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
