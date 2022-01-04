@@ -773,6 +773,9 @@ pre,
 samp {
   font-family: "Fira Code", Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+.gitalk-container img {
+  margin: 0;
+}
 .postlist-container {
   margin-bottom: 15px;
 }
