@@ -87,17 +87,17 @@ layout: default
         {% endunless %}
 
     <!-- Sidebar Container -->
-            <div class="
+            <!-- <div class="
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
-                sidebar-container">
+                sidebar-container"> -->
 
                 <!-- Featured Tags -->
-                {% include featured-tags.html bottom=true %}
+                <!-- {% include featured-tags.html bottom=true %} -->
 
                 <!-- Friends Blog -->
-                {% include friends.html %}
-            </div>
+                <!-- {% include friends.html %} -->
+            <!-- </div> -->
         </div>
     </div>
 </article>
@@ -159,6 +159,20 @@ layout: default
     gitalk.render('gitalk-container')
 </script> 
 <!-- Gitalk end -->
+{% endif %}
+
+
+{% if site.utterances %}
+<!-- utterances start -->
+<script src="https://utteranc.es/client.js"
+        repo="ZewanHuang/zewan-blog"
+        issue-term="pathname"
+        label="Comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+<!-- utterances end -->
 {% endif %}
 
 

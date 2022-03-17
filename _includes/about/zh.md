@@ -11,6 +11,13 @@
 - 项目地址：[https://github.com/ZewanHuang/Questionnaire-Planet](https://github.com/ZewanHuang/Questionnaire-Planet)
 - Demo展示：[https://qn.zewan.cc](https://qn.zewan.cc)
 
+#### 学术成果分享平台
+
+- 简介：Slime学术成果共享平台，实现了学术搜索引擎的大多基本功能，并增添了部分社交属性，以及对作者以及入驻学者的多样化统计分析。
+- 开发时间：2021年秋季学期
+- 项目地址：[https://github.com/BUAASE-Slime/SlimeScholar-frontend](https://github.com/BUAASE-Slime/SlimeScholar-frontend)
+- Demo展示：由于对服务器设备要求过高，团队难以支撑，故无Demo在线展示
+
 #### 网上出版系统
 
 - 简介：网上出版系统，为读者、作者、审稿人、编辑提供一站式服务。在本站，读者可以查阅已发布文章、申请成为作者，作者可以上传发布文章，审稿人审阅文章并给出评论，编辑统一分配管理。
