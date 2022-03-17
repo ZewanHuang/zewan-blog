@@ -13,15 +13,17 @@ tags:
     - Django
 ---
 
-本篇记录我在一个全新服务器上部署 Vue 和 Django 前后端项目的全过程，内容包括服务器配置 Django 虚拟环境、uWSGI 和 Nginx 的使用以及报错的纠正等。若前后端采用的技术栈和我相同，可基本按照本文进行操作；否则可能需要理解所涉及步骤的意义和使用，再结合自己的技术栈进行调整。
+本篇记录我在一个全新服务器上部署 Vue 和 Django 前后端项目的全过程，内容包括服务器初始配置、安装 Django 虚拟环境、python web 服务器 uWSGI 和反向代理 Nginx 的使用，以及报错的纠正等。
+
+若前后端采用的技术栈和我相同，可基本按照本文进行操作；否则可能需要理解所涉及步骤的意义和使用，再结合自己的技术栈进行调整。
 
 ## 服务器预设
 
 ### 租服务器
 
-各大云平台，如腾讯云、阿里云、华为云等，都有学生优惠。我这里选择的是腾讯云，原因：控制台界面简洁优雅（狗头）。
+各大云平台，如腾讯云、阿里云、华为云等，都有学生优惠。我选择的是腾讯云，原因：UI好看。
 
-相关配置仅供参考：
+我所租借服务器的配置如下，仅供参考：
 
 ![服务器配置](/img/in-post/post-deploy/server.png)
 
@@ -29,6 +31,12 @@ tags:
 * 实例规格：CPU 1核，内存 2GB
 * 磁盘：系统盘 40GB
 * 流量包套餐：带宽 5Mbps，流量包 1000GB/月（免费）
+
+我使用的是 CentOS，关于 CentOS 和 Ubuntu 镜像的选择，可以参考 <a href="https://zhuanlan.zhihu.com/p/32274264" target="_blank">CentOS、Ubuntu、Debian三个linux比较异同 - 知乎</a>。
+
+很多企业部署在生产环境的服务器使用的是 CentOS，但对于个人网站或者课内学习之用，我认为可能 Ubuntu 会方便一些也容易上手一些，从实操来看，很多 Ubuntu 能直接 apt 下载的东西，CentOS 要绕不少弯。
+
+> 如果你选择的是 Ubuntu，这篇文章也是能给你部署带来帮助的，因为步骤大同小异
 
 ### SSH 远程连接
 
@@ -70,6 +78,33 @@ ssh root@<IP address>       # IP address 为你服务器的公网IP地址
 
 另外，VScode 的 [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) 远程连接插件真香。
 
+### 添加用户
+
+所有命令都在 root 用户下执行，这样是不明智的，所以实现远程连接后，我们在本地终端连接服务器，使用以下命令添加一个新用户：
+
+``` bash
+adduser <username>
+```
+
+为其指定密码：
+
+``` bash
+passwd <username>
+```
+
+如果服务器是本人的，还可以为创建的用户添加 sudo 权限：
+
+``` bash
+vim /etc/sudoers
+```
+
+将 root 所在行复制后改为用户的 username，保存后该用户则拥有 sudo 权限；另外设置需要密码才能使用 sudo 权限，则设置后面字段为 `ALL`，不需要密码则为 `NOPASSWD:ALL`。修改后大致为：
+
+``` bash
+root      ALL=(ALL)       NOPASSWD:ALL
+hadoop    ALL=(ALL:ALL)   ALL
+```
+
 ### 配置公钥
 
 配置公钥后，本地连接服务器，无需每次都输入密码。
@@ -80,7 +115,7 @@ ssh root@<IP address>       # IP address 为你服务器的公网IP地址
 ssh-keygen -t rsa           # 打开cmd或powershell输入
 ```
 
-默认回车即可，成功后在 `C:\Users\用户名\.ssh` 文件夹下会生成 `id_rsa` 和 `id_rsa.pub`，后者就是本地用户的密钥。打开该文件，复制内容。然后使用 ssh 命令登录远程服务器，在 root 用户根目录下创建 .ssh 文件夹并进入，再创建 authorized_keys 文件，将密钥粘贴进去，之后重启 ssh 服务。
+默认回车即可，成功后在 `C:\Users\用户名\.ssh` 文件夹下会生成 `id_rsa` 和 `id_rsa.pub`，后者就是本地用户的密钥。打开该文件，复制内容。然后使用 ssh 命令登录远程服务器，在用户根目录下（`~/`）创建 .ssh 文件夹并进入，再创建 authorized_keys 文件，将密钥粘贴进去，之后重启 ssh 服务。
 
 ``` bash
 service sshd restart        # 重启ssh
@@ -98,7 +133,15 @@ yum install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqli
 
 ## 配置 Django
 
+本步骤中，我在服务器上搭建 Django 环境，采用的是 virtualenv 虚拟环境管理器。当然我现在重新配置的话，可能不再会采用该方式了，我更推荐安装 <a href="https://www.anaconda.com/" target="_blank">Anaconda</a> 或者 <a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank">Miniconda</a>（服务器比较小型可选择后者），通过 Conda 来管理 Python 环境会方便一些。
+
+> TODO: 也许我什么时候会想写篇博客简单介绍一下 Conda
+
 ### 安装 python3.8.4
+
+CentOS 拿到手，发现不自带高版本 Python 时，我是很懵的，这也是我推荐入门者用 Ubuntu 的原因之一。推荐归推荐，当初我还是乖乖地给自己安了个 Python 3.8。
+
+在执行以下操作前，请先输入 `python -V` 查看一下本地 Python 版本，如果是 3.x 这一步就不需要做了。
 
 ``` bash
 cd /usr/local                   # 我一般喜欢把文件下载到该目录下
