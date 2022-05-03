@@ -130,3 +130,11 @@ mysql -u <username> -h <mysql_server_ip> -p
 ![pycharm-success](/img/in-post/post-ubuntu-mysql/pycharm-success.png)
 
 随后，软件中会出现 console，我们可以在这里输入 MySQL 语句并点击绿色启动按钮执行命令，同时可双击右侧弹出栏中的数据库表，查看信息。
+
+---
+
+附上 MySQL 创建数据库，并指定编码 UTF8 的命令：
+
+```bash
+CREATE DATABASE `mydb` CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
