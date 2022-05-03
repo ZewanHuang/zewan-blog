@@ -11,6 +11,7 @@ tags:
     - 部署
     - Vue
     - Django
+    - 服务器
 ---
 
 本篇记录我在一个全新服务器上部署 Vue 和 Django 前后端项目的全过程，内容包括服务器初始配置、安装 Django 虚拟环境、python web 服务器 uWSGI 和反向代理 Nginx 的使用，以及报错的纠正等。
