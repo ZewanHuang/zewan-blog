@@ -43,7 +43,8 @@
     <a target="_blank" href="https://www.zhihu.com/people/{{ site.zhihu_username }}">
       <span class="fa-stack fa-lg">
         <i class="fa fa-circle fa-stack-2x"></i>
-        <i class="fa  fa-stack-1x fa-inverse">知</i>
+        <i class="fa fa-stack-1x fa-inverse icon-CN_zhihu"></i>
+        <!-- <i class="fa fa-stack-1x fa-inverse">知</i> -->
       </span>
     </a>
   </li>
@@ -84,6 +85,36 @@
       <span class="fa-stack fa-lg">
         <i class="fa fa-circle fa-stack-2x"></i>
         <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  {% endif %}
+  {% if site.bilibili_spaceid %}
+  <li>
+    <a target="_blank" href="https://space.bilibili.com/{{ site.bilibili_spaceid }}">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa icon-CN_bilibili fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  {% endif %}
+  {% if site.csdn_userid %}
+  <li>
+    <a target="_blank" href="https://blog.csdn.net/{{ site.csdn_userid }}?type=blog">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa icon-CN_csdnnet fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  {% endif %}
+  {% if site.cnblogs_username %}
+  <li>
+    <a target="_blank" href="https://www.cnblogs.com/{{ site.cnblogs_username }}">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa icon-CN_cnblogs fa-stack-1x fa-inverse"></i>
       </span>
     </a>
   </li>

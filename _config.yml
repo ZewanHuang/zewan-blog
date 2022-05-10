@@ -13,11 +13,14 @@ future: true
 
 # SNS settings
 RSS: false
-weibo_username:     ZewanHuang
+# weibo_username:     ZewanHuang
 zhihu_username:     zewanhuang
 github_username:    ZewanHuang
 # twitter_username:   ZewanHuang
 email_address:      zewanhuang@126.com
+bilibili_spaceid:   45242048
+# csdn_userid:        weixin_45497461
+# cnblogs_username:   zewanhuang
 
 
 
