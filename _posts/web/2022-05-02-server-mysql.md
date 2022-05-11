@@ -18,7 +18,7 @@ tags:
 
 本篇介绍如何在 Linux 服务器上安装 MySQL 数据库，并设置为可远程连接。
 
-# 在 Ubuntu 上安装 MySQL
+## 在 Ubuntu 上安装 MySQL
 
 为安装最新版本的 MySQL，我们可以先更新一下 apt 管理的资源包。
 
@@ -36,7 +36,7 @@ sudo apt install mysql-server
 
 安装完成后，MySQL 服务会自动启动。想验证 MySQL 正在运行，输入：
 
-```
+```bash
 sudo systemctl status mysql
 ```
 
@@ -44,9 +44,9 @@ sudo systemctl status mysql
 
 ![MySQL已启动](/img/in-post/post-ubuntu-mysql/mysql-running.png)
 
-# 开启远程连接权限
+## 开启远程连接权限
 
-## 编辑 MySQL 配置文件
+### 编辑 MySQL 配置文件
 
 默认情况下，MySQL 数据库仅监听本地连接。若想允许远程连接数据库，首先需要修改配置文件，让 MySQL 可以监听远程固定 IP 或所有远程 IP。
 
@@ -70,7 +70,7 @@ sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 sudo systemctl restart mysql
 ```
 
-## 创建 MySQL 用户
+### 创建 MySQL 用户
 
 以 sudo 权限进入 MySQL 服务：
 
@@ -107,9 +107,9 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
-# 远程连接 MySQL 数据库
+## 远程连接 MySQL 数据库
 
-## 命令行远程访问
+### 命令行远程访问
 
 命令格式如下：
 
@@ -117,7 +117,7 @@ EXIT;
 mysql -u <username> -h <mysql_server_ip> -p
 ```
 
-## Jetbrains 家族 Database 连接
+### Jetbrains 家族 Database 连接
 
 在 IDEA、Pycharm 等软件中，内置 Database 访问插件，具备可视化数据库表的功能，一般在右侧任务栏点击展开。
 

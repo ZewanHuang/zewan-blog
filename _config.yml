@@ -1,9 +1,9 @@
 # Site settings
 title: Zewan Blog
-SEOTitle: 黄泽桓的博客 | Zewan Blog
+SEOTitle: Zewan 的博客 | Zewan Blog
 header-img: img/home-bg.jpg
 email: huangzehuan@buaa.edu.cn
-description: "黄泽桓，Beihang University，Maybe a CG lover | 这里是 @Zewan 的个人博客，与你一起发现更大的世界。"
+description: "Zewan, Beihang University, working on 3D vision | 这里是 @Zewan 的个人博客，与你一起发现更大的世界。"
 keyword: "黄泽桓, Zewan, ZewanHuang, Zehuan, @Zewan, 黄泽桓的博客, Zewan Blog, 博客, 个人网站, 北航"
 url: "https://blog.zewan.cc"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
@@ -89,7 +89,7 @@ ba_track_id: c611bb0482f8ea68726d3c8503b6d3c3
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "黄泽桓，Beihang University，Maybe a CG lover"
+sidebar-about-description: "Zewan, Beihang University, working on 3D vision"
 sidebar-avatar: https://github.com/ZewanHuang.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
