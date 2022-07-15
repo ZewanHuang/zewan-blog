@@ -9,7 +9,6 @@ mathjax:    true
 header-style: text
 tags:
     - MySQL
-    - 服务器
     - Linux
     - Web
 ---
