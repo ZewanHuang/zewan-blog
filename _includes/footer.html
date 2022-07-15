@@ -214,6 +214,17 @@
 </script>
 {% endunless %}
 
+<!-- Back-To-Top -->
+<script>
+window.onscroll = function() {scrollFunction()};
+function scrollFunction() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+    $(".back-to-top").addClass('visible');
+    } else {
+    $(".back-to-top").removeClass("visible")
+    }
+}
+</script>
 
 <!-- Multi-Lingual -->
 {% if page.multilingual %}

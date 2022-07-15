@@ -1699,6 +1699,31 @@ img::-moz-selection {
 .no-scroll {
   overflow-y: hidden;
 }
+#back-to-top {
+  cursor: pointer;
+  font-size: 20px;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antaliased;
+  font-style: normal;
+  font-weight: normal;
+  pointer-events: none;
+  letter-spacing: 0;
+  opacity: 0;
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  text-align: center;
+  text-rendering: optimizeLegibility;
+  transition: opacity .3s ease-in-out;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#back-to-top.visible {
+  opacity: 0.5;
+  pointer-events: all;
+}
 .medium-zoom-overlay,
 .medium-zoom-image--opened {
   z-index: 999;
