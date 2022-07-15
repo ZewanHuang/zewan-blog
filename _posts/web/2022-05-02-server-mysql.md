@@ -7,6 +7,7 @@ author:     "Zewan"
 catalog:    true
 mathjax:    true
 header-style: text
+target: _blank
 tags:
     - MySQL
     - Linux

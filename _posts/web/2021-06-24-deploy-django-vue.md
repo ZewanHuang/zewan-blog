@@ -6,6 +6,7 @@ date:       2021-06-24 16:19:49
 author:     "Zewan"
 catalog:    true
 header-style: text
+target: _blank
 tags:
     - Web
     - 部署

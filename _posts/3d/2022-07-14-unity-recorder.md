@@ -6,6 +6,7 @@ date:       2022-07-14 15:47:39
 author:     "Zewan"
 catalog:    true
 mathjax:    true
+target: _blank
 header-style: text
 tags:
     - unity
