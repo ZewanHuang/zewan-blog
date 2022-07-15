@@ -102,6 +102,9 @@ layout: default
     </div>
 </article>
 
+<script src="/js/medium-zoom.min.js"></script>
+<script>mediumZoom(document.querySelectorAll('div.post-container img'), { background: 'rgba(1,1,1,0.8)' })</script>
+
 <!-- add support for mathjax by voleking-->
 {% if page.mathjax %}
   {% include mathjax_support.html %}

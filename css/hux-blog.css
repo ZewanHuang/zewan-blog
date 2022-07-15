@@ -1699,3 +1699,7 @@ img::-moz-selection {
 .no-scroll {
   overflow-y: hidden;
 }
+.medium-zoom-overlay,
+.medium-zoom-image--opened {
+  z-index: 999;
+}
