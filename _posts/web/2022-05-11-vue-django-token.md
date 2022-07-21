@@ -8,7 +8,6 @@ catalog:    true
 mathjax:    true
 header-style: text
 tags:
-    - Token
     - Web
     - Vue
     - Django

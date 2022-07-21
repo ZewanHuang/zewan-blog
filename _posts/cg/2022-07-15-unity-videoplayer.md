@@ -9,7 +9,8 @@ mathjax:    true
 target: _blank
 header-style: text
 tags:
-    - unity
+    - Unity
+    - 图形学CG
 ---
 
 在 Unity 项目开发中，有时需要在非全屏 UI 窗口下播放 CG 或其它类型的视频。本文介绍支持多平台播放的 _Video Player_ 组件的用法。

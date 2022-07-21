@@ -9,7 +9,7 @@ header-style: text
 target: _blank
 tags:
     - Web
-    - 部署
+    - 服务器
     - Vue
     - Django
 ---

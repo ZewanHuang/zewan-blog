@@ -9,7 +9,8 @@ mathjax:    true
 target: _blank
 header-style: text
 tags:
-    - unity
+    - Unity
+    - 图形学CG
 ---
 
 在 Unity Editor 中录屏的方式主要有仅限 Windows 平台的 Unity 自带录屏和官方录屏插件 _Unity Recorder_，它们共有的功能有：
