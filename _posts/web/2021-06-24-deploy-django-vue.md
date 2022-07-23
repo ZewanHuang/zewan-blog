@@ -10,6 +10,7 @@ target: _blank
 tags:
     - Web
     - 服务器
+    - 部署
     - Vue
     - Django
 ---
